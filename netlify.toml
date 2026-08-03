@@ -1,0 +1,9 @@
+[build]
+  base = "holo-kai"
+  command = "npm run build"
+  publish = "holo-kai/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,20 @@
+{
+  "hosting": {
+    "site": "third-glazing-k7c1c",
+    "public": "holo-kai/dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  }
+}
