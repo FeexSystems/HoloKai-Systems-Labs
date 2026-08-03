@@ -52,8 +52,14 @@ def _extract_message_content(message: Any) -> str:
 
 def _resolve_provider() -> str:
     provider = (os.getenv("HOSTED_PROVIDER") or "").strip().lower()
-    if provider in {"kimi", "moonshot", "openai", "frontier", "generic"}:
+    if provider in {"vertex_ai", "vertex", "gemini", "google", "kimi", "moonshot", "openai", "frontier", "generic"}:
         return provider
+
+    if os.getenv("USE_VERTEX_AI") == "1" or os.getenv("VERTEX_AI") == "1":
+        return "vertex_ai"
+
+    if os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY"):
+        return "gemini"
 
     if os.getenv("MOONSHOT_API_KEY") or os.getenv("KIMI_API_KEY"):
         return "kimi"
@@ -64,8 +70,43 @@ def _resolve_provider() -> str:
     return "none"
 
 
+def _get_openai_client(api_key: str, base_url: str | None = None):
+    from openai import OpenAI
+    import httpx
+    return OpenAI(api_key=api_key, base_url=base_url, http_client=httpx.Client())
+
+
 def _hosted_synthesize(messages: List[Dict[str, str]], model: str | None = None) -> Dict[str, Any]:
     provider = _resolve_provider()
+
+    if provider in {"vertex_ai", "vertex"}:
+        from gcp_vertex_gateway import synthesize_with_vertex_ai
+        return synthesize_with_vertex_ai(messages, model=model)
+
+    if provider in {"gemini", "google"}:
+        api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            raise RuntimeError("No Gemini API key configured (GEMINI_API_KEY/GOOGLE_API_KEY)")
+
+        base_url = os.getenv("GEMINI_BASE_URL") or "https://generativelanguage.googleapis.com/v1beta/openai/"
+        hosted_model = model or os.getenv("GEMINI_MODEL") or "gemini-3.5-flash"
+
+        client = _get_openai_client(api_key=api_key, base_url=base_url)
+        response = client.chat.completions.create(
+            model=hosted_model,
+            messages=messages,
+            temperature=0.2,
+        )
+        answer = _extract_message_content(response.choices[0].message)
+        if not answer:
+            raise RuntimeError("Gemini hosted model returned an empty answer")
+
+        return {
+            "answer": answer,
+            "provider": "gemini",
+            "model": hosted_model,
+            "host": base_url,
+        }
 
     if provider in {"kimi", "moonshot"}:
         api_key = os.getenv("MOONSHOT_API_KEY") or os.getenv("KIMI_API_KEY")

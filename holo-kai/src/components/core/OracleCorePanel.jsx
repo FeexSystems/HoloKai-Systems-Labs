@@ -35,7 +35,7 @@ const itemVariants = {
 };
 
 export default function OracleCorePanel({ onSelectSource, activePeriod }) {
-  const [activeTab, setActiveTab] = useState('voice-synthesis'); // 'voice-synthesis' | 'computation' | 'chatbot' | 'studio' | 'telemetry' | 'graph'
+  const [activeTab, setActiveTab] = useState('chatbot'); // 'chatbot' | 'voice-synthesis' | 'computation' | 'studio' | 'telemetry' | 'graph'
   const [compQuery, setCompQuery] = useState('How far was Timbuktu from Cairo?');
   const [compResult, setCompResult] = useState(null);
   const [evidenceEval, setEvidenceEval] = useState(null);

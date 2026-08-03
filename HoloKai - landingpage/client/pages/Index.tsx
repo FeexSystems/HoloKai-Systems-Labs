@@ -221,7 +221,7 @@ export default function Index() {
             <div className="mb-8 inline-flex items-center gap-3 border border-amber-500/25 bg-amber-900/10 px-4 py-2 text-[9px] font-bold tracking-[0.3em] text-amber-300 sm:text-[10px]">
               <Activity className="h-4 w-4" /> FEEXSYSTEMS LABORATORY GENESIS · 2026
             </div>
-            <h1 className="max-w-5xl font-display text-6xl font-light leading-[0.84] tracking-[-0.045em] text-white sm:text-7xl md:text-8xl lg:text-[7.2rem]">
+            <h1 className="max-w-5xl font-display text-3xl font-light leading-[0.85] tracking-[-0.045em] text-white sm:text-5xl md:text-7xl lg:text-[7.2rem]">
               Where Civilization
               <br />
               <span className="bg-gradient-to-r from-amber-100 via-amber-400 to-amber-700 bg-clip-text font-bold italic text-transparent">
@@ -234,11 +234,11 @@ export default function Index() {
               humanoid incarnations. One unified consciousness preserving ancestry,
               knowledge, and futures with mathematical and cultural precision.
             </p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <button
                 type="button"
                 onClick={() => scrollToSection("vanguard")}
-                className="group flex items-center justify-center gap-3 bg-amber-500 px-8 py-4 text-xs font-bold tracking-[0.22em] text-black transition hover:bg-amber-300"
+                className="group flex items-center justify-center gap-3 bg-amber-500 px-6 sm:px-8 py-3.5 sm:py-4 text-xs font-bold tracking-[0.22em] text-black transition hover:bg-amber-300 w-full sm:w-auto"
               >
                 WITNESS THE VANGUARD
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -246,28 +246,28 @@ export default function Index() {
               <button
                 type="button"
                 onClick={openLabDefault}
-                className="border border-white/25 px-8 py-4 text-xs tracking-[0.2em] text-white transition hover:bg-white/5"
+                className="border border-white/25 px-6 sm:px-8 py-3.5 sm:py-4 text-xs tracking-[0.2em] text-white transition hover:bg-white/5 w-full sm:w-auto text-center"
               >
                 ENTER 3D LAB
               </button>
               <button
                 type="button"
                 onClick={() => goToCore()}
-                className="border border-amber-500/40 bg-amber-500/10 px-8 py-4 text-xs tracking-[0.2em] text-amber-200 transition hover:bg-amber-500/20"
+                className="border border-amber-500/40 bg-amber-500/10 px-6 sm:px-8 py-3.5 sm:py-4 text-xs tracking-[0.2em] text-amber-200 transition hover:bg-amber-500/20 w-full sm:w-auto text-center"
               >
                 ENTER ALKEBULAN
               </button>
               <button
                 type="button"
                 onClick={() => goToCore("/core")}
-                className="border border-white/20 px-8 py-4 text-xs tracking-[0.2em] text-white transition hover:bg-white/5"
+                className="border border-white/20 px-6 sm:px-8 py-3.5 sm:py-4 text-xs tracking-[0.2em] text-white transition hover:bg-white/5 w-full sm:w-auto text-center"
               >
                 CIVILIZATION CORE
               </button>
               <button
                 type="button"
                 onClick={() => navigate(SPLINE_LAB_PATH)}
-                className="border border-white/20 px-8 py-4 text-xs tracking-[0.2em] text-white transition hover:bg-white/5"
+                className="border border-white/20 px-6 sm:px-8 py-3.5 sm:py-4 text-xs tracking-[0.2em] text-white transition hover:bg-white/5 w-full sm:w-auto text-center"
               >
                 SPLINE LAB
               </button>
