@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "site": "third-glazing-k7c1c",
     "public": "holo-kai/dist",
     "ignore": [
       "firebase.json",
