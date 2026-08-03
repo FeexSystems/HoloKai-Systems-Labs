@@ -1,0 +1,80 @@
+modules = ["python-3.12", "nodejs-20", "web"]
+
+[nix]
+channel = "stable-25_05"
+
+[agent]
+expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Backend (FastAPI)"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Frontend (Vite)"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Landing Page (Vite)"
+
+[[workflows.workflow]]
+name = "Backend (FastAPI)"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python main.py"
+waitForPort = 8000
+
+[[workflows.workflow]]
+name = "Frontend (Vite)"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pnpm -C holo-kai run dev"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Landing Page (Vite)"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pnpm --filter fusion-starter run dev"
+waitForPort = 8080
+
+[[ports]]
+localPort = 5000
+externalPort = 5000
+
+[[ports]]
+localPort = 5001
+externalPort = 3000
+
+[[ports]]
+localPort = 8000
+externalPort = 8000
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+
+[[ports]]
+localPort = 8081
+externalPort = 8081
+
+[userenv]
+
+[userenv.shared]
+VITE_CORE_URL = "http://localhost:5000"
+VITE_LANDING_URL = "http://localhost:8080"

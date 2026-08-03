@@ -1,0 +1,26 @@
+{
+  "name": "holokai-civilization-core",
+  "private": true,
+  "description": "HoloKai monorepo. Active frontend: holo-kai/. Orbital lab entry: HoloKai - landingpage/.",
+  "workspaces": [
+    "holo-kai",
+    "HoloKai - landingpage"
+  ],
+  "scripts": {
+    "dev": "npm --prefix holo-kai run dev",
+    "dev:app": "npm --prefix holo-kai run dev",
+    "dev:landingpage": "npm --prefix \"HoloKai - landingpage\" run dev",
+    "build": "npm --prefix holo-kai run build",
+    "build:landingpage": "npm --prefix \"HoloKai - landingpage\" run build",
+    "lint": "npm --prefix holo-kai run lint",
+    "preview": "npm --prefix holo-kai run preview"
+  },
+  "dependencies": {
+    "@google/genai": "^2.13.0",
+    "@types/d3": "^7.4.3",
+    "@types/leaflet": "^1.9.21",
+    "d3": "^7.9.0",
+    "firebase": "^12.16.0",
+    "leaflet": "^1.9.4"
+  }
+}

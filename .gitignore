@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+holo-kai/node_modules/
+HoloKai - landingpage/node_modules/
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Local env & secrets
+.env
+.env.local
+frontend/.env.local
+*.pem
+
+# HoloKai local vector stores (regenerate via seed)
+frontend/.data/
+holokai_chroma/
+*.chroma/
+.parquet
+groundsourse_2026.parquet
+
+# Build artifacts
+frontend/.next/
+.next/
+out/
+frontend/out/
+holo-kai/dist/
+HoloKai - landingpage/dist/
+
+# Temp / runtime files
+*.ris
+response.json
+chat_response.json
+_t.tmp
+*.chroma/
+.parquet
+groundsourse_2026.parquet
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# Build
+dist/
+build/

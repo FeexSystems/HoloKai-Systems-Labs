@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "users": {
+      "title": "Users",
+      "description": "User accounts and authentication profiles",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "email"]
+    },
+    "conversations": {
+      "title": "Conversations",
+      "description": "User chat and intelligence sessions",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId"]
+    },
+    "researchNotes": {
+      "title": "Research Notes",
+      "description": "Saved civilization research notes and insights",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId"]
+    },
+    "historicalRecords": {
+      "title": "Historical Records",
+      "description": "Organized historical records and codices stored for users exploring the HoloKai portal",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "era": { "type": "string" },
+        "region": { "type": "string" },
+        "category": { "type": "string" },
+        "timeframe": { "type": "string" },
+        "summary": { "type": "string" },
+        "keyInsights": { "type": "array" },
+        "status": { "type": "string" },
+        "isBookmarked": { "type": "boolean" },
+        "tags": { "type": "array" },
+        "userId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "era", "category"]
+    }
+  }
+}

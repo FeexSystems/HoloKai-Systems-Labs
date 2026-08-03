@@ -1,0 +1,8 @@
+{
+  "name": "HoloKai — Where Civilizations Remembers",
+  "description": "Africa's First Civilization Intelligence Platform.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
