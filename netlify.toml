@@ -1,7 +1,8 @@
 [build]
   base = "holo-kai"
   command = "npm run build"
-  publish = "holo-kai/dist"
+  publish = "dist"
+
 
 [[redirects]]
   from = "/*"
