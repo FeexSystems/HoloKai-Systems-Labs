@@ -20,6 +20,9 @@ import LogUpdateDialog from '@/components/core/LogUpdateDialog';
 import CivilizationArchive from '@/components/core/CivilizationArchive';
 import Artifact3DGallery from '@/components/core/Artifact3DGallery';
 import KnowledgeNavigator from '@/components/core/KnowledgeNavigator';
+import AncientScriptSynthesizer from '@/components/core/AncientScriptSynthesizer';
+import QuantumTimeSimulator from '@/components/core/QuantumTimeSimulator';
+import CelestialObservatory from '@/components/core/CelestialObservatory';
 
 import SectionSkeleton from '@/components/ui/SectionSkeleton';
 import AmbientSoundscapeToggle from '@/components/ui/AmbientSoundscapeToggle';
@@ -27,13 +30,17 @@ import { useHoloKai } from '@/lib/HoloKaiContext';
 import { retroAudio } from '@/lib/audioFeedback';
 import {
   Sparkles, Landmark, MessageSquare, Library as LibraryIcon, Clock, Map,
-  ScrollText, GitBranch, Scale, Volume2, ShieldCheck, PenTool, Box, Compass
+  ScrollText, GitBranch, Scale, Volume2, ShieldCheck, PenTool, Box, Compass,
+  Languages, Cpu, Star
 } from 'lucide-react';
 
 // Panel View Registry
 const PANELS = {
   oracle: OracleCorePanel,
   navigator: KnowledgeNavigator,
+  synth: AncientScriptSynthesizer,
+  simulator: QuantumTimeSimulator,
+  observatory: CelestialObservatory,
   archive: CivilizationArchive,
   gallery3d: Artifact3DGallery,
   chat: ResearchChat,
@@ -51,6 +58,9 @@ const PANELS = {
 const TAB_NAV = [
   { id: 'oracle', label: 'Oracle Portal', icon: Sparkles, badge: 'AI Voice & Telemetry' },
   { id: 'navigator', label: 'Knowledge Navigator', icon: Compass, badge: 'Firestore Historical Records' },
+  { id: 'synth', label: 'Script Synthesizer', icon: Languages, badge: 'Phonetic Voice Engine' },
+  { id: 'simulator', label: 'Quantum Simulator', icon: Cpu, badge: 'Epistemic Scenario Modeling' },
+  { id: 'observatory', label: 'Celestial Observatory', icon: Star, badge: 'Archaeoastronomy & Calendar' },
   { id: 'archive', label: 'Civilization Archive', icon: Landmark, badge: '14 Empires' },
   { id: 'gallery3d', label: '3D Gallery Exhibition', icon: Box, badge: 'Spline Virtual Tour' },
   { id: 'chat', label: 'Research AI Chat', icon: MessageSquare, badge: 'Multi-Turn' },

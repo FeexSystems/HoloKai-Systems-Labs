@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   MessageSquare, Library, Clock, Map, GitBranch, ScrollText,
-  Scale, Volume2, ChevronLeft, ShieldCheck, PenTool, Sparkles, Landmark, Box, X, Compass
+  Scale, Volume2, ChevronLeft, ShieldCheck, PenTool, Sparkles, Landmark, Box, X, Compass,
+  Languages, Cpu, Star
 } from 'lucide-react';
 import { useHoloKai } from '@/lib/HoloKaiContext';
 import { GUARDIANS } from '@/lib/guardians';
@@ -14,6 +15,9 @@ const NAV_GROUPS = [
     items: [
       { id: 'oracle', label: 'Oracle Portal', icon: Sparkles },
       { id: 'navigator', label: 'Knowledge Navigator', icon: Compass },
+      { id: 'synth', label: 'Script Synthesizer', icon: Languages },
+      { id: 'simulator', label: 'Quantum Simulator', icon: Cpu },
+      { id: 'observatory', label: 'Celestial Observatory', icon: Star },
       { id: 'archive', label: 'Civilization Archive', icon: Landmark },
       { id: 'gallery3d', label: '3D Gallery', icon: Box },
       { id: 'map', label: 'Interactive Map', icon: Map },
