@@ -70,6 +70,10 @@ export function HoloKaiProvider({ children }) {
     setSession(null);
   };
 
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+
   const activeGuardian = session ? getGuardianById(session.guardianId) : DEFAULT_GUARDIAN;
 
   return (
@@ -87,6 +91,12 @@ export function HoloKaiProvider({ children }) {
         setTheme,
         language,
         setLanguage,
+        isSpeaking,
+        setIsSpeaking,
+        isThinking,
+        setIsThinking,
+        isListening,
+        setIsListening,
       }}
     >
       {children}
