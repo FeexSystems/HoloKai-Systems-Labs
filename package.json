@@ -12,6 +12,9 @@
     "dev:landingpage": "npm --prefix \"HoloKai - landingpage\" run dev",
     "build": "npm --prefix holo-kai run build",
     "build:landingpage": "npm --prefix \"HoloKai - landingpage\" run build",
+    "deploy:hosting": "npm --prefix holo-kai run build && firebase deploy --only hosting",
+    "deploy:firestore": "firebase deploy --only firestore",
+    "deploy:firebase": "npm --prefix holo-kai run build && firebase deploy",
     "lint": "npm --prefix holo-kai run lint",
     "preview": "npm --prefix holo-kai run preview"
   },
