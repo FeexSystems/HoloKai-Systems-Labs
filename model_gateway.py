@@ -20,10 +20,11 @@ def _build_messages(query: str, contexts: List[Dict[str, Any]]) -> List[Dict[str
         "You are HoloKai research synthesis. Use only provided evidence blocks. "
         "If evidence is insufficient, explicitly say so. Keep claims precise and traceable."
     )
+    evidence_text = "\n\n".join(evidence) if evidence else "[none]"
     user = (
         f"Question: {query}\n\n"
         "Evidence blocks:\n"
-        f"{'\n\n'.join(evidence) if evidence else '[none]'}\n\n"
+        f"{evidence_text}\n\n"
         "Return a concise synthesis and call out uncertainty or contested points."
     )
 
