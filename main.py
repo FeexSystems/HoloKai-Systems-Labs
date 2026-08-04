@@ -378,13 +378,11 @@ async def health():
     elif not rag.get("ready") and rag.get("enabled"):
         hint = "POST /api/rag/seed or: python seed_knowledge.py"
 
-    ollama_status = {}
-    try:
-        from ollama_client import status as ollama_status_fn
-
-        ollama_status = ollama_status_fn()
-    except Exception as exc:
-        ollama_status = {"ok": False, "error": str(exc)}
+    ai_status = {
+        "gemini": bool(os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")),
+        "elevenlabs": bool(os.getenv("ELEVENLABS_API_KEY") or os.getenv("VITE_ELEVENLABS_API_KEY")),
+        "deepgram": bool(os.getenv("DEEPGRAM_API_KEY") or os.getenv("VITE_DEEPGRAM_API_KEY")),
+    }
 
     alive_snap: Dict[str, Any] = {}
     try:
@@ -399,8 +397,8 @@ async def health():
         "service": "HoloKai Civilization Core",
         "version": "3.0.0",
         "mode": "alive",
-        "ollama": ollama_status,
-        "supervisor": getattr(getattr(core, "supervisor", None), "active_backend", None),
+        "ai_engines": ai_status,
+        "supervisor": "gemini",
         "vector_rag": {
             "ready": bool(rag.get("ready")),
             "enabled": bool(rag.get("enabled")),
@@ -1083,54 +1081,16 @@ async def get_history():
 
 
 @app.post("/api/stt")
-async def speech_to_text(file: UploadFile = File(...)):
-    """Speech-to-text via faster-whisper (runs locally, no cloud)."""
-    try:
-        from faster_whisper import WhisperModel
-
-        model = WhisperModel("base", device="cpu", compute_type="int8")
-        audio_bytes = await file.read()
-        import tempfile
-        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
-            tmp.write(audio_bytes)
-            tmp_path = tmp.name
-        try:
-            segments, info = model.transcribe(tmp_path, beam_size=5)
-            text = " ".join(seg.text for seg in segments)
-        finally:
-            os.unlink(tmp_path)
-        return {"text": text.strip(), "language": info.language, "duration": info.duration}
-    except ImportError:
-        return {"text": "", "language": "en", "duration": 0, "error": "faster-whisper not installed on server"}
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+@app.post("/api/speech-to-text")
+async def speech_to_text(request: Request):
+    """Speech-to-text via Deepgram nova-3."""
+    return await deepgram_stt(request)
 
 
 @app.post("/api/tts")
-async def text_to_speech(payload: TTSRequest):
-    """Text-to-speech via edge-tts (Microsoft neural voices, local)."""
-    try:
-        import edge_tts
-        import io
-
-        rate_str = f"+{int((payload.rate - 1) * 100)}%" if payload.rate >= 1 else f"{int((1 - payload.rate) * 100)}%"
-        pitch_str = f"+{int((payload.pitch - 1) * 25)}Hz" if payload.pitch >= 1 else f"-{int((1 - payload.pitch) * 25)}Hz"
-        communicate = edge_tts.Communicate(
-            payload.text,
-            voice=payload.voice,
-            rate=rate_str,
-            pitch=pitch_str,
-        )
-        buf = io.BytesIO()
-        async for chunk in communicate.stream():
-            if chunk["type"] == "audio":
-                buf.write(chunk["data"])
-        audio_bytes = buf.getvalue()
-        return Response(content=audio_bytes, media_type="audio/mpeg")
-    except ImportError:
-        raise HTTPException(status_code=503, detail="edge-tts not installed on server")
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+async def text_to_speech(request: Request):
+    """Text-to-speech via ElevenLabs."""
+    return await elevenlabs_tts(request)
 
 
 @app.post("/api/elevenlabs/tts")
@@ -1267,103 +1227,50 @@ async def deepgram_stt(request: Request):
 
 @app.get("/api/ollama/status")
 async def ollama_status():
-    """Ollama client status (local + cloud, via ollama-python)."""
-    try:
-        from ollama_client import status as ollama_status_fn
-
-        return ollama_status_fn()
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+    """Gemini AI status endpoint."""
+    has_key = bool(os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY"))
+    return {
+        "ok": has_key,
+        "provider": "gemini",
+        "model": "gemini-1.5-flash",
+        "ready": has_key,
+    }
 
 
 @app.get("/api/ollama/tags")
 async def ollama_tags():
-    """List models — same shape as Ollama /api/tags for the frontend proxy."""
-    try:
-        from ollama_client import list_models, resolve_chat_host
-
-        host = resolve_chat_host()
-        names = list_models(host, purpose="chat")
-        return {
-            "models": [{"name": n, "model": n} for n in names],
-            "host": host,
-        }
-    except Exception as exc:
-        raise HTTPException(
-            status_code=503,
-            detail=f"Ollama unreachable: {exc}",
-        ) from exc
+    """List models — returns Gemini models for frontend components."""
+    return {
+        "models": [
+            {"name": "gemini-1.5-flash", "model": "gemini-1.5-flash"},
+            {"name": "gemini-2.0-flash", "model": "gemini-2.0-flash"},
+            {"name": "gemini-3.5-flash", "model": "gemini-3.5-flash"},
+        ],
+        "host": "generativelanguage.googleapis.com",
+    }
 
 
 @app.post("/api/ollama/chat")
 async def ollama_chat(payload: OllamaChatRequest):
-    """
-    Chat via official ollama-python client (local or cloud).
-    Keeps OLLAMA_API_KEY server-side — browser should call this, not ollama.com directly.
-    """
-    import json as _json
-
-    model = payload.model or os.getenv("HOLAKAI_CHAT_MODEL") or os.getenv(
-        "NEXT_PUBLIC_OLLAMA_MODEL", "gemma4"
-    )
-    options = {"temperature": payload.temperature, "top_p": payload.top_p}
-
+    """Chat endpoint proxying through Google Gemini."""
     try:
-        from ollama_client import OllamaClientError, chat, stream_chat_ndjson
-    except ImportError as exc:
-        raise HTTPException(
-            status_code=503,
-            detail="ollama package missing — pip install ollama",
-        ) from exc
+        from model_gateway import _hosted_synthesize
+        # Extract last user query
+        query = ""
+        for m in reversed(payload.messages):
+            if m.get("role") == "user":
+                query = m.get("content", "")
+                break
 
-    if not payload.stream:
-        try:
-            resp = chat(
-                payload.messages,
-                model=model,
-                stream=False,
-                options=options,
-                format=payload.format,
-                tools=payload.tools,
-                think=payload.think,
-            )
-        except OllamaClientError as exc:
-            raise HTTPException(status_code=exc.status_code or 502, detail=str(exc)) from exc
-        except Exception as exc:
-            raise HTTPException(status_code=502, detail=str(exc)) from exc
-
-        # Normalize to Ollama native response shape
-        message = getattr(resp, "message", None)
-        if message is not None:
-            content = getattr(message, "content", "") or ""
-            tool_calls = getattr(message, "tool_calls", None)
-            body: Dict[str, Any] = {
-                "model": model,
-                "message": {"role": "assistant", "content": content},
-                "done": True,
-            }
-            if tool_calls:
-                body["message"]["tool_calls"] = tool_calls
-            return body
-        if isinstance(resp, dict):
-            return resp
-        return {"model": model, "message": {"role": "assistant", "content": str(resp)}, "done": True}
-
-    def generate():
-        try:
-            for chunk in stream_chat_ndjson(
-                payload.messages,
-                model=model,
-                options=options,
-                format=payload.format,
-                tools=payload.tools,
-                think=payload.think,
-            ):
-                yield _json.dumps(chunk) + "\n"
-        except Exception as exc:
-            yield _json.dumps({"error": str(exc), "done": True}) + "\n"
-
-    return StreamingResponse(generate(), media_type="application/x-ndjson")
+        gw = _hosted_synthesize(payload.messages, model=payload.model or "gemini-1.5-flash")
+        answer = gw.get("answer", "")
+        return {
+            "model": gw.get("model", "gemini-1.5-flash"),
+            "message": {"role": "assistant", "content": answer},
+            "done": True,
+        }
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Gemini chat failed: {exc}") from exc
 
 
 @app.post("/api/web_search")

@@ -748,57 +748,19 @@ class LLMSupervisor:
             or os.getenv("NEXT_PUBLIC_OLLAMA_MODEL")
             or "gemma4"
         )
-        self.xai_key = os.getenv("XAI_API_KEY") or os.getenv("OPENAI_API_KEY")
-        self.xai_client = None
-        self.ollama_ready = False
+        self.gemini_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
         self.active_backend: str = "rules"
 
-        # Probe Ollama (fast; auto falls through on failure)
-        if self.provider in ("auto", "ollama"):
-            try:
-                from ollama_client import list_models, resolve_chat_host
-
-                host = resolve_chat_host()
-                list_models(host, purpose="chat")
-                self.ollama_ready = True
-                self.active_backend = "ollama"
-                logger.info(
-                    "LLM Supervisor: Ollama ready · host=%s · model=%s",
-                    host,
-                    self.ollama_model,
-                )
-            except Exception as exc:
-                self.ollama_ready = False
-                if self.provider == "ollama":
-                    logger.warning("Ollama supervisor requested but unavailable: %s", exc)
-                else:
-                    logger.info("Ollama supervisor probe failed (%s); trying xAI / rules", exc)
-
-        if (
-            not self.ollama_ready
-            and self.provider in ("auto", "xai", "grok")
-            and self.xai_key
-        ):
-            try:
-                from openai import OpenAI
-
-                self.xai_client = OpenAI(
-                    api_key=self.xai_key,
-                    base_url="https://api.x.ai/v1",
-                )
-                self.active_backend = "xai"
-                logger.info("LLM Supervisor initialized with xAI / Grok")
-            except Exception as e:
-                logger.warning("Failed to initialize xAI client: %s", e)
-                self.xai_client = None
-
-        if not self.ollama_ready and self.xai_client is None:
+        if self.gemini_key:
+            self.active_backend = "gemini"
+            logger.info("LLM Supervisor initialized with Google Gemini")
+        else:
             self.active_backend = "rules"
-            logger.info("No LLM supervisor available – using rule-based Supervisor only")
+            logger.info("No Gemini key found – using rule-based Supervisor")
 
     @property
     def enabled(self) -> bool:
-        return self.active_backend in ("ollama", "xai")
+        return self.active_backend in ("gemini", "xai")
 
     def _parse_plan(self, raw: str) -> ExecutionPlan:
         data = json.loads(raw)
@@ -812,20 +774,23 @@ class LLMSupervisor:
             notes=data.get("reasoning", "LLM-generated plan"),
         )
 
-    def _plan_ollama(self, query: str) -> ExecutionPlan:
-        from ollama_client import chat_text
+    def _plan_gemini(self, query: str) -> ExecutionPlan:
+        from openai import OpenAI
+        import httpx
 
-        raw = chat_text(
-            [
+        base_url = os.getenv("GEMINI_BASE_URL") or "https://generativelanguage.googleapis.com/v1beta/openai/"
+        model = os.getenv("GEMINI_MODEL") or "gemini-1.5-flash"
+        client = OpenAI(api_key=self.gemini_key, base_url=base_url, http_client=httpx.Client())
+
+        resp = client.chat.completions.create(
+            model=model,
+            messages=[
                 {"role": "system", "content": SUPERVISOR_SYSTEM_PROMPT},
                 {"role": "user", "content": f"Query: {query}"},
             ],
-            model=self.ollama_model,
-            options={"temperature": 0.2},
-            format="json",
+            temperature=0.2,
         )
-        # Some models wrap JSON in fences
-        text = (raw or "").strip()
+        text = (resp.choices[0].message.content or "").strip()
         if text.startswith("```"):
             text = text.strip("`")
             if text.lower().startswith("json"):
@@ -845,23 +810,11 @@ class LLMSupervisor:
         return self._parse_plan(response.choices[0].message.content)
 
     def plan(self, query: str) -> ExecutionPlan:
-        if self.active_backend == "ollama" and self.ollama_ready:
+        if self.active_backend == "gemini" and self.gemini_key:
             try:
-                return self._plan_ollama(query)
+                return self._plan_gemini(query)
             except Exception as e:
-                logger.warning("Ollama supervisor failed, falling back: %s", e)
-                if self.xai_client is not None:
-                    try:
-                        return self._plan_xai(query)
-                    except Exception as e2:
-                        logger.warning("xAI supervisor also failed: %s", e2)
-                return self.fallback.plan(query)
-
-        if self.active_backend == "xai" and self.xai_client is not None:
-            try:
-                return self._plan_xai(query)
-            except Exception as e:
-                logger.warning("LLM Supervisor failed, falling back to rules: %s", e)
+                logger.warning("Gemini supervisor failed, falling back to rules: %s", e)
                 return self.fallback.plan(query)
 
         return self.fallback.plan(query)

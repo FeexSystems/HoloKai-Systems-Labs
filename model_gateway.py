@@ -51,26 +51,6 @@ def _extract_message_content(message: Any) -> str:
     return str(content or "").strip()
 
 
-def _resolve_provider() -> str:
-    provider = (os.getenv("HOSTED_PROVIDER") or "").strip().lower()
-    if provider in {"vertex_ai", "vertex", "gemini", "google", "kimi", "moonshot", "openai", "frontier", "generic"}:
-        return provider
-
-    if os.getenv("USE_VERTEX_AI") == "1" or os.getenv("VERTEX_AI") == "1":
-        return "vertex_ai"
-
-    if os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY"):
-        return "gemini"
-
-    if os.getenv("MOONSHOT_API_KEY") or os.getenv("KIMI_API_KEY"):
-        return "kimi"
-
-    if os.getenv("FRONTIER_API_KEY") or os.getenv("OPENAI_API_KEY"):
-        return "generic"
-
-    return "none"
-
-
 def _get_openai_client(api_key: str, base_url: str | None = None):
     from openai import OpenAI
     import httpx
@@ -78,119 +58,28 @@ def _get_openai_client(api_key: str, base_url: str | None = None):
 
 
 def _hosted_synthesize(messages: List[Dict[str, str]], model: str | None = None) -> Dict[str, Any]:
-    provider = _resolve_provider()
+    api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        raise RuntimeError("No Gemini API key configured (GEMINI_API_KEY / GOOGLE_API_KEY)")
 
-    if provider in {"vertex_ai", "vertex"}:
-        from gcp_vertex_gateway import synthesize_with_vertex_ai
-        return synthesize_with_vertex_ai(messages, model=model)
+    base_url = os.getenv("GEMINI_BASE_URL") or "https://generativelanguage.googleapis.com/v1beta/openai/"
+    hosted_model = model or os.getenv("GEMINI_MODEL") or "gemini-1.5-flash"
 
-    if provider in {"gemini", "google"}:
-        api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
-        if not api_key:
-            raise RuntimeError("No Gemini API key configured (GEMINI_API_KEY/GOOGLE_API_KEY)")
-
-        base_url = os.getenv("GEMINI_BASE_URL") or "https://generativelanguage.googleapis.com/v1beta/openai/"
-        hosted_model = model or os.getenv("GEMINI_MODEL") or "gemini-3.5-flash"
-
-        client = _get_openai_client(api_key=api_key, base_url=base_url)
-        response = client.chat.completions.create(
-            model=hosted_model,
-            messages=messages,
-            temperature=0.2,
-        )
-        answer = _extract_message_content(response.choices[0].message)
-        if not answer:
-            raise RuntimeError("Gemini hosted model returned an empty answer")
-
-        return {
-            "answer": answer,
-            "provider": "gemini",
-            "model": hosted_model,
-            "host": base_url,
-        }
-
-    if provider in {"kimi", "moonshot"}:
-        api_key = os.getenv("MOONSHOT_API_KEY") or os.getenv("KIMI_API_KEY")
-        if not api_key:
-            raise RuntimeError("No Kimi API key configured (MOONSHOT_API_KEY/KIMI_API_KEY)")
-
-        base_url = os.getenv("MOONSHOT_BASE_URL") or os.getenv("KIMI_BASE_URL") or "https://api.moonshot.ai/v1"
-        hosted_model = model or os.getenv("KIMI_MODEL") or os.getenv("MOONSHOT_MODEL") or "kimi-k3"
-        reasoning_effort = (
-            os.getenv("KIMI_REASONING_EFFORT")
-            or os.getenv("MOONSHOT_REASONING_EFFORT")
-            or "max"
-        ).strip().lower()
-        if reasoning_effort not in {"low", "high", "max"}:
-            reasoning_effort = "max"
-
-        from openai import OpenAI
-
-        client = OpenAI(api_key=api_key, base_url=base_url)
-        # Kimi K3 guidance: omit temperature/top_p/etc; pass reasoning_effort only.
-        response = client.chat.completions.create(
-            model=hosted_model,
-            reasoning_effort=reasoning_effort,
-            messages=messages,
-        )
-        answer = _extract_message_content(response.choices[0].message)
-        if not answer:
-            raise RuntimeError("Kimi hosted model returned an empty answer")
-
-        return {
-            "answer": answer,
-            "provider": "kimi",
-            "model": hosted_model,
-            "host": base_url,
-            "reasoning_effort": reasoning_effort,
-        }
-
-    if provider in {"frontier", "openai", "generic"}:
-        api_key = os.getenv("FRONTIER_API_KEY") or os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            raise RuntimeError("No hosted model API key configured (FRONTIER_API_KEY/OPENAI_API_KEY)")
-
-        base_url = os.getenv("FRONTIER_BASE_URL") or os.getenv("OPENAI_BASE_URL")
-        hosted_model = model or os.getenv("FRONTIER_MODEL") or os.getenv("OPENAI_MODEL") or "gpt-5-mini"
-
-        from openai import OpenAI
-
-        client = OpenAI(api_key=api_key, base_url=base_url)
-        response = client.chat.completions.create(
-            model=hosted_model,
-            messages=messages,
-            temperature=0.2,
-        )
-        answer = _extract_message_content(response.choices[0].message)
-        if not answer:
-            raise RuntimeError("Hosted model returned an empty answer")
-
-        return {
-            "answer": answer,
-            "provider": "hosted",
-            "model": hosted_model,
-            "host": base_url or "default",
-        }
-
-    raise RuntimeError(
-        "No hosted provider configured. Set MOONSHOT_API_KEY (Kimi) or FRONTIER_API_KEY/OPENAI_API_KEY."
+    client = _get_openai_client(api_key=api_key, base_url=base_url)
+    response = client.chat.completions.create(
+        model=hosted_model,
+        messages=messages,
+        temperature=0.2,
     )
-
-
-def _ollama_synthesize(messages: List[Dict[str, str]], model: str | None = None) -> Dict[str, Any]:
-    from ollama_client import CHAT_MODEL, chat_text, resolve_chat_host
-
-    chosen = model or CHAT_MODEL
-    host = resolve_chat_host()
-    answer = chat_text(messages, model=chosen, host=host, options={"temperature": 0.25, "top_p": 0.9})
+    answer = _extract_message_content(response.choices[0].message)
     if not answer:
-        raise RuntimeError("Ollama returned an empty answer")
+        raise RuntimeError("Gemini model returned an empty answer")
 
     return {
         "answer": answer,
-        "provider": "ollama",
-        "model": chosen,
-        "host": host,
+        "provider": "gemini",
+        "model": hosted_model,
+        "host": base_url,
     }
 
 
@@ -203,16 +92,5 @@ def synthesize_with_gateway(
     ollama_model: str | None = None,
 ) -> Dict[str, Any]:
     messages = _build_messages(query, contexts)
-    errors: List[str] = []
+    return _hosted_synthesize(messages, model=hosted_model)
 
-    if prefer_hosted:
-        try:
-            return _hosted_synthesize(messages, model=hosted_model)
-        except Exception as exc:
-            errors.append(f"hosted: {exc}")
-
-    try:
-        return _ollama_synthesize(messages, model=ollama_model)
-    except Exception as exc:
-        errors.append(f"ollama: {exc}")
-        raise RuntimeError(" ; ".join(errors)) from exc

@@ -467,18 +467,13 @@ def alive_ask(
     chat_host = None
     answer_mode = "extractive_fallback"
     try:
-        from ollama_client import CHAT_MODEL, chat_text, resolve_chat_host
+        from model_gateway import synthesize_with_gateway
 
-        messages = build_alive_messages(q, contexts, memory_block=memory_block)
-        chat_host = resolve_chat_host()
-        model_used = model or CHAT_MODEL
-        answer = chat_text(
-            messages,
-            model=model_used,
-            host=chat_host,
-            options={"temperature": temperature, "top_p": 0.92},
-        )
-        answer_mode = "alive_synthesis"
+        gw = synthesize_with_gateway(query=q, contexts=contexts, hosted_model=model)
+        answer = gw.get("answer")
+        model_used = gw.get("model", model or "gemini-1.5-flash")
+        chat_host = gw.get("host", "generativelanguage.googleapis.com")
+        answer_mode = "alive_gemini_synthesis"
     except Exception as exc:
         logger.warning("Alive synthesis failed: %s", exc)
         result["synthesize_error"] = str(exc)
