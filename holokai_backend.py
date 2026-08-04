@@ -896,7 +896,24 @@ class CivilizationCore:
                 seed_summary: Dict[str, Any] = {"skipped": True}
                 try:
                     if self.kb.count() == 0:
-                        seed_summary = ensure_seeded(self.kb, force=False)
+                        import threading
+
+                        def _async_seed():
+                            try:
+                                ensure_seeded(self.kb, force=False)
+                            except Exception as async_exc:
+                                logger.warning("Background seed completed with notice: %s", async_exc)
+
+                        thread = threading.Thread(
+                            target=_async_seed,
+                            daemon=True,
+                            name="holokai-async-seeder",
+                        )
+                        thread.start()
+                        seed_summary = {
+                            "background": True,
+                            "status": "seeding asynchronously in background thread",
+                        }
                     else:
                         seed_summary = {
                             "skipped": True,
