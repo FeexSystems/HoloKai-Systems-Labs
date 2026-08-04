@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger("holokai.gcp.vertex")
 
-GCP_PROJECT = os.getenv("GCP_PROJECT") or os.getenv("GOOGLE_CLOUD_PROJECT") or "third-glazing-k7c1c"
+GCP_PROJECT = os.getenv("GCP_PROJECT") or os.getenv("GOOGLE_CLOUD_PROJECT") or "gen-lang-client-0948281794"
 GCP_REGION = os.getenv("GCP_REGION") or os.getenv("GOOGLE_CLOUD_REGION") or "us-central1"
 DEFAULT_VERTEX_MODEL = os.getenv("VERTEX_GEMINI_MODEL", "gemini-1.5-flash")
 

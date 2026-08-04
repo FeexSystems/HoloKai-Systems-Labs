@@ -17,7 +17,7 @@ from gcp_vertex_gateway import get_gcp_access_token, GCP_PROJECT
 
 logger = logging.getLogger("holokai.gcp.gcs")
 
-GCS_BUCKET_NAME = os.getenv("GCS_VECTOR_BUCKET", "third-glazing-k7c1c-holokai-vectors")
+GCS_BUCKET_NAME = os.getenv("GCS_VECTOR_BUCKET", "gen-lang-client-0948281794-holokai-vectors")
 LOCAL_VECTORS_PATH = os.path.join(
     os.path.dirname(__file__), "frontend", ".data", "holokai-vectors.json"
 )

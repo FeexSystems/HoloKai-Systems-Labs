@@ -15,6 +15,8 @@ env/
 .env.local
 frontend/.env.local
 *.pem
+serviceAccountKey.json
+*serviceAccount*.json
 
 # HoloKai local vector stores (regenerate via seed)
 frontend/.data/
@@ -36,9 +38,6 @@ HoloKai - landingpage/dist/
 response.json
 chat_response.json
 _t.tmp
-*.chroma/
-.parquet
-groundsourse_2026.parquet
 
 # OS / IDE
 .DS_Store

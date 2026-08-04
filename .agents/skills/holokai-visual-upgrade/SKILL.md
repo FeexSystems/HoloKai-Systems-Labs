@@ -1,89 +1,85 @@
 ---
 name: holokai-visual-upgrade
-description: Guide the visual redesign of HoloKai Oracle Portal following the Antigravity IDE handoff. Use when making design-system, layout, or component visual changes to any HoloKai page or component.
+description: [TODO: Complete and informative explanation of what the skill does and when to use it. Include WHEN to use this skill - specific scenarios, file types, or tasks that trigger it.]
 ---
 
-# HoloKai Visual Upgrade
+# Holokai Visual Upgrade
 
 ## Overview
 
-This skill governs the visual redesign of the HoloKai Oracle Portal. It ensures all UI changes follow the established design direction (sophisticated, classy, modern, minimalistic) and preserve existing functionality.
+[TODO: 1-2 sentences explaining what this skill enables]
 
-## Design Direction
+## Structuring This Skill
 
-The visual target is:
-**Classical intelligence + African heritage + advanced spatial computing + luxury editorial design.**
+[TODO: Choose the structure that best fits this skill's purpose. Common patterns:
 
-NOT a generic SaaS dashboard. NOT a cyberpunk HUD.
+**1. Workflow-Based** (best for sequential processes)
+- Works well when there are clear step-by-step procedures
+- Example: DOCX skill with "Workflow Decision Tree" -> "Reading" -> "Creating" -> "Editing"
+- Structure: ## Overview -> ## Workflow Decision Tree -> ## Step 1 -> ## Step 2...
 
-## Workflow
+**2. Task-Based** (best for tool collections)
+- Works well when the skill offers different operations/capabilities
+- Example: PDF skill with "Quick Start" -> "Merge PDFs" -> "Split PDFs" -> "Extract Text"
+- Structure: ## Overview -> ## Quick Start -> ## Task Category 1 -> ## Task Category 2...
 
-### 1. Inspect Before Changing
-- Read the existing component/page source in `holo-kai/src/pages` or `holo-kai/src/components`.
-- Identify what the component currently does, what state it manages, and what routes it serves.
+**3. Reference/Guidelines** (best for standards or specifications)
+- Works well for brand guidelines, coding standards, or requirements
+- Example: Brand styling with "Brand Guidelines" -> "Colors" -> "Typography" -> "Features"
+- Structure: ## Overview -> ## Guidelines -> ## Specifications -> ## Usage...
 
-### 2. Map to Design System
-Reference `docs/UI_ARCHITECTURE.md` to identify which design-system layer the component belongs to:
-- Foundation, Navigation, Oracle, Civilization, Guardians, Research, Spatial, or System.
+**4. Capabilities-Based** (best for integrated systems)
+- Works well when the skill provides multiple interrelated features
+- Example: Product Management with "Core Capabilities" -> numbered capability list
+- Structure: ## Overview -> ## Core Capabilities -> ### 1. Feature -> ### 2. Feature...
 
-### 3. Design Tokens First
-Before modifying any component visually:
-- Check if the required tokens exist in the centralized token system.
-- If not, add them to the token file before proceeding.
-- Token categories: background, surface, elevated surface, text, muted text, Oracle accent, heritage accent, system/status, spacing, radius, elevation, blur, motion.
+Patterns can be mixed and matched as needed. Most skills combine patterns (e.g., start with task-based, add workflow for complex operations).
 
-### 4. Build Reusable Primitives
-- Extract shared patterns into reusable components in `holo-kai/src/components/ui/` or `holo-kai/src/components/common/`.
-- Avoid inline one-off styles for patterns that appear more than once.
+Delete this entire "Structuring This Skill" section when done - it's just guidance.]
 
-### 5. Preserve Functionality
-- All existing routes must continue to work.
-- All existing state management must be preserved.
-- All existing data flows must remain intact.
-- If replacing a component, verify the same props/behavior contract is honored.
+## [TODO: Replace with the first main section based on chosen structure]
 
-### 6. Verify Responsive Behavior
-Check all changes at:
-- Desktop (1280px+)
-- Tablet (768px–1279px)
-- Mobile (< 768px)
+[TODO: Add content here. See examples in existing skills:
+- Code samples for technical skills
+- Decision trees for complex workflows
+- Concrete examples with realistic user requests
+- References to scripts/templates/references as needed]
 
-### 7. Accessibility
-- Ensure accessible contrast ratios.
-- Verify focus states and keyboard navigation.
-- Provide `prefers-reduced-motion` alternatives for animations.
-- Maintain adequate touch targets on mobile.
+## Resources (optional)
 
-## Priority Reference
+Create only the resource directories this skill actually needs. Delete this section if no resources are required.
 
-| Priority | Area | Key Components |
-|----------|------|----------------|
-| P0 | Design Foundation | Token system, typography, spacing |
-| P0 | CivilizationCore | Master shell, navigation grouping |
-| P0 | Oracle | Search, response, evidence, provenance |
-| P1 | Spatial | Orbital Lab, 3D Orbital, artifact viewer |
-| P1 | Research | Portfolio, journal, citations, knowledge graph |
-| P1 | Guardians | Card, profile, voice state, selectors |
-| P2 | Responsive/A11y | All breakpoints, reduced motion, contrast |
+### scripts/
+Executable code (Python/Bash/etc.) that can be run directly to perform specific operations.
 
-## Placeholder Pages — Do Not Over-Design
+**Examples from other skills:**
+- PDF skill: `fill_fillable_fields.py`, `extract_form_field_info.py` - utilities for PDF manipulation
+- DOCX skill: `document.py`, `utilities.py` - Python modules for document processing
 
-These pages exist as minimal stubs. Do not fabricate full implementations:
-- Dashboard
-- CommunityGallery
-- ContributionPortal
-- GlobalInsights
-- HelpCenter
-- Notifications
-- Settings
-- SystemStatus
+**Appropriate for:** Python scripts, shell scripts, or any executable code that performs automation, data processing, or specific operations.
 
-## Golden-Path UX
+**Note:** Scripts may be executed without loading into context, but can still be read by Codex for patching or environment adjustments.
 
-Landing → Orbital Lab → Select Guardian → Civilization Core → Oracle → Ask Question → Oracle Response → Evidence → Source → Manuscript/Artifact → Research
+### references/
+Documentation and reference material intended to be loaded into context to inform Codex's process and thinking.
 
-## References
+**Examples from other skills:**
+- Product management: `communication.md`, `context_building.md` - detailed workflow guides
+- BigQuery: API reference documentation and query examples
+- Finance: Schema documentation, company policies
 
-- [ANTIGRAVITY_HANDOFF.md](file:///c:/Users/ENGR%20BILLI/Downloads/holokai-oracle-portal%20(1)/docs/ANTIGRAVITY_HANDOFF.md)
-- [UI_ARCHITECTURE.md](file:///c:/Users/ENGR%20BILLI/Downloads/holokai-oracle-portal%20(1)/docs/UI_ARCHITECTURE.md)
-- [PROJECT_MANIFEST.json](file:///c:/Users/ENGR%20BILLI/Downloads/holokai-oracle-portal%20(1)/docs/PROJECT_MANIFEST.json)
+**Appropriate for:** In-depth documentation, API references, database schemas, comprehensive guides, or any detailed information that Codex should reference while working.
+
+### assets/
+Files not intended to be loaded into context, but rather used within the output Codex produces.
+
+**Examples from other skills:**
+- Brand styling: PowerPoint template files (.pptx), logo files
+- Frontend builder: HTML/React boilerplate project directories
+- Typography: Font files (.ttf, .woff2)
+
+**Appropriate for:** Templates, boilerplate code, document templates, images, icons, fonts, or any files meant to be copied or used in the final output.
+
+---
+
+**Not every skill requires all three types of resources.**
