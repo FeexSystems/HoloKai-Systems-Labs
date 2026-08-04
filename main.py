@@ -50,7 +50,7 @@ app = FastAPI(
     version="3.0.0",
 )
 
-# CORS – local Next.js + Vite; credentials off so wildcard-safe origins work
+# CORS – local Next.js + Vite + deployed cloud frontends
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -61,7 +61,7 @@ app.add_middleware(
         "http://localhost:3001",
         "http://127.0.0.1:3001",
     ],
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
+    allow_origin_regex=r"https?://([a-zA-Z0-9-]+\.)*(localhost|127\.0\.0\.1|netlify\.app|onrender\.com|vercel\.app|pages\.dev)(:\d+)?",
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],

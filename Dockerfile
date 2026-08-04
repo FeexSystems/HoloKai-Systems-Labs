@@ -27,5 +27,6 @@ ENV GCP_PROJECT=third-glazing-k7c1c
 
 EXPOSE 8000
 
-# Run FastAPI backend using Uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run FastAPI backend using Uvicorn with dynamic PORT support
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+

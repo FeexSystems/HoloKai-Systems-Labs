@@ -414,8 +414,7 @@ export default function Index() {
               <img
                 src={unit.fullbodyImage}
                 alt={unit.name}
-                className="absolute inset-0 h-full w-full object-cover object-top transition duration-700 group-hover:scale-105"
-                style={{ mixBlendMode: 'screen' }}
+                className="absolute inset-0 h-full w-full object-cover object-top transition duration-700 group-hover:scale-105 opacity-85 group-hover:opacity-100"
                 loading="lazy"
               />
               <div className="relative flex h-full flex-col justify-between p-7">

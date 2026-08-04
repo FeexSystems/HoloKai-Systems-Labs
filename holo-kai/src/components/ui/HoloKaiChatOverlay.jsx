@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, Send, X, Bot, Sparkles, Loader2, RefreshCw, BookOpen, Crown, GraduationCap, Users } from 'lucide-react';
 import { useHoloKai } from '@/lib/HoloKaiContext';
 import { retroAudio } from '@/lib/audioFeedback';
+import { callGeminiApi } from '@/lib/geminiApi';
 
 const PERSONAS = [
   {
@@ -108,21 +109,11 @@ export default function HoloKaiChatOverlay() {
         content: m.content
       }));
 
-      const response = await fetch('/api/gemini/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'gemini-3.6-flash',
-          messages: chatHistory,
-          system_instruction: activePersona.systemInstruction
-        })
+      const data = await callGeminiApi('/api/gemini/chat', {
+        model: 'gemini-3.6-flash',
+        messages: chatHistory,
+        system_instruction: activePersona.systemInstruction
       });
-
-      if (!response.ok) {
-        throw new Error('Could not fetch oracle response');
-      }
-
-      const data = await response.json();
       setMessages((prev) => [
         ...prev,
         { role: 'assistant', content: data.text || 'The signals from the ancient grid are fading. Please ask again.' }

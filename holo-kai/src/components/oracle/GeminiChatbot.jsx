@@ -8,6 +8,7 @@ import { collection, addDoc, query, where, orderBy, onSnapshot } from 'firebase/
 import { oracleVoiceEngine } from '@/lib/oracleVoiceEngine';
 import VoiceVisualizer from '@/components/oracle/VoiceVisualizer';
 import AncientScriptVoiceVisualizer from '@/components/oracle/AncientScriptVoiceVisualizer';
+import { callGeminiApi } from '@/lib/geminiApi';
 
 const ROLES = [
   {
@@ -281,18 +282,7 @@ export default function GeminiChatbot() {
         thinking_level: highThinking ? 'HIGH' : undefined
       };
 
-      const res = await fetch('/api/gemini/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(chatPayload)
-      });
-
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.detail || 'Gemini response error');
-      }
-
-      const data = await res.json();
+      const data = await callGeminiApi('/api/gemini/chat', chatPayload);
       
       const assistantMsg = {
         id: (Date.now() + 1).toString(),

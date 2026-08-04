@@ -34,8 +34,8 @@ export const units: Unit[] = [
     role: "The Griot",
     description:
       "Acoustic intelligence that preserves the harmonic resonance of indigenous storytellers.",
-    image: "/images/vanguard/oluwa-core-fullbody.png",
-    fullbodyImage: "/images/vanguard/oluwa-core-fullbody.png",
+    image: "/images/Oluwa-Core - The Griot.jpg",
+    fullbodyImage: "/images/Oluwa-Core - The Griot.jpg",
     video: "/videos/meet the guardians  armorpack vidz.mp4",
     specs: ["Acoustic synthesis", "Tonal preservation", "Vocal mesh"],
     detail:
@@ -55,8 +55,8 @@ export const units: Unit[] = [
     role: "The Sentinel",
     description:
       "A calm, resilient guardian for sacred archaeological sites and their communities.",
-    image: "/images/vanguard/naja-7-fullbody.png",
-    fullbodyImage: "/images/vanguard/naja-7-fullbody.png",
+    image: "/images/Naja-7 - The Sentinel.jpg",
+    fullbodyImage: "/images/Naja-7 - The Sentinel.jpg",
     video: "/videos/meet the guardians  armorpack vidz.mp4",
     specs: ["Impact resistance", "Thermal optics", "Kinetic absorption"],
     detail:
@@ -76,8 +76,8 @@ export const units: Unit[] = [
     role: "The Archivist",
     description:
       "Optical arrays recover fragile manuscripts at atomic resolution.",
-    image: "/images/vanguard/kemet-alpha-fullbody.png",
-    fullbodyImage: "/images/vanguard/kemet-alpha-fullbody.png",
+    image: "/images/Kemet-Alpha - The Archivist (Preserver  Scanner).jpg",
+    fullbodyImage: "/images/Kemet-Alpha - The Archivist (Preserver  Scanner).jpg",
     video: "/videos/meet the guardians  armorpack vidz.mp4",
     specs: ["Hyperspectral scan", "Paleography", "LiDAR mesh"],
     detail:
@@ -97,8 +97,8 @@ export const units: Unit[] = [
     role: "The Scholar",
     description:
       "A dialectical engine that makes the silences of colonial archives visible.",
-    image: "/images/vanguard/zamani-fullbody.png",
-    fullbodyImage: "/images/vanguard/zamani-fullbody.png",
+    image: "/images/Zamani - The Scholar (Dialectician  Cross-Referencer).jpg",
+    fullbodyImage: "/images/Zamani - The Scholar (Dialectician  Cross-Referencer).jpg",
     video: "/videos/meet the guardians  armorpack vidz.mp4",
     specs: ["Neural weaving", "Logic matrix", "Data sovereign"],
     detail:
@@ -118,8 +118,8 @@ export const units: Unit[] = [
     role: "The Navigator",
     description:
       "Profound spatial awareness maps ancient migration routes and submerged cities.",
-    image: "/images/vanguard/bantu-node-fullbody.png",
-    fullbodyImage: "/images/vanguard/bantu-node-fullbody.png",
+    image: "/images/Bantu-Node - The Navigator (Explorer  Mapper).jpg",
+    fullbodyImage: "/images/Bantu-Node - The Navigator (Explorer  Mapper).jpg",
     video: "/videos/meet the guardians  armorpack vidz.mp4",
     specs: ["Geo-spatial radar", "Depth perception", "Terrain adapt"],
     detail:
@@ -139,8 +139,8 @@ export const units: Unit[] = [
     role: "The Artisan",
     description:
       "Fifty-DOF hands recreate lost artifacts, textiles, and micro-metallurgy.",
-    image: "/images/vanguard/sika-gold-fullbody.png",
-    fullbodyImage: "/images/vanguard/sika-gold-fullbody.png",
+    image: "/images/Sika-Gold - The Artisan (Creator  Craftsman).jpg",
+    fullbodyImage: "/images/Sika-Gold - The Artisan (Creator  Craftsman).jpg",
     video: "/videos/meet the guardians  armorpack vidz.mp4",
     specs: ["Micro-actuation", "Haptic skin", "Precision forging"],
     detail:
@@ -160,8 +160,8 @@ export const units: Unit[] = [
     role: "The Oracle",
     description:
       "Predictive engine modeling climate, agriculture, and urban trajectories.",
-    image: "/images/vanguard/asante-v-fullbody.png",
-    fullbodyImage: "/images/vanguard/asante-v-fullbody.png",
+    image: "/images/Asante-V - The Oracle (Predictor  Visionary).jpg",
+    fullbodyImage: "/images/Asante-V - The Oracle (Predictor  Visionary).jpg",
     video: "/videos/meet the guardians  armorpack vidz.mp4",
     specs: ["Fluid dynamics", "Probability engine", "Chaos modeling"],
     detail:

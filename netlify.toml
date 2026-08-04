@@ -5,7 +5,15 @@
 
 
 
+# API Proxy rule for deployed backend (replace target URL with your Render/Cloud Run backend URL)
+[[redirects]]
+  from = "/api/*"
+  to = "https://holokai-backend.onrender.com/api/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+

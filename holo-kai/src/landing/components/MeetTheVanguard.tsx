@@ -19,13 +19,13 @@ const COLLECTIVE_IMAGES = [
   },
   {
     id: "group",
-    src: encodeURI("/meet-the-vanguards/meet the guardians  with names.jpeg"),
+    src: "/meet-the-vanguards/vanguard-roster.jpg",
     title: "Group Roster",
     caption: "All eight units with individual designations and roles.",
   },
   {
     id: "armor",
-    src: encodeURI("/meet-the-vanguards/meet the guardians  armor.jpeg"),
+    src: "/meet-the-vanguards/armor-blueprint.jpg",
     title: "Armor & Exoskeleton Blueprint",
     caption: "High-density titanium and sigil-carved defensive plates.",
   },
@@ -69,19 +69,27 @@ function CollectiveVideoCard({
   return (
     <article className="group overflow-hidden border border-amber-900/40 bg-zinc-950">
       <div className="relative aspect-video bg-black">
-        <video
-          ref={videoRef}
-          src={src}
-          className="absolute inset-0 h-full w-full object-cover"
-          playsInline
-          muted
-          loop
-          preload="metadata"
-          onError={() => setHasError(true)}
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
-          onEnded={() => setPlaying(false)}
-        />
+        {hasError ? (
+          <img
+            src="/meet-the-vanguards/vanguards-exploded-view-tchnical-blueprints.WEBP"
+            alt={title}
+            className="absolute inset-0 h-full w-full object-cover opacity-80"
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            src={src}
+            className="absolute inset-0 h-full w-full object-cover"
+            playsInline
+            muted
+            loop
+            preload="metadata"
+            onError={() => setHasError(true)}
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            onEnded={() => setPlaying(false)}
+          />
+        )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
         <button
           type="button"
