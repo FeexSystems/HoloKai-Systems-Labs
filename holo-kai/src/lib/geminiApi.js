@@ -1,14 +1,36 @@
 import { getApiBase } from './holokaiApi';
+import { functions, httpsCallable } from './firebase';
 
 /**
- * Robust Gemini API client supporting backend proxying, direct client fallback via VITE_GEMINI_API_KEY,
- * and graceful fallback synthesis when offline.
+ * Robust Gemini API client supporting Firebase Cloud Functions, backend proxying,
+ * direct client fallback via VITE_GEMINI_API_KEY, and graceful fallback synthesis when offline.
  */
 export async function callGeminiApi(endpoint = '/api/gemini/chat', payload = {}) {
   const base = getApiBase();
   const apiEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
 
-  // 1. Attempt backend server / Vite proxy endpoint
+  // 1. Attempt Firebase Cloud Function oracleQuery
+  if (functions) {
+    try {
+      const oracleFn = httpsCallable(functions, 'oracleQuery');
+      const queryText = payload.prompt || payload.messages?.slice(-1)[0]?.content || '';
+      if (queryText) {
+        const res = await oracleFn({ query: queryText, civilizationFilter: payload.civilizationFilter || 'Global' });
+        if (res?.data?.answer) {
+          return {
+            text: res.data.answer,
+            epistemicClassification: res.data.epistemicClassification || 'ESTABLISHED',
+            confidence: res.data.confidence || 0.95,
+            model: 'gemini-1.5-flash-cloud-function'
+          };
+        }
+      }
+    } catch (err) {
+      console.warn('[HoloKai Gemini API] Cloud Function call skipped/unauthenticated, trying next provider:', err?.message || err);
+    }
+  }
+
+  // 2. Attempt backend server / Vite proxy endpoint
   try {
     const res = await fetch(`${base}${apiEndpoint}`, {
       method: 'POST',

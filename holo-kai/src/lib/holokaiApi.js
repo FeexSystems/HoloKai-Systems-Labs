@@ -7,7 +7,7 @@
 
 function getApiBase() {
   const raw = import.meta.env.VITE_API_BASE_URL;
-  if (raw == null || raw === '') return '';
+  if (raw == null || raw === '') return 'https://holokai-backend-production.up.railway.app';
   return String(raw).replace(/\/$/, '');
 }
 

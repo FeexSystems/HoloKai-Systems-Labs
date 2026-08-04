@@ -28,17 +28,17 @@ service cloud.firestore {
 
     match /historicalRecords/{docId} {
       allow read: if true;
-      allow write: if true;
+      allow write: if isAuthenticated();
     }
 
     match /synthesizedCodices/{docId} {
       allow read: if true;
-      allow write: if true;
+      allow write: if isAuthenticated();
     }
 
     match /quantumSimulations/{docId} {
       allow read: if true;
-      allow write: if true;
+      allow write: if isAuthenticated();
     }
   }
 }

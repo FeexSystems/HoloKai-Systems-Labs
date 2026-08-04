@@ -51,4 +51,5 @@ dist/
 build/
 
 # Local Netlify folder
-.netlify
+.netlify/
+**/.netlify/
