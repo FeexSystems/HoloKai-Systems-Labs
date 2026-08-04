@@ -1125,9 +1125,24 @@ async def elevenlabs_tts(request: Request):
                 if resp.is_success:
                     return Response(content=resp.content, media_type="audio/mpeg")
         except Exception as exc:
-            logger.warning("ElevenLabs proxy failed, falling back to edge-tts: %s", exc)
+            logger.warning("ElevenLabs proxy failed, falling back: %s", exc)
 
-    # Fallback to local edge-tts
+    # Fallback to Deepgram TTS (aura-zeus-en) or edge-tts
+    try:
+        dg_key = os.getenv("DEEPGRAM_API_KEY") or os.getenv("VITE_DEEPGRAM_API_KEY") or "1b696cc92d917abe19bf14bdcb77d20a6a52f814"
+        if dg_key:
+            import httpx
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                resp = await client.post(
+                    "https://api.deepgram.com/v1/speak?model=aura-zeus-en",
+                    headers={"Authorization": f"Token {dg_key}", "Content-Type": "application/json", "Accept": "audio/mp3"},
+                    json={"text": text}
+                )
+                if resp.is_success:
+                    return Response(content=resp.content, media_type="audio/mp3")
+    except Exception as exc:
+        logger.warning("Deepgram TTS fallback failed: %s", exc)
+
     try:
         import edge_tts
         import io
