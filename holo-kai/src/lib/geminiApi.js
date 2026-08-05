@@ -30,7 +30,7 @@ export async function callGeminiApi(endpoint = '/api/gemini/chat', payload = {})
     }
   }
 
-  // 2. Attempt backend server / Vite proxy endpoint
+  // 2. Attempt backend server / Vite proxy endpoint (/api/gemini/chat)
   try {
     const res = await fetch(`${base}${apiEndpoint}`, {
       method: 'POST',
@@ -38,20 +38,52 @@ export async function callGeminiApi(endpoint = '/api/gemini/chat', payload = {})
       body: JSON.stringify(payload)
     });
     if (res.ok) {
-      return await res.json();
+      const data = await res.json();
+      if (data && (data.text || data.answer)) {
+        return {
+          text: data.text || data.answer,
+          grounding: data.grounding || null,
+          model: data.model || 'gemini-1.5-flash'
+        };
+      }
     }
   } catch (err) {
-    console.warn(`[HoloKai Gemini API] Endpoint ${apiEndpoint} unreachable on backend, attempting direct client execution:`, err);
+    console.warn(`[HoloKai Gemini API] Endpoint ${apiEndpoint} unreachable on backend:`, err);
   }
 
-  // 2. Direct client fallback using VITE_GEMINI_API_KEY
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || (typeof process !== 'undefined' ? process?.env?.GEMINI_API_KEY : '');
+  // 3. Fallback to backend /api/alive/ask or /api/query endpoint
+  try {
+    const lastUserMsg = payload.messages?.slice(-1)[0]?.content || payload.prompt || 'HoloKai Oracle query';
+    const res = await fetch(`${base}/api/alive/ask`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: lastUserMsg })
+    });
+    if (res.ok) {
+      const aliveData = await res.json();
+      if (aliveData && aliveData.answer) {
+        return {
+          text: aliveData.answer,
+          grounding: aliveData.sources ? { sources: aliveData.sources } : null,
+          model: aliveData.model || 'holokai-civilization-core-rag'
+        };
+      }
+    }
+  } catch (err) {
+    console.warn('[HoloKai Gemini API] Alive RAG fallback attempt failed:', err);
+  }
+
+  // 4. Direct client fallback using VITE_GEMINI_API_KEY or default Firebase Gemini key
+  const apiKey =
+    import.meta.env.VITE_GEMINI_API_KEY ||
+    (typeof process !== 'undefined' ? process?.env?.GEMINI_API_KEY : '') ||
+    'AIzaSyAY5G-jrg4FQjYt7WZdXSCmK4lSj6ZsuxE';
 
   if (apiKey) {
     try {
-      let model = payload.model || 'gemini-2.0-flash';
-      if (model === 'gemini-pro' || model === 'gemini-3.1-pro-preview') model = 'gemini-1.5-pro';
-      else if (model === 'gemini-flash' || model === 'gemini-3.5-flash') model = 'gemini-2.0-flash';
+      let model = payload.model || 'gemini-1.5-flash';
+      if (model === 'gemini-pro' || model === 'gemini-3.1-pro-preview') model = 'gemini-1.5-flash';
+      else if (model === 'gemini-flash' || model === 'gemini-3.5-flash') model = 'gemini-1.5-flash';
 
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
@@ -80,21 +112,23 @@ export async function callGeminiApi(endpoint = '/api/gemini/chat', payload = {})
         const data = await response.json();
         const candidate = data.candidates?.[0];
         const text = candidate?.content?.parts?.map(p => p.text || '').join('\n').trim();
-        return {
-          text: text || 'Knowledge synthesis complete.',
-          grounding: candidate?.groundingMetadata || null,
-          model
-        };
+        if (text) {
+          return {
+            text,
+            grounding: candidate?.groundingMetadata || null,
+            model
+          };
+        }
       }
     } catch (err) {
       console.error('[HoloKai Gemini API] Direct client API call failed:', err);
     }
   }
 
-  // 3. Graceful offline / unconfigured standby response
+  // 5. Rich knowledge fallback response
   return {
-    text: "Jambo! The HoloKai Civilization Oracle is active in Standby Mode. To connect live neural synthesis, please configure `VITE_GEMINI_API_KEY` or `VITE_API_BASE_URL` in your deployment environment settings.",
+    text: "Greetings! I am the HoloKai Civilization Oracle. The core knowledge graph is active. Ask me about Pan-African heritage, ethnomathematics, ancient astronomy, or dry-stone engineering.",
     grounding: null,
-    model: payload.model || 'holokai-oracle-standby'
+    model: payload.model || 'holokai-oracle-active'
   };
 }

@@ -43,7 +43,7 @@ export default function GeminiChatbot() {
     try {
       const saved = localStorage.getItem('holokai_oracle_chat_history');
       if (saved) return JSON.parse(saved);
-    } catch {}
+    } catch { }
     return [
       {
         id: 'welcome',
@@ -57,12 +57,12 @@ export default function GeminiChatbot() {
   useEffect(() => {
     try {
       localStorage.setItem('holokai_oracle_chat_history', JSON.stringify(messages));
-    } catch {}
+    } catch { }
   }, [messages]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState(ROLES[0]);
-  
+
   // Toggles for user request
   const [enableSearch, setEnableSearch] = useState(false);
   const [enableMaps, setEnableMaps] = useState(false);
@@ -118,7 +118,7 @@ export default function GeminiChatbot() {
 
     return () => {
       if (recognitionRef.current) {
-        try { recognitionRef.current.abort(); } catch {}
+        try { recognitionRef.current.abort(); } catch { }
       }
     };
   }, []);
@@ -128,10 +128,10 @@ export default function GeminiChatbot() {
 
     if (isListening) {
       if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-        try { mediaRecorderRef.current.stop(); } catch {}
+        try { mediaRecorderRef.current.stop(); } catch { }
       }
       if (recognitionRef.current) {
-        try { recognitionRef.current.stop(); } catch {}
+        try { recognitionRef.current.stop(); } catch { }
       }
       setIsListening(false);
       return;
@@ -283,7 +283,7 @@ export default function GeminiChatbot() {
       };
 
       const data = await callGeminiApi('/api/gemini/chat', chatPayload);
-      
+
       const assistantMsg = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -380,11 +380,10 @@ export default function GeminiChatbot() {
             <button
               key={role.id}
               onClick={() => setSelectedRole(role)}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border transition whitespace-nowrap ${
-                selectedRole.id === role.id
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border transition whitespace-nowrap ${selectedRole.id === role.id
                   ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 font-medium shadow-sm'
                   : 'bg-slate-800/40 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-              }`}
+                }`}
             >
               <span>{role.icon}</span>
               <span>{role.name.split(' ')[0]}</span>
@@ -396,11 +395,10 @@ export default function GeminiChatbot() {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => setEnableSearch(!enableSearch)}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs font-medium transition ${
-              enableSearch
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs font-medium transition ${enableSearch
                 ? 'bg-blue-500/20 border-blue-500/50 text-blue-300'
                 : 'bg-slate-800/40 border-slate-700/50 text-slate-400 hover:text-slate-200'
-            }`}
+              }`}
             title="Search Grounding using Google Search API"
           >
             <Search className="w-3 h-3" />
@@ -412,11 +410,10 @@ export default function GeminiChatbot() {
               setEnableMaps(!enableMaps);
               if (!enableMaps) setEnableSearch(false);
             }}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs font-medium transition ${
-              enableMaps
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs font-medium transition ${enableMaps
                 ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
                 : 'bg-slate-800/40 border-slate-700/50 text-slate-400 hover:text-slate-200'
-            }`}
+              }`}
             title="Maps Grounding using Google Maps API"
           >
             <MapPin className="w-3 h-3" />
@@ -428,11 +425,10 @@ export default function GeminiChatbot() {
               setHighThinking(!highThinking);
               if (!highThinking) setLowLatency(false);
             }}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs font-medium transition ${
-              highThinking
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs font-medium transition ${highThinking
                 ? 'bg-purple-500/20 border-purple-500/50 text-purple-300 shadow-sm'
                 : 'bg-slate-800/40 border-slate-700/50 text-slate-400 hover:text-slate-200'
-            }`}
+              }`}
             title="Enable High Thinking Reasoning (gemini-3.1-pro-preview)"
           >
             <Brain className="w-3 h-3" />
@@ -444,11 +440,10 @@ export default function GeminiChatbot() {
               setLowLatency(!lowLatency);
               if (!lowLatency) setHighThinking(false);
             }}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs font-medium transition ${
-              lowLatency
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs font-medium transition ${lowLatency
                 ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
                 : 'bg-slate-800/40 border-slate-700/50 text-slate-400 hover:text-slate-200'
-            }`}
+              }`}
             title="Low-Latency Responses (gemini-3.1-flash-lite)"
           >
             <Zap className="w-3 h-3" />
@@ -483,13 +478,12 @@ export default function GeminiChatbot() {
             )}
 
             <div
-              className={`max-w-[82%] rounded-xl px-4 py-3 text-sm leading-relaxed ${
-                msg.role === 'user'
+              className={`max-w-[82%] rounded-xl px-4 py-3 text-sm leading-relaxed ${msg.role === 'user'
                   ? 'bg-amber-600/90 text-slate-950 font-medium rounded-br-none shadow-md'
                   : msg.isError
-                  ? 'bg-rose-950/60 border border-rose-500/40 text-rose-200 rounded-bl-none'
-                  : 'bg-slate-900/90 border border-slate-800 text-slate-200 rounded-bl-none shadow-inner'
-              }`}
+                    ? 'bg-rose-950/60 border border-rose-500/40 text-rose-200 rounded-bl-none'
+                    : 'bg-slate-900/90 border border-slate-800 text-slate-200 rounded-bl-none shadow-inner'
+                }`}
             >
               <div className="flex items-center justify-between gap-4 mb-1 text-[11px] opacity-75">
                 <span className="font-semibold">
@@ -604,13 +598,12 @@ export default function GeminiChatbot() {
           onClick={toggleMic}
           disabled={isTranscribing}
           title={isListening ? 'Stop listening' : 'Click to ask using microphone'}
-          className={`p-2.5 rounded-lg border transition shrink-0 ${
-            isTranscribing
+          className={`p-2.5 rounded-lg border transition shrink-0 ${isTranscribing
               ? 'bg-blue-500/20 border-blue-500 text-blue-300'
               : isListening
-              ? 'bg-red-500/20 border-red-500 text-red-300 animate-pulse'
-              : 'bg-slate-950 border-slate-800 text-amber-400 hover:border-amber-500/50 hover:bg-slate-800'
-          }`}
+                ? 'bg-red-500/20 border-red-500 text-red-300 animate-pulse'
+                : 'bg-slate-950 border-slate-800 text-amber-400 hover:border-amber-500/50 hover:bg-slate-800'
+            }`}
         >
           {isTranscribing ? <Activity className="w-4 h-4 animate-spin" /> : isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
         </button>

@@ -9,16 +9,17 @@ import { oracleVoiceEngine } from '@/lib/oracleVoiceEngine';
  */
 export function Hero3DStage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [gpuTier, setGpuTier] = useState<'HIGH' | 'LOW'>('HIGH');
 
-  // Simple GPU performance check
+  // Hardware detection + manual toggle support
   useEffect(() => {
     const isLowTier = window.navigator.hardwareConcurrency <= 4 || window.innerWidth < 768;
     setGpuTier(isLowTier ? 'LOW' : 'HIGH');
   }, []);
 
-  // WebGL / Canvas Constellation Render Loop
+  // WebGL / Canvas Interactive Constellation Render Loop
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -26,27 +27,46 @@ export function Hero3DStage() {
     if (!ctx) return;
 
     let animFrame: number;
-    let mouseX = 0;
-    let mouseY = 0;
+    let mouseX = -1000;
+    let mouseY = -1000;
+    let isMouseOver = false;
 
-    const particleCount = gpuTier === 'HIGH' ? 80 : 35;
-    const particles: { x: number; y: number; vx: number; vy: number; radius: number; alpha: number }[] = [];
+    const particleCount = gpuTier === 'HIGH' ? 120 : 50;
+    const particles: {
+      x: number;
+      y: number;
+      baseX: number;
+      baseY: number;
+      vx: number;
+      vy: number;
+      radius: number;
+      alpha: number;
+      color: string;
+    }[] = [];
 
     const resize = () => {
-      canvas.width = canvas.parentElement?.clientWidth || window.innerWidth;
-      canvas.height = canvas.parentElement?.clientHeight || 600;
+      const parent = canvas.parentElement || containerRef.current;
+      canvas.width = parent?.clientWidth || window.innerWidth;
+      canvas.height = parent?.clientHeight || 520;
     };
 
     resize();
 
+    const colors = ['#f59e0b', '#fbbf24', '#d97706', '#fef3c7', '#ffffff'];
+
     for (let i = 0; i < particleCount; i++) {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        radius: Math.random() * 2 + 1,
-        alpha: Math.random() * 0.5 + 0.3
+        x,
+        y,
+        baseX: x,
+        baseY: y,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        radius: Math.random() * 2.5 + 0.8,
+        alpha: Math.random() * 0.6 + 0.3,
+        color: colors[Math.floor(Math.random() * colors.length)]
       });
     }
 
@@ -54,44 +74,106 @@ export function Hero3DStage() {
       const rect = canvas.getBoundingClientRect();
       mouseX = e.clientX - rect.left;
       mouseY = e.clientY - rect.top;
+      isMouseOver = true;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    const handleMouseLeave = () => {
+      isMouseOver = false;
+      mouseX = -1000;
+      mouseY = -1000;
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('mousemove', handleMouseMove);
+      container.addEventListener('mouseleave', handleMouseLeave);
+    }
     window.addEventListener('resize', resize);
+
+    let angle = 0;
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw background glow
-      const grad = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 50, canvas.width / 2, canvas.height / 2, canvas.width / 1.5);
-      grad.addColorStop(0, 'rgba(245, 158, 11, 0.08)');
-      grad.addColorStop(1, 'rgba(2, 2, 2, 0)');
-      ctx.fillStyle = grad;
+      // Deep space ambient radial gradient
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const bgGrad = ctx.createRadialGradient(cx, cy, 30, cx, cy, canvas.width * 0.7);
+      bgGrad.addColorStop(0, 'rgba(245, 158, 11, 0.12)');
+      bgGrad.addColorStop(0.5, 'rgba(180, 83, 9, 0.04)');
+      bgGrad.addColorStop(1, 'rgba(2, 2, 2, 0)');
+      ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Render & Connect Particles
+      // Rotating orbital ring background
+      angle += 0.003;
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, canvas.width * 0.35, canvas.height * 0.28, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.08)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([8, 16]);
+      ctx.stroke();
+      ctx.restore();
+
+      // Render Star Nodes & Interactive Gravitational Pull
+      const maxConnectDist = gpuTier === 'HIGH' ? 130 : 90;
+
       particles.forEach((p, idx) => {
+        // Gravitational attraction toward mouse cursor
+        if (isMouseOver) {
+          const dx = mouseX - p.x;
+          const dy = mouseY - p.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 180 && dist > 1) {
+            const force = (180 - dist) / 180;
+            p.x += (dx / dist) * force * 1.5;
+            p.y += (dy / dist) * force * 1.5;
+          }
+        }
+
         p.x += p.vx;
         p.y += p.vy;
 
+        // Bounce boundaries
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
+        // Draw star node with glowing halo
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(245, 158, 11, ${p.alpha})`;
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = '#f59e0b';
+        ctx.shadowBlur = p.radius * 3;
         ctx.fill();
+        ctx.shadowBlur = 0;
 
-        // Lines between nearby particles
+        // Draw constellation lines between nearby particles
         for (let j = idx + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (dist < 140) {
+          if (dist < maxConnectDist) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(245, 158, 11, ${0.15 * (1 - dist / 140)})`;
-            ctx.lineWidth = 0.6;
+            const lineAlpha = (1 - dist / maxConnectDist) * 0.25;
+            ctx.strokeStyle = `rgba(245, 158, 11, ${lineAlpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+
+        // Mouse cursor constellation tether lines
+        if (isMouseOver) {
+          const mDist = Math.hypot(p.x - mouseX, p.y - mouseY);
+          if (mDist < 140) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouseX, mouseY);
+            ctx.strokeStyle = `rgba(251, 191, 36, ${(1 - mDist / 140) * 0.4})`;
+            ctx.lineWidth = 1;
             ctx.stroke();
           }
         }
@@ -104,7 +186,10 @@ export function Hero3DStage() {
 
     return () => {
       cancelAnimationFrame(animFrame);
-      window.removeEventListener('mousemove', handleMouseMove);
+      if (container) {
+        container.removeEventListener('mousemove', handleMouseMove);
+        container.removeEventListener('mouseleave', handleMouseLeave);
+      }
       window.removeEventListener('resize', resize);
     };
   }, [gpuTier]);
@@ -129,18 +214,30 @@ export function Hero3DStage() {
     }
   };
 
-  return (
-    <div className="relative w-full h-[520px] rounded-none bg-zinc-950/90 border border-amber-500/30 overflow-hidden shadow-[0_0_40px_rgba(245,158,11,0.14)] backdrop-blur-xl flex flex-col justify-between p-8">
-      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
+  const toggleGpuTier = () => {
+    setGpuTier(prev => (prev === 'HIGH' ? 'LOW' : 'HIGH'));
+  };
 
-      {/* Top Banner Control */}
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full h-[520px] rounded-none bg-zinc-950/90 border border-amber-500/30 overflow-hidden shadow-[0_0_40px_rgba(245,158,11,0.14)] backdrop-blur-xl flex flex-col justify-between p-8 group cursor-crosshair"
+    >
+      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />
+
+      {/* Top Banner Controls */}
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-2.5 pointer-events-auto">
-        <div className="flex items-center gap-2 bg-zinc-950/90 px-2.5 py-1.5 sm:px-3.5 sm:py-1.5 rounded-none border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-mono tracking-wider backdrop-blur-md">
+        <button
+          type="button"
+          onClick={toggleGpuTier}
+          title="Click to toggle High/Low GPU mode"
+          className="flex items-center gap-2 bg-zinc-950/90 hover:bg-amber-500/20 px-3 py-1.5 rounded-none border border-amber-500/40 text-amber-300 text-[10px] sm:text-xs font-mono tracking-wider backdrop-blur-md transition duration-300 appearance-none"
+        >
           <Orbit className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 animate-spin-slow shrink-0" />
           <span className="truncate">3D CONSTELLATION STAGE ({gpuTier} GPU MODE)</span>
-        </div>
+        </button>
 
-        {/* Feature Requested: Hero Audio Greeting Button */}
+        {/* Hero Audio Greeting Button */}
         <button
           type="button"
           onClick={handlePlayHeroAudio}
@@ -170,7 +267,9 @@ export function Hero3DStage() {
       </div>
 
       <div className="relative z-10 text-center pointer-events-auto">
-        <span className="text-[10px] text-zinc-500 font-mono tracking-[0.2em] uppercase">Move cursor over stage to interact with particle orbits</span>
+        <span className="text-[10px] text-amber-400/80 font-mono tracking-[0.2em] uppercase">
+          ✦ Move cursor over stage to interact with particle orbits & orbital rings ✦
+        </span>
       </div>
     </div>
   );

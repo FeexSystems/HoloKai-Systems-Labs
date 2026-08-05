@@ -16,7 +16,7 @@ export default function DockedGuardian({ aiState: aiStateProp }) {
   const state = STATES[aiState] || STATES.idle;
 
   return (
-    <div className="fixed bottom-4 right-4 z-30 pointer-events-none">
+    <div className="fixed bottom-24 right-6 z-30 pointer-events-none">
       <div className="relative flex flex-col items-center">
         {/* Floating mini panel */}
         <div className="glass-panel rounded-xl p-2 pointer-events-auto mb-2">

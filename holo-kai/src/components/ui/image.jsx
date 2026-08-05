@@ -72,18 +72,22 @@ function buildSrcSet(parsed, options) {
   ).join(", ")
 }
 
-const ImageWrapper = React.forwardRef(({ aspectRatio, className, style, children }, ref) => (
-  <span
-    ref={ref}
-    className={cn("inline-block relative", className)}
-    style={{ aspectRatio, ...style }}
-  >
-    {children}
-  </span>
-))
+const ImageWrapper = React.forwardRef(
+  /** @param {{ aspectRatio?: any, className?: string, style?: any, children?: React.ReactNode }} props */
+  ({ aspectRatio, className, style, children }, ref) => (
+    <span
+      ref={ref}
+      className={cn("inline-block relative", className)}
+      style={{ aspectRatio, ...style }}
+    >
+      {children}
+    </span>
+  )
+)
 ImageWrapper.displayName = "ImageWrapper"
 
 const ResponsiveImage = React.forwardRef(
+  /** @param {{ parsed: any, fittingType?: string, focalPoint?: any, quality?: number, className?: string, style?: any, aspectRatio?: string, onLoad?: Function, [key: string]: any }} props */
   ({ parsed, fittingType, focalPoint, quality, className, style, aspectRatio, onLoad, ...props }, parentRef) => {
     const wrapperRef = React.useRef(null)
     const imgRef = React.useRef(null)
@@ -173,6 +177,7 @@ ResponsiveImage.displayName = "ResponsiveImage"
  * plain <img>. Failed loads swap to a fallback image.
  */
 const Image = React.forwardRef(
+  /** @param {{ src?: string, fittingType?: string, originWidth?: number, originHeight?: number, focalPointX?: number, focalPointY?: number, quality?: number, [key: string]: any }} props */
   (
     {
       src,

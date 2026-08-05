@@ -99,7 +99,7 @@ export default function FloatingDock({
       onMouseLeave={handleMouseLeave}
       className={cn(
         'fixed bottom-0 left-1/2 -translate-x-1/2 z-[90] pb-4 transition-all duration-500 ease-in-out',
-        active ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-40 hover:opacity-100 hover:translate-y-0',
+        active ? 'translate-y-0 opacity-100' : 'translate-y-11 opacity-40 hover:opacity-100 hover:translate-y-0',
         className
       )}
     >
