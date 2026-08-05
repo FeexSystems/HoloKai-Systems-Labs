@@ -60,7 +60,7 @@ export default function OracleCorePanel({ onSelectSource, activePeriod }) {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="h-full flex flex-col overflow-y-auto scrollbar-thin p-3 sm:p-6 space-y-4 sm:space-y-6 bg-zinc-950 text-zinc-100"
+      className="h-full flex flex-col overflow-y-auto scrollbar-thin pb-28 p-3 sm:p-6 space-y-4 sm:space-y-6 bg-zinc-950 text-zinc-100"
     >
       <FullScreenScanline opacity="opacity-20" />
 

@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 /**
  * HoloKai frontend ↔ Python Civilization Core client.
  *
@@ -8,7 +9,8 @@
 import { MOCK_SOURCES } from './mockData';
 
 function getApiBase() {
-  const raw = import.meta.env.VITE_API_BASE_URL;
+  const meta = /** @type {any} */ (import.meta);
+  const raw = meta.env?.VITE_API_BASE_URL;
   if (raw == null || raw === '') return 'https://holokai-backend-production.up.railway.app';
   return String(raw).replace(/\/$/, '');
 }

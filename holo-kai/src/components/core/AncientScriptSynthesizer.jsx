@@ -176,7 +176,7 @@ export default function AncientScriptSynthesizer() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-6 space-y-6 text-zinc-100 font-sans">
+    <div className="w-full h-full overflow-y-auto scrollbar-thin pb-28 max-w-7xl mx-auto px-4 py-6 space-y-6 text-zinc-100 font-sans">
       {/* HERO BANNER */}
       <div className="relative rounded-3xl border border-amber-500/30 bg-gradient-to-r from-zinc-950 via-zinc-900 to-amber-950/40 p-6 sm:p-8 shadow-2xl overflow-hidden backdrop-blur-xl">
         <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -197,6 +197,7 @@ export default function AncientScriptSynthesizer() {
 
           <div className="flex items-center gap-3">
             <button
+              type="button"
               onClick={handleSaveToFirestore}
               className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-mono font-bold text-xs flex items-center gap-2 shadow-[0_0_20px_rgba(245,158,11,0.4)] transition"
             >
@@ -218,10 +219,11 @@ export default function AncientScriptSynthesizer() {
 
           <div className="space-y-2">
             {ANCIENT_SCRIPTS.map((script) => (
-              <div
+              <button
+                type="button"
                 key={script.id}
                 onClick={() => handleSelectScript(script)}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col gap-1.5 ${
+                className={`w-full text-left p-4 rounded-2xl border transition-all cursor-pointer flex flex-col gap-1.5 focus:outline-none focus:ring-2 focus:ring-amber-400 ${
                   selectedScript.id === script.id
                     ? 'border-amber-500 bg-amber-500/15 shadow-lg'
                     : 'border-white/10 bg-zinc-950/80 hover:border-amber-500/40 hover:bg-zinc-900'
@@ -240,7 +242,7 @@ export default function AncientScriptSynthesizer() {
                 <div className="text-lg font-serif text-amber-400/90 pt-1 line-clamp-1">
                   {script.sampleText}
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>

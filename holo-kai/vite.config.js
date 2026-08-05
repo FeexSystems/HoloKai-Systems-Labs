@@ -373,6 +373,7 @@ export default defineConfig({
     react(),
   ],
   resolve: {
+    dedupe: ['three'],
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@landing': fileURLToPath(new URL('./src/landing', import.meta.url)),
