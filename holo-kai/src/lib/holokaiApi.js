@@ -5,6 +5,8 @@
  * Example: VITE_API_BASE_URL=http://localhost:8000
  */
 
+import { MOCK_SOURCES } from './mockData';
+
 function getApiBase() {
   const raw = import.meta.env.VITE_API_BASE_URL;
   if (raw == null || raw === '') return 'https://holokai-backend-production.up.railway.app';
@@ -60,6 +62,7 @@ export async function apiFetch(path, options = {}) {
     });
     if (!res.ok) {
       const message = await readError(res);
+      /** @type {Error & { status?: number }} */
       const err = new Error(message);
       err.status = res.status;
       throw err;
@@ -314,8 +317,7 @@ export async function synthesizeClientGrounded(query, options = {}) {
  * Falls back to client-side grounded synthesis if backend is unreachable.
  *
  * @param {string} query
- * @param {object} [options]
- * @param {(state: 'retrieving' | 'reasoning') => void} [options.onPhase]
+ * @param {{ onPhase?: (state: string) => void, pollIntervalMs?: number, maxWaitMs?: number, [key: string]: any }} [options]
  */
 export async function groundedAskWithLifecycle(query, options = {}) {
   const { onPhase, pollIntervalMs = 1200, maxWaitMs = 180000, ...askOptions } = options;

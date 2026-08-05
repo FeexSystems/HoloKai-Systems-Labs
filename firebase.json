@@ -12,6 +12,17 @@
         "source": "**",
         "destination": "/index.html"
       }
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; frame-src 'self' https:; img-src 'self' https: data: blob:; worker-src 'self' blob:;"
+          }
+        ]
+      }
     ]
   },
   "firestore": {

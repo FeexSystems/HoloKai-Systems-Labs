@@ -582,7 +582,10 @@ export default function GeminiChatbot() {
       )}
 
       {/* Input Form */}
-      <form onSubmit={handleSend} className="p-4 bg-slate-900/95 border-t border-slate-800/80 flex items-center gap-3">
+      <form onSubmit={handleSend} className="p-4 mb-20 bg-slate-900/95 border-t border-slate-800/80 flex items-center gap-3 relative z-20">
+        <label htmlFor="oracle_chat_input" className="sr-only">
+          Ask the HoloKai Civilization Oracle
+        </label>
         <input
           type="text"
           id="oracle_chat_input"
@@ -591,6 +594,7 @@ export default function GeminiChatbot() {
           onChange={(e) => setInput(e.target.value)}
           placeholder={`Ask ${selectedRole.name.split(' ')[0]} about African history, manuscripts, monuments...`}
           disabled={loading}
+          aria-label="Ask the HoloKai Civilization Oracle"
           className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500/60 focus:ring-1 focus:ring-amber-500/60 transition"
         />
         <button
@@ -598,6 +602,7 @@ export default function GeminiChatbot() {
           onClick={toggleMic}
           disabled={isTranscribing}
           title={isListening ? 'Stop listening' : 'Click to ask using microphone'}
+          aria-label={isListening ? 'Stop microphone' : 'Ask with microphone'}
           className={`p-2.5 rounded-lg border transition shrink-0 ${isTranscribing
               ? 'bg-blue-500/20 border-blue-500 text-blue-300'
               : isListening
@@ -610,6 +615,7 @@ export default function GeminiChatbot() {
         <button
           type="submit"
           disabled={loading || !input.trim()}
+          aria-label="Send Message"
           className="bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-slate-950 font-semibold px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-md transition shrink-0"
         >
           <Send className="w-4 h-4" />
