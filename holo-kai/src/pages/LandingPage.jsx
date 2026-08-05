@@ -14,6 +14,8 @@ import { GUARDIANS } from '@/lib/guardians';
 import OrbitalScene from '@/components/orbital-lab/OrbitalScene';
 import SplineOrbitalStage from '@/components/orbital-lab/SplineOrbitalStage';
 import CivilizationMemory3DOrbital from '@/components/orbital-lab/CivilizationMemory3DOrbital';
+import QuantumCanvasHero from '@/components/orbital-lab/QuantumCanvasHero';
+import PublicCodexFeed from '@/components/core/PublicCodexFeed';
 
 // Single shared armorpack video (the only video file in /public/videos/)
 const GUARDIAN_VIDEO_SRC = encodeURI('/videos/meet the guardians  armorpack vidz.mp4');
@@ -144,6 +146,9 @@ export default function LandingPage() {
         ref={heroRef}
         className="relative z-10 min-h-screen flex flex-col items-center justify-center overflow-hidden"
       >
+        {/* Interactive Quantum Particle Canvas */}
+        <QuantumCanvasHero particleCount={50} />
+
         {/* Soft radial wash over 3D stack */}
         <motion.div
           style={{ opacity: heroOpacity }}
@@ -202,18 +207,14 @@ export default function LandingPage() {
               onClick={() => navigate('/orbital-lab')}
               className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full transition-all duration-500 gold-glow"
               style={{
-                background: 'linear-gradient(135deg, rgba(232,184,75,0.15), rgba(232,184,75,0.05))',
-                border: '1px solid rgba(232,184,75,0.3)',
+                background: 'linear-gradient(135deg, #FFC400 0%, #FF9100 50%, #DD2C00 100%)',
+                border: '1px solid rgba(255, 196, 0, 0.4)',
               }}
             >
-              <span className="text-sm tracking-[0.3em] uppercase font-mono font-medium text-holokai-gold">
+              <span className="text-sm tracking-[0.3em] uppercase font-mono font-bold text-zinc-950">
                 Enter Alkebulan
               </span>
-              <ChevronRight className="w-4 h-4 text-holokai-gold transition-transform group-hover:translate-x-1" />
-              <div
-                className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ boxShadow: '0 0 40px -5px rgba(232,184,75,0.3)' }}
-              />
+              <ChevronRight className="w-4 h-4 text-zinc-950 transition-transform group-hover:translate-x-1" />
             </button>
 
             <button
@@ -252,6 +253,16 @@ export default function LandingPage() {
             <div className="w-1 h-1.5 rounded-full bg-white/30 animate-bounce" />
           </div>
         </motion.div>
+      </section>
+
+      {/* ===== PUBLIC CODEX & ARCHIVE FEED ===== */}
+      <section className="relative z-10 py-20 px-4 bg-background/90 border-t border-b border-white/5">
+        <SectionHeading
+          label="Live Public Archives"
+          title="Synthesized Codices & Records"
+          subtitle="Explore primary sources, epigraphic records, and oral traditions preserved across the HoloKai network."
+        />
+        <PublicCodexFeed onNavigate={navigate} />
       </section>
 
       {/* ===== VISION ===== */}
