@@ -18,7 +18,7 @@ import {
 import { HoloKaiLogo } from "@/components/HoloKaiLogo";
 import type { Unit } from "@/data/units";
 import { units } from "@/data/units";
-import type { LabDisplayMode } from "./UnitModel";
+export type LabDisplayMode = "spline" | "canvas" | "portrait" | "model";
 
 const LabCanvas = lazy(() =>
   import("./LabCanvas").then((m) => ({ default: m.LabCanvas })),
