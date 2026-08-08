@@ -45,10 +45,12 @@ function StageMessage({ title, hint }: { title: string; hint: string }) {
   );
 }
 
+import { autoOptimizer } from "@holokai/runtime";
+
 /**
  * Orbital Spline lab: an interactive 3D space for exploring the Vanguard units.
  * Spline is the primary renderer; the react-three-fiber lab canvas takes over
- * when the scene is missing or fails, and a static notice covers no-WebGL.
+ * when the scene is missing or fails, or when autoOptimizer triggers lite mode.
  */
 export default function SplineLab() {
   const [selected, setSelected] = useState<Unit>(units[0]);
@@ -59,6 +61,16 @@ export default function SplineLab() {
 
   const webgl = useMemo(() => isWebGLAvailable(), []);
   const accent = selected.accent ?? "#f59e0b";
+
+  // Autonomous UI Optimization: Auto-fallback to LabCanvas if performance degrades
+  useMemo(() => {
+    if (typeof window !== 'undefined') {
+      const config = autoOptimizer.getOptimizationConfig();
+      if (!config.enable3DCanvas) {
+        setSplineDown(true);
+      }
+    }
+  }, []);
 
   const applyZoom = useCallback((next: number) => {
     const clamped = Math.min(

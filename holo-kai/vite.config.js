@@ -396,6 +396,11 @@ export default defineConfig({
       '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
       '@oracle': fileURLToPath(new URL('./src/components/oracle', import.meta.url)),
       '@client': fileURLToPath(new URL('./src', import.meta.url)),
+      '@holokai/runtime': fileURLToPath(new URL('../packages/runtime/src/index.ts', import.meta.url)),
+      '@holokai/design-system': fileURLToPath(new URL('../packages/design-system/src/index.ts', import.meta.url)),
+      '@holokai/contracts': fileURLToPath(new URL('../packages/contracts/src/index.ts', import.meta.url)),
+      '@holokai/event-bus': fileURLToPath(new URL('../packages/event-bus/src/index.ts', import.meta.url)),
+      '@holokai/mfe-orchestrator': fileURLToPath(new URL('../packages/mfe-orchestrator/src/index.ts', import.meta.url)),
     },
   },
   build: {
