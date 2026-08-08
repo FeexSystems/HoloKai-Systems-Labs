@@ -8,16 +8,9 @@ const __dirname = path.dirname(__filename);
 const nextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: path.resolve(__dirname, '../../'),
-  transpilePackages: [
-    '@holokai/design-system',
-    '@holokai/contracts',
-    '@holokai/runtime',
-    '@holokai/event-bus',
-    '@holokai/mfe-orchestrator',
-    '@holokai/ui-composer',
-  ],
+  transpilePackages: ['@holokai/ui', '@holokai/design-system', '@holokai/contracts', '@holokai/event-bus'],
   experimental: {
-    optimizePackageImports: ['lucide-react', '@holokai/design-system'],
+    optimizePackageImports: ['lucide-react', '@holokai/ui', '@holokai/design-system'],
   },
 };
 

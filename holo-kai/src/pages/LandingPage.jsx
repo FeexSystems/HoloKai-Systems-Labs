@@ -2,14 +2,29 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
-  ChevronRight,
-  Globe,
-  BookOpen,
-  Compass,
-  Sparkles,
-  Shield,
-  Layers,
+  ChevronRight as ChevronRightRaw,
+  Globe as GlobeRaw,
+  BookOpen as BookOpenRaw,
+  Compass as CompassRaw,
+  Sparkles as SparklesRaw,
+  Shield as ShieldRaw,
+  Layers as LayersRaw,
 } from 'lucide-react';
+
+/** @type {any} */
+const ChevronRight = ChevronRightRaw;
+/** @type {any} */
+const Globe = GlobeRaw;
+/** @type {any} */
+const BookOpen = BookOpenRaw;
+/** @type {any} */
+const Compass = CompassRaw;
+/** @type {any} */
+const Sparkles = SparklesRaw;
+/** @type {any} */
+const Shield = ShieldRaw;
+/** @type {any} */
+const Layers = LayersRaw;
 import { GUARDIANS } from '@/lib/guardians';
 import OrbitalScene from '@/components/orbital-lab/OrbitalScene';
 import SplineOrbitalStage from '@/components/orbital-lab/SplineOrbitalStage';
@@ -85,8 +100,8 @@ function VideoCard({ src, image, name, role, index }) {
             playsInline
             onError={() => setVideoError(true)}
             className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105 opacity-90"
-            onMouseEnter={(e) => e.target.play().catch(() => {})}
-            onMouseLeave={(e) => { e.target.pause(); e.target.currentTime = 0; }}
+            onMouseEnter={(e) => { const vid = e.currentTarget; if (vid && vid.play) vid.play().catch(() => {}); }}
+            onMouseLeave={(e) => { const vid = e.currentTarget; if (vid && vid.pause) { vid.pause(); vid.currentTime = 0; } }}
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -327,6 +342,7 @@ export default function LandingPage() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {FEATURES.map((feature, i) => {
+              /** @type {any} */
               const Icon = feature.icon;
               return (
                 <motion.div
