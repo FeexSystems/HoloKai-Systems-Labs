@@ -3,6 +3,9 @@
   "private": true,
   "description": "HoloKai monorepo. Active frontend: holo-kai/. Orbital lab entry: HoloKai - landingpage/.",
   "workspaces": [
+    "apps/*",
+    "packages/*",
+    "edge/*",
     "holo-kai",
     "HoloKai - landingpage"
   ],

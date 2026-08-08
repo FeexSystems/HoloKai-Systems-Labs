@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
@@ -9,32 +9,39 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { HoloKaiProvider } from '@/lib/HoloKaiContext';
-import LandingPage from '@/pages/LandingPage';
-import LandingIndex from '@landing/pages/Index';
-import SplineLab from '@landing/pages/SplineLab';
-import LandingAdmin from '@landing/pages/Admin';
-import OrbitalLab from '@/pages/OrbitalLab';
-import CivilizationCore from '@/pages/CivilizationCore';
-import Login from '@/pages/Login';
-import Register from '@/pages/Register';
-import ForgotPassword from '@/pages/ForgotPassword';
-import ResetPassword from '@/pages/ResetPassword';
+import SectionSkeleton from '@/components/ui/SectionSkeleton';
+
+// Route-level Code Splitting via React.lazy
+const LandingPage = lazy(() => import('@/pages/LandingPage'));
+const LandingIndex = lazy(() => import('@landing/pages/Index'));
+const SplineLab = lazy(() => import('@landing/pages/SplineLab'));
+const LandingAdmin = lazy(() => import('@landing/pages/Admin'));
+const OrbitalLab = lazy(() => import('@/pages/OrbitalLab'));
+const CivilizationCore = lazy(() => import('@/pages/CivilizationCore'));
+const Login = lazy(() => import('@/pages/Login'));
+const Register = lazy(() => import('@/pages/Register'));
+const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
+
 // Public / informational
-import OraclePortal from '@/pages/OraclePortal';
-import GuardianProfiles from '@/pages/GuardianProfiles';
-import GuardianArchive from '@/pages/GuardianArchive';
-import GlobalInsights from '@/pages/GlobalInsights';
-import HelpCenter from '@/pages/HelpCenter';
-import SystemStatus from '@/pages/SystemStatus';
+const OraclePortal = lazy(() => import('@/pages/OraclePortal'));
+const GuardianProfiles = lazy(() => import('@/pages/GuardianProfiles'));
+const GuardianArchive = lazy(() => import('@/pages/GuardianArchive'));
+const GlobalInsights = lazy(() => import('@/pages/GlobalInsights'));
+const HelpCenter = lazy(() => import('@/pages/HelpCenter'));
+const SystemStatus = lazy(() => import('@/pages/SystemStatus'));
+
 // Protected / personal
-import Dashboard from '@/pages/Dashboard';
-import ResearchPortfolio from '@/pages/ResearchPortfolio';
-import ResearchJournal from '@/pages/ResearchJournal';
-import Notifications from '@/pages/Notifications';
-import Settings from '@/pages/Settings';
+const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const ResearchPortfolio = lazy(() => import('@/pages/ResearchPortfolio'));
+const ResearchJournal = lazy(() => import('@/pages/ResearchJournal'));
+const Notifications = lazy(() => import('@/pages/Notifications'));
+const Settings = lazy(() => import('@/pages/Settings'));
+
 // Mixed
-import CommunityGallery from '@/pages/CommunityGallery';
-import ContributionPortal from '@/pages/ContributionPortal';
+const CommunityGallery = lazy(() => import('@/pages/CommunityGallery'));
+const ContributionPortal = lazy(() => import('@/pages/ContributionPortal'));
+
 import FloatingDock from '@/components/ui/FloatingDock';
 import { useHoloKai } from '@/lib/HoloKaiContext';
 import AncientDustCursor from '@/components/ui/AncientDustCursor';
@@ -67,50 +74,52 @@ const AuthenticatedApp = () => {
 
   // Render the main app
   return (
-    <Routes>
-      {/* Primary working application entry points */}
-      <Route path="/" element={<LandingIndex />} />
-      <Route path="/landing" element={<LandingIndex />} />
-      <Route path="/vision" element={<LandingPage />} />
-      <Route path="/core" element={<CivilizationCore />} />
-      <Route path="/app" element={<CivilizationCore />} />
+    <Suspense fallback={<SectionSkeleton />}>
+      <Routes>
+        {/* Primary working application entry points */}
+        <Route path="/" element={<LandingIndex />} />
+        <Route path="/landing" element={<LandingIndex />} />
+        <Route path="/vision" element={<LandingPage />} />
+        <Route path="/core" element={<CivilizationCore />} />
+        <Route path="/app" element={<CivilizationCore />} />
 
-      {/* Labs — public, immersive entrances */}
-      <Route path="/lab-spline" element={<SplineLab />} />
-      <Route path="/orbital-lab" element={<OrbitalLab />} />
-      <Route path="/landing-admin" element={<LandingAdmin />} />
+        {/* Labs — public, immersive entrances */}
+        <Route path="/lab-spline" element={<SplineLab />} />
+        <Route path="/orbital-lab" element={<OrbitalLab />} />
+        <Route path="/landing-admin" element={<LandingAdmin />} />
 
-      {/* Auth */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
-      {/* Public / informational pages */}
-      <Route path="/oracle-portal" element={<OraclePortal />} />
-      <Route path="/oracle" element={<OraclePortal />} />
-      <Route path="/guardian-profiles" element={<GuardianProfiles />} />
-      <Route path="/guardian-archive" element={<GuardianArchive />} />
-      <Route path="/civilization-archive" element={<GuardianArchive />} />
-      <Route path="/global-insights" element={<GlobalInsights />} />
-      <Route path="/research-portfolio" element={<ResearchPortfolio />} />
-      <Route path="/help-center" element={<HelpCenter />} />
-      <Route path="/system-status" element={<SystemStatus />} />
+        {/* Public / informational pages */}
+        <Route path="/oracle-portal" element={<OraclePortal />} />
+        <Route path="/oracle" element={<OraclePortal />} />
+        <Route path="/guardian-profiles" element={<GuardianProfiles />} />
+        <Route path="/guardian-archive" element={<GuardianArchive />} />
+        <Route path="/civilization-archive" element={<GuardianArchive />} />
+        <Route path="/global-insights" element={<GlobalInsights />} />
+        <Route path="/research-portfolio" element={<ResearchPortfolio />} />
+        <Route path="/help-center" element={<HelpCenter />} />
+        <Route path="/system-status" element={<SystemStatus />} />
 
-      {/* Mixed access (readable public, actions may require auth later) */}
-      <Route path="/community-gallery" element={<CommunityGallery />} />
-      <Route path="/contribution-portal" element={<ContributionPortal />} />
+        {/* Mixed access (readable public, actions may require auth later) */}
+        <Route path="/community-gallery" element={<CommunityGallery />} />
+        <Route path="/contribution-portal" element={<ContributionPortal />} />
 
-      {/* Protected — authenticated research environment */}
-      <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/research-journal" element={<ResearchJournal />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path="/settings" element={<Settings />} />
-      </Route>
+        {/* Protected — authenticated research environment */}
+        <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/research-journal" element={<ResearchJournal />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
 
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 

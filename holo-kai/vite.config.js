@@ -209,7 +209,12 @@ function voiceApiPlugin() {
               let payload = {};
               try { payload = JSON.parse(bodyBuffer.toString('utf-8') || '{}'); } catch {}
 
-              const apiKey = process.env.ELEVENLABS_API_KEY || process.env.VITE_ELEVENLABS_API_KEY || 'sk_a982b655eb5e4321ffb435b7e886aa7feaa90bc7812f305a';
+              const apiKey = process.env.ELEVENLABS_API_KEY || process.env.VITE_ELEVENLABS_API_KEY;
+              if (!apiKey) {
+                res.statusCode = 503;
+                res.setHeader('Content-Type', 'application/json');
+                return res.end(JSON.stringify({ detail: 'ELEVENLABS_API_KEY is not configured.' }));
+              }
               const voiceId = payload.voice_id || process.env.ELEVENLABS_VOICE_ID || process.env.VITE_ELEVENLABS_VOICE_ID || 'Woqh9nzF1s8TxOxMqlo0';
               const text = payload.text || 'HoloKai Oracle system active.';
 
@@ -252,7 +257,12 @@ function voiceApiPlugin() {
 
           if (req.url.startsWith('/api/deepgram/tts')) {
             try {
-              const apiKey = process.env.DEEPGRAM_API_KEY || process.env.VITE_DEEPGRAM_API_KEY || '1b696cc92d917abe19bf14bdcb77d20a6a52f814';
+              const apiKey = process.env.DEEPGRAM_API_KEY || process.env.VITE_DEEPGRAM_API_KEY;
+              if (!apiKey) {
+                res.statusCode = 503;
+                res.setHeader('Content-Type', 'application/json');
+                return res.end(JSON.stringify({ detail: 'DEEPGRAM_API_KEY is not configured.' }));
+              }
               let textToSpeak = 'HoloKai Oracle system active.';
 
               try {
@@ -291,7 +301,12 @@ function voiceApiPlugin() {
 
           if (req.url.startsWith('/api/deepgram/stt')) {
             try {
-              const apiKey = process.env.DEEPGRAM_API_KEY || process.env.VITE_DEEPGRAM_API_KEY || '1b696cc92d917abe19bf14bdcb77d20a6a52f814';
+              const apiKey = process.env.DEEPGRAM_API_KEY || process.env.VITE_DEEPGRAM_API_KEY;
+              if (!apiKey) {
+                res.statusCode = 503;
+                res.setHeader('Content-Type', 'application/json');
+                return res.end(JSON.stringify({ detail: 'DEEPGRAM_API_KEY is not configured.' }));
+              }
               const contentType = req.headers['content-type'] || 'audio/webm';
 
               let sendBuffer = bodyBuffer;

@@ -1,0 +1,21 @@
+{
+  "name": "Planetary UI Platform Performance Budgets",
+  "version": "2.0.0",
+  "budgets": {
+    "coreWebVitals": {
+      "lcpMs": 1000,
+      "cls": 0.1,
+      "inpMs": 200,
+      "ttfbMs": 200
+    },
+    "bundleSizesKb": {
+      "shellHost": 250,
+      "mfeRemote": 150,
+      "designSystem": 45
+    },
+    "edgeTiming": {
+      "maxEdgeLatencyMs": 50,
+      "maxWorkerCpuMs": 10
+    }
+  }
+}

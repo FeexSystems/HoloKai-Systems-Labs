@@ -1,0 +1,14 @@
+:root {
+  --background: #05050a;
+  --foreground: #f4f4f5;
+  --accent-gold: #c8952a;
+}
+
+html, body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
