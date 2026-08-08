@@ -1,0 +1,16 @@
+{
+  "name": "@holokai/design-tokens",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Planetary UI CSS design token foundation — source of truth for colors, typography, spacing, motion, and theming.",
+  "exports": {
+    ".": "./src/index.css",
+    "./css": "./src/index.css",
+    "./preset": "./tailwind.preset.ts",
+    "./src/*": "./src/*"
+  },
+  "files": [
+    "src/",
+    "tailwind.preset.ts"
+  ]
+}

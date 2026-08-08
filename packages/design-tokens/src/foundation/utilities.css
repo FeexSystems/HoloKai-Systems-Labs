@@ -1,0 +1,75 @@
+/* ============================================================
+ * PLANETARY UI — SURFACE SYSTEM & GRID UTILITIES (§21, §22, §29)
+ * ============================================================ */
+
+/* Surface System */
+.pui-surface {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.pui-surface-subtle {
+  background: var(--color-surface-subtle);
+  color: var(--color-text);
+}
+
+.pui-surface-elevated {
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-md);
+  color: var(--color-text);
+}
+
+/* Planetary 12-Column Grid Primitive */
+.pui-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .pui-grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .pui-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}
+
+/* Hover Motion Utilities (§29) */
+.pui-button-motion {
+  transition:
+    transform var(--duration-fast) var(--ease-planetary),
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.pui-button-motion:hover {
+  transform: translateY(-1px);
+}
+
+.pui-button-motion:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.pui-card-motion {
+  transition:
+    transform 300ms var(--ease-planetary),
+    border-color 240ms var(--ease-standard),
+    box-shadow 300ms var(--ease-planetary);
+}
+
+.pui-card-motion:hover {
+  transform: translateY(-4px);
+}
+
+.pui-card-motion img {
+  transition: transform 700ms var(--ease-planetary);
+}
+
+.pui-card-motion:hover img {
+  transform: scale(1.035);
+}

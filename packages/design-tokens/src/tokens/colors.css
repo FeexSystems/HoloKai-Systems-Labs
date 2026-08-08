@@ -1,0 +1,121 @@
+/* ============================================================
+ * PLANETARY UI — COLOR TOKENS
+ * Source of truth for the entire color system.
+ *
+ * Architecture:
+ *   1. Primitive tokens  (--pui-*)   — raw palette values
+ *   2. Semantic tokens   (--color-*) — contextual mappings
+ *   3. Dark theme        [data-theme="dark"]
+ *   4. White-label       [data-brand="*"]
+ * ============================================================ */
+
+/* ----------------------------------------------------------
+ * 1. PRIMITIVE TOKENS
+ * ---------------------------------------------------------- */
+
+:root {
+  /* Neutrals */
+  --pui-black: #000000;
+  --pui-white: #ffffff;
+
+  --pui-gray-50:  #fafafa;
+  --pui-gray-100: #f4f4f5;
+  --pui-gray-200: #e4e4e7;
+  --pui-gray-300: #d4d4d8;
+  --pui-gray-400: #a1a1aa;
+  --pui-gray-500: #71717a;
+  --pui-gray-600: #52525b;
+  --pui-gray-700: #3f3f46;
+  --pui-gray-800: #27272a;
+  --pui-gray-900: #18181b;
+  --pui-gray-950: #09090b;
+
+  /* HoloKai Gold & Heritage — mapped from @holokai/design-system */
+  --pui-gold-400: #ffd27a;
+  --pui-gold-500: #e8b84b;
+  --pui-gold-600: #c8952a;
+  --pui-gold-700: #b45309;
+  --pui-gold-800: #78350f;
+
+  --pui-heritage-orange: #ff9100;
+  --pui-heritage-red:    #dd2c00;
+  --pui-heritage-yellow: #ffc400;
+  --pui-heritage-terracotta: #d97706;
+
+  /* Status */
+  --pui-success: #16a34a;
+  --pui-warning: #d97706;
+  --pui-danger:  #dc2626;
+  --pui-info:    #2563eb;
+}
+
+/* ----------------------------------------------------------
+ * 2. SEMANTIC TOKENS — Light theme (default)
+ * ---------------------------------------------------------- */
+
+:root {
+  --color-bg:          var(--pui-white);
+  --color-bg-subtle:   var(--pui-gray-50);
+  --color-bg-elevated: var(--pui-white);
+
+  --color-surface:       var(--pui-white);
+  --color-surface-subtle: var(--pui-gray-100);
+  --color-surface-hover:  var(--pui-gray-100);
+
+  --color-text:          var(--pui-gray-950);
+  --color-text-secondary: var(--pui-gray-600);
+  --color-text-muted:    var(--pui-gray-500);
+  --color-text-disabled: var(--pui-gray-400);
+
+  --color-border:        var(--pui-gray-200);
+  --color-border-subtle: var(--pui-gray-100);
+  --color-border-strong: var(--pui-gray-300);
+
+  --color-brand:          var(--pui-gold-600);
+  --color-brand-contrast: var(--pui-white);
+
+  --color-success: var(--pui-success);
+  --color-warning: var(--pui-warning);
+  --color-danger:  var(--pui-danger);
+  --color-info:    var(--pui-info);
+}
+
+/* ----------------------------------------------------------
+ * 3. DARK THEME
+ * ---------------------------------------------------------- */
+
+[data-theme="dark"] {
+  --color-bg:          #05050a;
+  --color-bg-subtle:   #0a0a0f;
+  --color-bg-elevated: #12121a;
+
+  --color-surface:       #12121a;
+  --color-surface-subtle: #1a1a26;
+  --color-surface-hover:  #1f1f2e;
+
+  --color-text:          #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.75);
+  --color-text-muted:    rgba(255, 255, 255, 0.45);
+  --color-text-disabled: rgba(255, 255, 255, 0.25);
+
+  --color-border:        rgba(200, 149, 42, 0.12);
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-border-strong: rgba(200, 149, 42, 0.25);
+
+  --color-brand:          var(--pui-gold-500);
+  --color-brand-contrast: var(--pui-black);
+}
+
+/* ----------------------------------------------------------
+ * 4. WHITE-LABEL BRAND OVERRIDES
+ * ---------------------------------------------------------- */
+
+[data-brand="planetary"] {
+  --color-brand:          var(--pui-gold-600);
+  --color-brand-contrast: var(--pui-white);
+}
+
+[data-brand="enterprise"] {
+  --color-brand:          #2563eb;
+  --color-brand-contrast: var(--pui-white);
+}

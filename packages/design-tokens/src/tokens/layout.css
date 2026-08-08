@@ -1,0 +1,51 @@
+/* ============================================================
+ * PLANETARY UI — LAYOUT TOKENS
+ * Container widths, page gutters, responsive adjustments.
+ * ============================================================ */
+
+:root {
+  --container-xs:  640px;
+  --container-sm:  768px;
+  --container-md:  1024px;
+  --container-lg:  1280px;
+  --container-xl:  1440px;
+
+  --page-gutter: 24px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: 32px;
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --page-gutter: 48px;
+  }
+}
+
+/* Container utility */
+.pui-container {
+  width: min(
+    calc(100% - (2 * var(--page-gutter))),
+    var(--container-xl)
+  );
+  margin-inline: auto;
+}
+
+.pui-container-md {
+  width: min(
+    calc(100% - (2 * var(--page-gutter))),
+    var(--container-md)
+  );
+  margin-inline: auto;
+}
+
+.pui-container-sm {
+  width: min(
+    calc(100% - (2 * var(--page-gutter))),
+    var(--container-sm)
+  );
+  margin-inline: auto;
+}

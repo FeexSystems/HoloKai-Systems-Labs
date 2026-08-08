@@ -1,0 +1,16 @@
+/* ============================================================
+ * PLANETARY UI — Z-INDEX SCALE
+ * Predictable stacking context hierarchy.
+ * ============================================================ */
+
+:root {
+  --z-base:     0;
+  --z-above:    1;
+  --z-dropdown: 10;
+  --z-sticky:   20;
+  --z-overlay:  30;
+  --z-modal:    40;
+  --z-toast:    50;
+  --z-tooltip:  60;
+  --z-max:      9999;
+}

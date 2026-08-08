@@ -1,4 +1,5 @@
 import React from 'react';
+import './global.css';
 
 export const metadata = {
   title: 'Civilization Archive MFE Remote — HoloKai Systems',

@@ -332,6 +332,9 @@ importers:
       '@holokai/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
+      '@holokai/design-tokens':
+        specifier: workspace:*
+        version: link:../../packages/design-tokens
       '@holokai/event-bus':
         specifier: workspace:*
         version: link:../../packages/event-bus
@@ -366,6 +369,15 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.0
         version: 19.2.4(@types/react@19.2.18)
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.5.4(postcss@8.5.26)
+      postcss:
+        specifier: ^8.4.49
+        version: 8.5.26
+      tailwindcss:
+        specifier: ^3.4.17
+        version: 3.4.19(tsx@4.23.11)(yaml@2.9.0)
       typescript:
         specifier: ^5.8.2
         version: 5.9.3
@@ -378,6 +390,9 @@ importers:
       '@holokai/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
+      '@holokai/design-tokens':
+        specifier: workspace:*
+        version: link:../../packages/design-tokens
       '@holokai/event-bus':
         specifier: workspace:*
         version: link:../../packages/event-bus
@@ -409,6 +424,15 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.0
         version: 19.2.4(@types/react@19.2.18)
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.5.4(postcss@8.5.26)
+      postcss:
+        specifier: ^8.4.49
+        version: 8.5.26
+      tailwindcss:
+        specifier: ^3.4.17
+        version: 3.4.19(tsx@4.23.11)(yaml@2.9.0)
       typescript:
         specifier: ^5.8.2
         version: 5.9.3
@@ -421,6 +445,9 @@ importers:
       '@holokai/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
+      '@holokai/design-tokens':
+        specifier: workspace:*
+        version: link:../../packages/design-tokens
       '@holokai/event-bus':
         specifier: workspace:*
         version: link:../../packages/event-bus
@@ -452,6 +479,15 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.0
         version: 19.2.4(@types/react@19.2.18)
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.5.4(postcss@8.5.26)
+      postcss:
+        specifier: ^8.4.49
+        version: 8.5.26
+      tailwindcss:
+        specifier: ^3.4.17
+        version: 3.4.19(tsx@4.23.11)(yaml@2.9.0)
       typescript:
         specifier: ^5.8.2
         version: 5.9.3
@@ -777,6 +813,8 @@ importers:
       typescript:
         specifier: ^5.8.2
         version: 5.9.3
+
+  packages/design-tokens: {}
 
   packages/event-bus:
     devDependencies:

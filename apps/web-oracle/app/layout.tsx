@@ -1,4 +1,5 @@
 import React from 'react';
+import './global.css';
 
 export const metadata = {
   title: 'Oracle AI MFE Remote — HoloKai Systems',
