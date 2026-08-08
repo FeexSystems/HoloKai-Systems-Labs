@@ -49,3 +49,52 @@ export interface UserProfile {
   betaAccess: boolean;
   createdAt: string;
 }
+
+export interface VanguardUnit {
+  id: string;
+  name: string;
+  title: string;
+  subtitle: string;
+  accent: string;
+  secondaryAccent: string;
+  origin: string;
+  description: string;
+  modelUrl: string;
+  image: string;
+  fullBodyImage: string;
+  capabilities: string[];
+  stats: Record<string, number>;
+}
+
+export interface CivilizationEntry {
+  id: string;
+  name: string;
+  region: string;
+  era: string;
+  centuryRange: string;
+  description: string;
+  achievements: string[];
+  keyFigures: string[];
+  vectorDistance?: number;
+}
+
+export interface DrizzleUser {
+  id: number;
+  uid: string;
+  email: string;
+  createdAt: Date | null;
+}
+
+export interface DrizzleEntry {
+  id: number;
+  userId: number;
+  content: string;
+  date: string;
+  createdAt: Date | null;
+}
+
+export interface GenkitSynthesisResult {
+  answer: string;
+  epistemicClassification: EpistemicStance;
+  confidence: number;
+}

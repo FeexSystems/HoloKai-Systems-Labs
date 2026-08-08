@@ -11,6 +11,8 @@
   ],
   "scripts": {
     "dev": "npm --prefix holo-kai run dev",
+    "dev:bff": "pnpm --filter @holokai/bff dev",
+    "dev:all": "turbo dev",
     "dev:app": "npm --prefix holo-kai run dev",
     "dev:landingpage": "npm --prefix \"HoloKai - landingpage\" run dev",
     "build": "npm --prefix holo-kai run build",
