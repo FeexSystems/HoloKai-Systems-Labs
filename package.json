@@ -1,6 +1,7 @@
 {
   "name": "holokai-civilization-core",
   "private": true,
+  "packageManager": "pnpm@10.15.0",
   "description": "HoloKai monorepo. Active frontend: holo-kai/. Orbital lab entry: HoloKai - landingpage/.",
   "workspaces": [
     "apps/*",
@@ -12,7 +13,7 @@
   "scripts": {
     "dev": "npm --prefix holo-kai run dev",
     "dev:bff": "pnpm --filter @holokai/bff dev",
-    "dev:all": "turbo dev",
+    "dev:all": "pnpm exec turbo dev",
     "dev:app": "npm --prefix holo-kai run dev",
     "dev:landingpage": "npm --prefix \"HoloKai - landingpage\" run dev",
     "build": "npm --prefix holo-kai run build",
@@ -38,5 +39,8 @@
     "genkit": "^1.40.1",
     "leaflet": "^1.9.4",
     "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.0"
   }
 }
