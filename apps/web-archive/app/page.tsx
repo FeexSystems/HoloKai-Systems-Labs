@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { eventBus } from '@holokai/event-bus';
-import { OracleQueryResponse, EpistemicStance } from '@holokai/contracts';
-import { COLOR_TOKENS, EPISTEMIC_STANCE_TOKENS } from '@holokai/design-system';
+import { OracleQueryResponse } from '@holokai/contracts';
+import { EpistemicBadge, CivilizationCard } from '@holokai/ui';
 
 export default function ArchiveMFEPage() {
   const [lastQuery, setLastQuery] = useState<OracleQueryResponse | null>(null);
@@ -18,7 +18,7 @@ export default function ArchiveMFEPage() {
   }, []);
 
   return (
-    <main className="max-w-6xl mx-auto space-y-8">
+    <main className="max-w-6xl mx-auto space-y-8 p-6 md:p-12">
       {/* Header Banner */}
       <header className="border-b border-amber-500/20 pb-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
@@ -42,17 +42,7 @@ export default function ArchiveMFEPage() {
             <span className="text-xs font-mono uppercase text-emerald-400 font-bold tracking-wider">
               ⚡ Live Inter-MFE Sync Event Received
             </span>
-            <span
-              className="px-2.5 py-1 text-[10px] font-mono rounded-full font-semibold"
-              style={{
-                color: EPISTEMIC_STANCE_TOKENS[lastQuery.epistemicStance]?.color || '#10b981',
-                backgroundColor: EPISTEMIC_STANCE_TOKENS[lastQuery.epistemicStance]?.bg || 'rgba(16,185,129,0.15)',
-                borderColor: EPISTEMIC_STANCE_TOKENS[lastQuery.epistemicStance]?.border || 'rgba(16,185,129,0.3)',
-                borderWidth: '1px',
-              }}
-            >
-              {lastQuery.epistemicStance}
-            </span>
+            <EpistemicBadge stance={lastQuery.epistemicStance} confidence={lastQuery.confidenceScore} />
           </div>
           <p className="text-sm text-zinc-200">
             Archive matched primary sources for query: <strong className="text-white">"{lastQuery.text}"</strong>
@@ -67,29 +57,42 @@ export default function ArchiveMFEPage() {
 
       {/* Historical Era Matrix */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="p-6 rounded-2xl border border-amber-500/20 bg-[#12121a] space-y-3">
-          <span className="text-xs font-mono text-amber-400 uppercase">Pre-3000 BCE</span>
-          <h3 className="text-lg font-bold text-white">Ancient Kemet & Nubian Vaults</h3>
-          <p className="text-xs text-zinc-400 leading-relaxed">
-            Early Nile Valley dynastic metallurgy, astronomical alignment, and architectural geometry.
-          </p>
-        </div>
-
-        <div className="p-6 rounded-2xl border border-amber-500/20 bg-[#12121a] space-y-3">
-          <span className="text-xs font-mono text-amber-400 uppercase">1000 BCE - 500 CE</span>
-          <h3 className="text-lg font-bold text-white">Axumite Empire & Nok Epigraphy</h3>
-          <p className="text-xs text-zinc-400 leading-relaxed">
-            Red Sea trade routes, Ge'ez script manuscript preservation, and terracota metallurgy.
-          </p>
-        </div>
-
-        <div className="p-6 rounded-2xl border border-amber-500/20 bg-[#12121a] space-y-3">
-          <span className="text-xs font-mono text-amber-400 uppercase">500 CE - 1500 CE</span>
-          <h3 className="text-lg font-bold text-white">Mali, Songhai & Timbuktu</h3>
-          <p className="text-xs text-zinc-400 leading-relaxed">
-            Sankore University manuscripts, astronomy, and dry-stone masonry of Great Zimbabwe.
-          </p>
-        </div>
+        <CivilizationCard
+          civilization={{
+            id: 'kemet-vaults',
+            name: 'Ancient Kemet & Nubia',
+            region: 'Nile Valley',
+            era: 'Pre-3000 BCE',
+            centuryRange: '31st c. BCE',
+            description: 'Early Nile Valley dynastic metallurgy, astronomical alignment, and architectural geometry.',
+            achievements: ['Metallurgy', 'Solar Astronomy', 'Monumental Stone'],
+            keyFigures: ['Imhotep', 'Narmer'],
+          }}
+        />
+        <CivilizationCard
+          civilization={{
+            id: 'axumite-nok',
+            name: 'Axumite & Nok Heritage',
+            region: 'Horn & West Africa',
+            era: '1000 BCE - 500 CE',
+            centuryRange: '1st c. CE',
+            description: 'Red Sea trade routes, Ge\'ez script manuscript preservation, and terracotta metallurgy.',
+            achievements: ['Ge\'ez Epigraphy', 'Terracotta Arts', 'Red Sea Commerce'],
+            keyFigures: ['Ezana', 'Kaleb'],
+          }}
+        />
+        <CivilizationCard
+          civilization={{
+            id: 'mali-songhai-archive',
+            name: 'Mali & Timbuktu Codex',
+            region: 'Niger Bend',
+            era: '500 CE - 1500 CE',
+            centuryRange: '14th c. CE',
+            description: 'Sankore University manuscripts, astronomy, and dry-stone masonry of Great Zimbabwe.',
+            achievements: ['Sankore Library', 'Mathematical Astronomy', 'Trade Law'],
+            keyFigures: ['Mansa Musa', 'Askia Muhammad'],
+          }}
+        />
       </section>
     </main>
   );

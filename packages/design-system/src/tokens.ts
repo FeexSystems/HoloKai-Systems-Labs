@@ -115,3 +115,39 @@ export const MOTION_TOKENS = {
   durationSlow: '600ms',
   easeSpring: 'cubic-bezier(0.16, 1, 0.3, 1)',
 } as const;
+
+export const RADIUS_TOKENS = {
+  sm: '8px',
+  md: '16px',
+  lg: '24px',
+  xl: '32px',
+  hero: '48px',
+  full: '9999px',
+} as const;
+
+export const TYPOGRAPHY_TOKENS = {
+  fontDisplay: 'Syne, var(--font-sans), system-ui, sans-serif',
+  fontHeading: 'Syne, var(--font-sans), system-ui, sans-serif',
+  fontBody: 'Inter, var(--font-sans), system-ui, sans-serif',
+  fontMono: 'JetBrains Mono, monospace',
+  scale: {
+    displayXl: 'clamp(3.5rem, 7vw, 7rem)',
+    displayLg: 'clamp(3rem, 6vw, 5.5rem)',
+    displayMd: 'clamp(2.5rem, 5vw, 4.5rem)',
+    headingXl: 'clamp(2.5rem, 4vw, 4rem)',
+    headingLg: 'clamp(2rem, 3.5vw, 3rem)',
+    headingMd: 'clamp(1.5rem, 2.5vw, 2.25rem)',
+    bodyLg: '1.25rem',
+    bodyMd: '1rem',
+    bodySm: '0.875rem',
+    bodyXs: '0.75rem',
+  },
+} as const;
+
+export const SPACING_TOKENS = {
+  maxContentWidth: '1440px',
+  sectionDesktop: '112px',
+  sectionTablet: '80px',
+  sectionMobile: '60px',
+} as const;
+

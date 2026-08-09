@@ -332,8 +332,39 @@ evolve into:
 - Zero-request navigation architecture  
   
 ---  
+---  
 ⚡ Module Federation v2 runtime implementation\  
 ⚡ Cloudflare Workers edge deployment code\  
 ⚡ AI routing model training pipeline\  
 ⚡ Full Kubernetes + Terraform production setup\  
 ⚡ Self-healing frontend recovery system  
+
+---
+
+# 11. 🎨 PLANETARY UI CSS FOUNDATION ARCHITECTURE (v2.1 — PHASE 2 IMPLEMENTED)
+
+## Token Hierarchy & Cascade Layers
+
+```text
+@layer reset, tokens, base, components, utilities, overrides;
+
+DESIGN TOKENS (@holokai/design-tokens)
+      ↓
+CSS CUSTOM PROPERTIES (--pui-* primitives, --color-* semantic)
+      ↓
+TAILWIND PRESET (packages/design-tokens/tailwind.preset.ts)
+      ↓
+DESIGN PRIMITIVES (@holokai/ui)
+      ↓
+APPLICATION SURFACES (apps/shell, apps/web-oracle, apps/web-archive)
+```
+
+### Core Specifications Implemented
+
+1. **Cascade Layer Orchestration**: Master entry point [packages/design-tokens/src/index.css](file:///c:/Users/ENGR BILLI/HoloKai-Systems-Labs/packages/design-tokens/src/index.css) enforcing cascade precedence.
+2. **Two-Level Color System**: Raw `--pui-*` primitives mapped to contextual `--color-*` semantic tokens with dark theme (`[data-theme="dark"]`), light theme (`:root`), and white-label brand overrides (`[data-brand="planetary"]`, `[data-brand="enterprise"]`).
+3. **Token Scales**: 13-step typography scale (`--text-xs` to `--text-9xl`), 4px grid spacing (`--space-0` to `--space-48`), 8-step border radius (`--radius-xs` to `--radius-full`), shadow depth scale (`--shadow-sm` to `--shadow-xl`), 6 motion durations (`--duration-instant` to `--duration-cinematic`), and 4 easings (`--ease-planetary`).
+4. **Motion & Stagger**: Entrance keyframes (`pui-fade-in`, `pui-rise`, `pui-scale-reveal`) and CSS stagger system (`[data-motion-item]` consuming `--motion-index`).
+5. **Accessibility**: Global `prefers-reduced-motion` reduction rules and `.sr-only` class in [accessibility.css](file:///c:/Users/ENGR BILLI/HoloKai-Systems-Labs/packages/design-tokens/src/foundation/accessibility.css).
+6. **Shared Tailwind Preset**: [packages/design-tokens/tailwind.preset.ts](file:///c:/Users/ENGR BILLI/HoloKai-Systems-Labs/packages/design-tokens/tailwind.preset.ts) wired to all monorepo applications via `@import '@holokai/design-tokens'`.
+
