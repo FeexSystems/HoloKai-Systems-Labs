@@ -117,6 +117,13 @@ flowchart TB
 │   ├── web-archive/                    # Civilization Archive MFE Remote (:3002)
 │   └── web-oracle/                     # Oracle AI Research MFE Remote (:3001)
 │
+├── services/                           # Backend Engine & Services
+│   └── python-engine/                  # FastAPI Engine, RAG, ChromaDB & Agent Stores (:8005)
+│       ├── main.py                     # FastAPI Application Entrypoint
+│       ├── holokai_backend.py          # CivilizationCore Multi-Agent Router
+│       ├── knowledge_base.py           # Vector RAG Engine & ChromaDB Store
+│       └── ...                         # (28 Consolidated Python Engine Modules)
+│
 ├── packages/                           # Shared Monorepo Micro-Packages
 │   ├── design-tokens/                  # @holokai/design-tokens — CSS Tokens, Layers & Tailwind Preset
 │   ├── ui/                             # @holokai/ui — React 19 Primitives & Civilization Domain Components

@@ -110,10 +110,22 @@ export const GLASS_TOKENS = {
 } as const;
 
 export const MOTION_TOKENS = {
+  instant: '100ms',
+  fast: '160ms',
+  normal: '240ms',
+  slow: '400ms',
+  reveal: '650ms',
+  cinematic: '900ms',
   durationFast: '150ms',
   durationNormal: '300ms',
   durationSlow: '600ms',
   easeSpring: 'cubic-bezier(0.16, 1, 0.3, 1)',
+} as const;
+
+export const EASING_TOKENS = {
+  standard: [0.2, 0.8, 0.2, 1],
+  enter: [0.16, 1, 0.3, 1],
+  exit: [0.7, 0, 0.84, 0],
 } as const;
 
 export const RADIUS_TOKENS = {

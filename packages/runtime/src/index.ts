@@ -8,3 +8,6 @@ export * from './telemetry';
 export * from './auto-optimizer';
 export * from './self-healing';
 export * from './zero-request-cache';
+export * from './auth-sdk';
+export * from './analytics-sdk';
+export * from './RuntimeProvider';

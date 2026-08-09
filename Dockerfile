@@ -19,6 +19,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application source code
 COPY . .
 
+WORKDIR /app/services/python-engine
+
 # Set environment variables for Cloud Run
 ENV PORT=8000
 ENV PYTHONUNBUFFERED=1
@@ -29,4 +31,5 @@ EXPOSE 8000
 
 # Run FastAPI backend using Uvicorn with dynamic PORT support
 CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+
 
