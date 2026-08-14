@@ -1,0 +1,32 @@
+name: Deploy Preview Channel to Firebase Hosting on PR
+
+on: pull_request
+
+jobs:
+  build_and_preview:
+    name: Build and Deploy Preview Channel
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: 'holo-kai/package-lock.json'
+
+      - name: Install Dependencies & Build Frontend
+        run: |
+          cd holo-kai
+          npm ci
+          npm run build
+
+      - name: Deploy Preview Channel to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GEN_LANG_CLIENT_0948281794 }}'
+          projectId: gen-lang-client-0948281794

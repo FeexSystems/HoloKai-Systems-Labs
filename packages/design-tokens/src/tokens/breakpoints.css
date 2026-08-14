@@ -1,0 +1,15 @@
+/* ============================================================
+ * PLANETARY UI — BREAKPOINTS REFERENCE
+ * Documentation & Media Query Reference (§15).
+ * Breakpoints are consumed directly in Tailwind & Media Queries.
+ * ============================================================
+ * xs   480px   (Mobile small)
+ * sm   640px   (Mobile large / Phablet)
+ * md   768px   (Tablet portait)
+ * lg   1024px  (Tablet landscape / Desktop sm)
+ * xl   1280px  (Desktop md)
+ * 2xl  1440px  (Desktop lg)
+ * 3xl  1680px  (Ultra-wide)
+ * ============================================================ */
+
+/* Media Query Utility Custom Media reference comments */

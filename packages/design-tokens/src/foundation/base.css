@@ -1,0 +1,28 @@
+/* ============================================================
+ * PLANETARY UI — BASE STYLES
+ * Base element rules scoped to the token layer.
+ * ============================================================ */
+
+html, body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-brand);
+  color: var(--color-brand-contrast);
+}

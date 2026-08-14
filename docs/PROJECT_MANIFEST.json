@@ -1,0 +1,31 @@
+{
+  "name": "HoloKai Oracle Portal — Antigravity IDE Handoff",
+  "version": "1.1.0",
+  "sourceOfTruth": [
+    "holo-kai/src/pages",
+    "holo-kai/src/components"
+  ],
+  "designDocuments": [
+    "docs/ANTIGRAVITY_HANDOFF.md",
+    "docs/UI_ARCHITECTURE.md",
+    "docs/WOLFRAM_COMPUTATIONAL_LAYER.md"
+  ],
+  "primaryShell": "CivilizationCore",
+  "designSystems": [
+    "Oracle",
+    "Civilization",
+    "Research",
+    "Guardians",
+    "Spatial",
+    "Computation",
+    "Epistemology",
+    "System"
+  ],
+  "computationalLayer": {
+    "engine": "Wolfram",
+    "role": "Quantitative verification, structured entities, computation",
+    "notRole": "Comprehensive African-history corpus",
+    "spec": "docs/WOLFRAM_COMPUTATIONAL_LAYER.md"
+  },
+  "generatedFor": "Google Antigravity IDE"
+}

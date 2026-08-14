@@ -1,0 +1,42 @@
+{
+  "name": "@holokai/shell",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.39.6",
+    "@holokai/branding": "workspace:*",
+    "@holokai/contracts": "workspace:*",
+    "@holokai/design-system": "workspace:*",
+    "@holokai/design-tokens": "workspace:*",
+    "@holokai/event-bus": "workspace:*",
+    "@holokai/mfe-orchestrator": "workspace:*",
+    "@holokai/runtime": "workspace:*",
+    "@holokai/ui": "workspace:*",
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
+    "lucide-react": "^0.475.0",
+    "motion": "^13.0.0",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "~0.177.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "~0.177.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^10.8.1",
+    "eslint-config-next": "^16.3.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.2"
+  }
+}

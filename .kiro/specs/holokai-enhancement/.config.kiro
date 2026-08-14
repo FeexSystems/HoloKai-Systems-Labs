@@ -1,0 +1,95 @@
+{
+  "specName": "holokai-enhancement",
+  "displayName": "HoloKai Platform Enhancement Initiative",
+  "specType": "feature",
+  "workflowType": "requirements-first",
+  "createdAt": "2026-08-11T00:00:00Z",
+  "version": "1.0.0",
+  "status": "in_progress",
+  "phase": "requirements",
+  "description": "Comprehensive transformation of HoloKai from prototype to production-grade AI-powered platform with live API integrations, intelligent agents, real products, and professional 3D UI/UX.",
+  "phases": {
+    "wave1": {
+      "name": "Foundation & Branding",
+      "duration": "Week 1-2",
+      "taskRange": [1, 15],
+      "status": "ready"
+    },
+    "wave2": {
+      "name": "Product Catalog & UI Components",
+      "duration": "Week 3-4",
+      "taskRange": [16, 26],
+      "status": "pending",
+      "blockedBy": ["wave1"]
+    },
+    "wave3": {
+      "name": "Product Pages Enhancement",
+      "duration": "Week 5-6",
+      "taskRange": [27, 52],
+      "status": "pending",
+      "blockedBy": ["wave1", "wave2"]
+    },
+    "wave4": {
+      "name": "Data & Content Layer",
+      "duration": "Week 7",
+      "taskRange": [53, 60],
+      "status": "pending",
+      "blockedBy": ["wave2"]
+    },
+    "wave5": {
+      "name": "AI Integration",
+      "duration": "Week 8-10",
+      "taskRange": [61, 84],
+      "status": "pending",
+      "blockedBy": ["wave4"]
+    },
+    "wave6": {
+      "name": "Agent Architecture",
+      "duration": "Week 11-12",
+      "taskRange": [85, 100],
+      "status": "pending",
+      "blockedBy": ["wave5"]
+    },
+    "wave7": {
+      "name": "Integration & Polish",
+      "duration": "Week 13-14",
+      "taskRange": [101, 125],
+      "status": "pending",
+      "blockedBy": ["wave6"]
+    },
+    "wave8": {
+      "name": "Monitoring & Launch",
+      "duration": "Week 15",
+      "taskRange": [126, 138],
+      "status": "pending",
+      "blockedBy": ["wave7"]
+    }
+  },
+  "keyApps": [
+    "apps/shell",
+    "apps/web-home",
+    "apps/web-oracle",
+    "apps/web-cart",
+    "apps/web-research",
+    "apps/web-archive",
+    "apps/bff"
+  ],
+  "keyPackages": [
+    "packages/ui",
+    "packages/design-tokens",
+    "packages/design-system"
+  ],
+  "externalDependencies": [
+    "Gemini API",
+    "ElevenLabs API",
+    "Deepgram API"
+  ],
+  "successCriteria": {
+    "branding": "All HoloKai logos in place, no amber/gold remaining",
+    "products": "5 products defined with pricing and real use cases",
+    "aiIntegration": "Gemini, ElevenLabs, Deepgram live and tested",
+    "agents": "4 intelligent agents responding naturally",
+    "performance": "LCP < 2.5s, API responses < 500ms",
+    "quality": "Agent accuracy >90%, <1% error rate"
+  }
+}

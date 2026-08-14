@@ -1,0 +1,95 @@
+/* ============================================================
+ * PLANETARY UI — ANIMATION KEYFRAMES & STAGGER SYSTEM
+ * ============================================================ */
+
+/* Fade In */
+@keyframes pui-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-pui-fade {
+  animation:
+    pui-fade-in
+    var(--duration-normal)
+    var(--ease-standard)
+    both;
+}
+
+/* Rise (translate Y + fade) */
+@keyframes pui-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-pui-rise {
+  animation:
+    pui-rise
+    var(--duration-reveal)
+    var(--ease-planetary)
+    both;
+}
+
+/* Scale Reveal */
+@keyframes pui-scale-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-pui-scale {
+  animation:
+    pui-scale-reveal
+    var(--duration-reveal)
+    var(--ease-planetary)
+    both;
+}
+
+/* Slide In from Left */
+@keyframes pui-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-pui-slide-left {
+  animation:
+    pui-slide-in-left
+    var(--duration-normal)
+    var(--ease-planetary)
+    both;
+}
+
+/* ---- STAGGER SYSTEM ---- */
+
+[data-motion-item] {
+  animation-delay:
+    calc(var(--motion-index, 0) * 70ms);
+}
+
+/*
+ * React usage:
+ *   style={{ "--motion-index": index } as React.CSSProperties}
+ *
+ * Do NOT manually write delay: 0.1, delay: 0.2, etc.
+ */

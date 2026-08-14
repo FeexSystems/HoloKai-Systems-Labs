@@ -1,0 +1,36 @@
+name: Performance Budget
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  performance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build shell app
+        run: pnpm --filter @holokai/shell build
+        
+      # The spec (§40.6) mentions bundlewatch or Lighthouse CI
+      # We add bundlewatch as an informational baseline step
+      - name: Run Bundlewatch
+        run: npx bundlewatch
+        env:
+          BUNDLEWATCH_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

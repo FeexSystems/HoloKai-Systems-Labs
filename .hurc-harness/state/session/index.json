@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "updatedAt": 1786590582410,
+  "workspaceRoot": "c:\\Users\\ENGR BILLI\\HoloKai-Systems-Labs",
+  "sessions": [
+    {
+      "id": "019ff104-40d5-7ff3-8ca5-107111cf242e",
+      "idShort": "019ff104",
+      "workspaceRoot": "c:\\Users\\ENGR BILLI\\HoloKai-Systems-Labs",
+      "startedAt": 1786455038018.897,
+      "lastActiveAt": 1786456684213.587,
+      "endedAt": 1786455329345.085,
+      "status": "abandoned",
+      "title": "# HoloKai Cinematic Upgrade & Design DNA Implementation Plan\n\nThis plan addresse",
+      "firstPrompt": "# HoloKai Cinematic Upgrade & Design DNA Implementation Plan\n\nThis plan addresses the gaps identified in the codebase audit and outlines the migration to the new `HOLOKAI DESIGNDNA` (Obsidian/Forest/T",
+      "model": "grok-4.5",
+      "agentHost": "grok-cli",
+      "clientModel": "grok-4.5",
+      "endpointModel": "grok-4.5",
+      "transport": "native",
+      "endpointProvider": "xai",
+      "messageCount": 36,
+      "tokenUsage": {
+        "input": 159773,
+        "output": 70,
+        "cached": 0,
+        "cacheCreation": 0
+      },
+      "durationMs": 291326.18798828125,
+      "gitBranch": null,
+      "snapshotRefStart": null,
+      "snapshotRefEnd": null,
+      "incomplete": true,
+      "taskStatus": "unknown",
+      "isSidechain": false,
+      "files": [],
+      "autoTags": [
+        "abandoned",
+        "incomplete",
+        "scope:crashed"
+      ],
+      "transcriptPath": "C:\\Users\\ENGR BILLI\\.grok\\sessions\\c%3A%5CUsers%5CENGR%20BILLI%5CHoloKai-Systems-Labs\\019ff104-40d5-7ff3-8ca5-107111cf242e\\chat_history.jsonl",
+      "failureScopes": [
+        {
+          "scope": "crashed",
+          "evidence": [
+            "Session has no terminal marker and no fresh heartbeat."
+          ],
+          "severity": "med",
+          "detectedAt": 1786590582315
+        }
+      ]
+    },
+    {
+      "id": "019ff106-0598-7633-84f1-ddded94dee7a",
+      "idShort": "019ff106",
+      "workspaceRoot": "c:\\Users\\ENGR BILLI\\HoloKai-Systems-Labs",
+      "startedAt": 1786455154814.925,
+      "lastActiveAt": 1786455194768.3943,
+      "endedAt": 1786455186352.1033,
+      "status": "completed",
+      "title": "Explore HoloKai BFF backend and Next.js config DX issues. Workspace: C:\\Users\\EN",
+      "firstPrompt": "Explore HoloKai BFF backend and Next.js config DX issues. Workspace: C:\\Users\\ENGR BILLI\\HoloKai-Systems-Labs Focus on: 1. apps/bff/src/routes/oracle.ts - validation, logging, speak endpoint 2. apps/b",
+      "model": "grok-4.5",
+      "agentHost": "grok-cli",
+      "clientModel": "grok-4.5",
+      "endpointModel": "grok-4.5",
+      "transport": "native",
+      "endpointProvider": "xai",
+      "messageCount": 8,
+      "tokenUsage": {
+        "input": 5656,
+        "output": 29,
+        "cached": 0,
+        "cacheCreation": 0
+      },
+      "durationMs": 31537.17822265625,
+      "gitBranch": null,
+      "snapshotRefStart": null,
+      "snapshotRefEnd": null,
+      "incomplete": false,
+      "taskStatus": "unknown",
+      "isSidechain": false,
+      "files": [],
+      "autoTags": [
+        "scope:crashed"
+      ],
+      "transcriptPath": "C:\\Users\\ENGR BILLI\\.grok\\sessions\\c%3A%5CUsers%5CENGR%20BILLI%5CHoloKai-Systems-Labs\\019ff106-0598-7633-84f1-ddded94dee7a\\chat_history.jsonl",
+      "failureScopes": [
+        {
+          "scope": "crashed",
+          "evidence": [
+            "Session has no terminal marker and no fresh heartbeat."
+          ],
+          "severity": "med",
+          "detectedAt": 1786590582398
+        }
+      ]
+    },
+    {
+      "id": "019ff106-0597-7971-ac0f-95f2867ed65b",
+      "idShort": "019ff106",
+      "workspaceRoot": "c:\\Users\\ENGR BILLI\\HoloKai-Systems-Labs",
+      "startedAt": 1786455154903.3867,
+      "lastActiveAt": 1786455161184.6904,
+      "endedAt": 1786455154944.4917,
+      "status": "abandoned",
+      "title": "Explore the HoloKai design system and design tokens packages thoroughly. Workspa",
+      "firstPrompt": "Explore the HoloKai design system and design tokens packages thoroughly. Workspace: C:\\Users\\ENGR BILLI\\HoloKai-Systems-Labs Focus on: 1. packages/design-tokens/ - all token files, colors, tailwind.pr",
+      "model": "grok-4.5",
+      "agentHost": "grok-cli",
+      "clientModel": null,
+      "endpointModel": "grok-4.5",
+      "transport": "native",
+      "endpointProvider": "xai",
+      "messageCount": 2,
+      "tokenUsage": {
+        "input": 254,
+        "output": 0,
+        "cached": 0,
+        "cacheCreation": 0
+      },
+      "durationMs": 41.10498046875,
+      "gitBranch": null,
+      "snapshotRefStart": null,
+      "snapshotRefEnd": null,
+      "incomplete": true,
+      "taskStatus": "unknown",
+      "isSidechain": false,
+      "files": [],
+      "autoTags": [
+        "abandoned",
+        "incomplete",
+        "scope:crashed"
+      ],
+      "transcriptPath": "C:\\Users\\ENGR BILLI\\.grok\\sessions\\c%3A%5CUsers%5CENGR%20BILLI%5CHoloKai-Systems-Labs\\019ff106-0597-7971-ac0f-95f2867ed65b\\chat_history.jsonl",
+      "failureScopes": [
+        {
+          "scope": "crashed",
+          "evidence": [
+            "Session has no terminal marker and no fresh heartbeat."
+          ],
+          "severity": "med",
+          "detectedAt": 1786590582351
+        }
+      ]
+    },
+    {
+      "id": "019ff106-0598-7633-84f1-ddc406fda8a4",
+      "idShort": "019ff106",
+      "workspaceRoot": "c:\\Users\\ENGR BILLI\\HoloKai-Systems-Labs",
+      "startedAt": 1786455154743.354,
+      "lastActiveAt": 1786455160834.4666,
+      "endedAt": 1786455154789.2026,
+      "status": "abandoned",
+      "title": "Explore HoloKai UI cinematic/homepage/oracle surfaces. Workspace: C:\\Users\\ENGR ",
+      "firstPrompt": "Explore HoloKai UI cinematic/homepage/oracle surfaces. Workspace: C:\\Users\\ENGR BILLI\\HoloKai-Systems-Labs Focus on: 1. packages/ui/src/oracle/OracleChamber.tsx - structure, colors, motion 2. apps/she",
+      "model": "grok-4.5",
+      "agentHost": "grok-cli",
+      "clientModel": null,
+      "endpointModel": "grok-4.5",
+      "transport": "native",
+      "endpointProvider": "xai",
+      "messageCount": 2,
+      "tokenUsage": {
+        "input": 264,
+        "output": 0,
+        "cached": 0,
+        "cacheCreation": 0
+      },
+      "durationMs": 45.8486328125,
+      "gitBranch": null,
+      "snapshotRefStart": null,
+      "snapshotRefEnd": null,
+      "incomplete": true,
+      "taskStatus": "unknown",
+      "isSidechain": false,
+      "files": [],
+      "autoTags": [
+        "abandoned",
+        "incomplete",
+        "scope:crashed"
+      ],
+      "transcriptPath": "C:\\Users\\ENGR BILLI\\.grok\\sessions\\c%3A%5CUsers%5CENGR%20BILLI%5CHoloKai-Systems-Labs\\019ff106-0598-7633-84f1-ddc406fda8a4\\chat_history.jsonl",
+      "failureScopes": [
+        {
+          "scope": "crashed",
+          "evidence": [
+            "Session has no terminal marker and no fresh heartbeat."
+          ],
+          "severity": "med",
+          "detectedAt": 1786590582373
+        }
+      ]
+    },
+    {
+      "id": "019ff101-7fc1-7d40-be4a-9712055f6b00",
+      "idShort": "019ff101",
+      "workspaceRoot": "c:\\Users\\ENGR BILLI\\HoloKai-Systems-Labs",
+      "startedAt": 1786454854245.2673,
+      "lastActiveAt": 1786454854253.3433,
+      "endedAt": 1786454854245.2673,
+      "status": "abandoned",
+      "title": null,
+      "firstPrompt": null,
+      "model": "grok-4.5",
+      "agentHost": "grok-cli",
+      "clientModel": null,
+      "endpointModel": "grok-4.5",
+      "transport": "native",
+      "endpointProvider": "xai",
+      "messageCount": 1,
+      "tokenUsage": {
+        "input": 148365,
+        "output": 0,
+        "cached": 0,
+        "cacheCreation": 0
+      },
+      "durationMs": 0,
+      "gitBranch": null,
+      "snapshotRefStart": null,
+      "snapshotRefEnd": null,
+      "incomplete": true,
+      "taskStatus": "unknown",
+      "isSidechain": false,
+      "files": [],
+      "autoTags": [
+        "abandoned",
+        "incomplete",
+        "scope:crashed"
+      ],
+      "transcriptPath": "C:\\Users\\ENGR BILLI\\.grok\\sessions\\c%3A%5CUsers%5CENGR%20BILLI%5CHoloKai-Systems-Labs\\019ff101-7fc1-7d40-be4a-9712055f6b00\\chat_history.jsonl",
+      "failureScopes": [
+        {
+          "scope": "crashed",
+          "evidence": [
+            "Session has no terminal marker and no fresh heartbeat."
+          ],
+          "severity": "med",
+          "detectedAt": 1786590582262
+        }
+      ]
+    }
+  ]
+}

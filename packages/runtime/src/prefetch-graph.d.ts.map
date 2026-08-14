@@ -1,0 +1,1 @@
+{"version":3,"file":"prefetch-graph.d.ts","sourceRoot":"","sources":["prefetch-graph.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,oBAAoB,CAAC;AAErD;;;GAGG;AACH,qBAAa,aAAa;IACxB,OAAO,CAAC,cAAc,CAA0B;IAEzC,eAAe,CAAC,UAAU,EAAE,eAAe,GAAG,IAAI;CAmB1D;AAED,eAAO,MAAM,aAAa,eAAsB,CAAC"}

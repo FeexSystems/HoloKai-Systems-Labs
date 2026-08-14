@@ -1,0 +1,26 @@
+/* ============================================================
+ * PLANETARY UI — MOTION TOKENS
+ * Duration & easing tokens for the motion language.
+ * ============================================================ */
+
+:root {
+  /* Durations */
+  --duration-instant:   100ms;
+  --duration-fast:      160ms;
+  --duration-normal:    240ms;
+  --duration-slow:      400ms;
+  --duration-reveal:    650ms;
+  --duration-cinematic: 900ms;
+
+  /* Easings */
+  --ease-linear: linear;
+
+  --ease-standard:
+    cubic-bezier(0.2, 0, 0, 1);
+
+  --ease-planetary:
+    cubic-bezier(0.16, 1, 0.3, 1);
+
+  --ease-smooth:
+    cubic-bezier(0.22, 1, 0.36, 1);
+}

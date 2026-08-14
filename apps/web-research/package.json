@@ -1,0 +1,36 @@
+{
+  "name": "@holokai/web-research",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3003",
+    "build": "next build",
+    "start": "next start -p 3003",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@holokai/branding": "workspace:*",
+    "@holokai/contracts": "workspace:*",
+    "@holokai/design-system": "workspace:*",
+    "@holokai/design-tokens": "workspace:*",
+    "@holokai/event-bus": "workspace:*",
+    "@holokai/runtime": "workspace:*",
+    "@holokai/ui": "workspace:*",
+    "lucide-react": "^0.475.0",
+    "motion": "^13.0.0",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^10.8.1",
+    "eslint-config-next": "^16.3.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.2"
+  }
+}

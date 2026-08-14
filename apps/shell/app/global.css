@@ -1,0 +1,28 @@
+@import '@holokai/design-tokens';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Skeleton shimmer animation (Skeleton.tsx) */
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Ticker scroll animation (ProductTicker.tsx) */
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Reduced motion overrides (§21, §37) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

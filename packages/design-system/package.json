@@ -1,0 +1,28 @@
+{
+  "name": "@holokai/design-system",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./src/tokens.ts",
+      "default": "./src/tokens.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  }
+}

@@ -1,0 +1,131 @@
+/* ============================================================
+ * PLANETARY UI — COLOR TOKENS
+ * Source of truth for the entire color system.
+ *
+ * Architecture:
+ *   1. Primitive tokens  (--pui-*)   — raw palette values
+ *   2. Semantic tokens   (--color-*) — contextual mappings
+ *   3. Dark theme        [data-theme="dark"]
+ *   4. White-label       [data-brand="*"]
+ * ============================================================ */
+
+/* ----------------------------------------------------------
+ * 1. PRIMITIVE TOKENS
+ * ---------------------------------------------------------- */
+
+:root {
+  /* Neutrals */
+  --pui-black: #000000;
+  --pui-white: #ffffff;
+
+  --pui-gray-50:  #fafafa;
+  --pui-gray-100: #f4f4f5;
+  --pui-gray-200: #e4e4e7;
+  --pui-gray-300: #d4d4d8;
+  --pui-gray-400: #a1a1aa;
+  --pui-gray-500: #71717a;
+  --pui-gray-600: #52525b;
+  --pui-gray-700: #3f3f46;
+  --pui-gray-800: #27272a;
+  --pui-gray-900: #18181b;
+  --pui-gray-950: #09090b;
+
+  /* HoloKai Scientific Identity (New DNA) */
+  --pui-abyss:         #050806;
+  --pui-obsidian:      #08110C;
+  --pui-lab-deep:      #0B1710;
+  
+  --pui-forest-deep:   #0B291B;
+  --pui-forest-active: #12402A;
+  
+  --pui-moss:          #8FAF91;
+  --pui-moss-bright:   #A9D5B0;
+  
+  --pui-teal-deep:     #163A31;
+  --pui-teal-bright:   #39826F;
+  --pui-teal-active:   #79B59F;
+
+  --pui-text-primary:   #E6EEE8;
+  --pui-text-secondary: #8C9991;
+  --pui-text-muted:     #58655D;
+
+  --pui-border-subtle: rgba(143, 175, 145, 0.10);
+  --pui-border-active: rgba(111, 175, 120, 0.45);
+
+  /* Status */
+  --pui-success: #16a34a;
+  --pui-warning: #d97706;
+  --pui-danger:  #dc2626;
+  --pui-info:    #2563eb;
+}
+
+/* ----------------------------------------------------------
+ * 2. SEMANTIC TOKENS — Light theme (default)
+ * ---------------------------------------------------------- */
+
+:root {
+  --color-bg:          var(--pui-white);
+  --color-bg-subtle:   var(--pui-gray-50);
+  --color-bg-elevated: var(--pui-white);
+
+  --color-surface:       var(--pui-white);
+  --color-surface-subtle: var(--pui-gray-100);
+  --color-surface-hover:  var(--pui-gray-100);
+
+  --color-text:          var(--pui-gray-950);
+  --color-text-secondary: var(--pui-gray-600);
+  --color-text-muted:    var(--pui-gray-500);
+  --color-text-disabled: var(--pui-gray-400);
+
+  --color-border:        var(--pui-gray-200);
+  --color-border-subtle: var(--pui-gray-100);
+  --color-border-strong: var(--pui-gray-300);
+
+  --color-brand:          var(--pui-forest-active);
+  --color-brand-contrast: var(--pui-white);
+
+  --color-success: var(--pui-success);
+  --color-warning: var(--pui-warning);
+  --color-danger:  var(--pui-danger);
+  --color-info:    var(--pui-info);
+}
+
+/* ----------------------------------------------------------
+ * 3. DARK THEME
+ * ---------------------------------------------------------- */
+
+[data-theme="dark"] {
+  --color-bg:          var(--pui-abyss);
+  --color-bg-subtle:   var(--pui-obsidian);
+  --color-bg-elevated: var(--pui-lab-deep);
+
+  --color-surface:        var(--pui-forest-deep);
+  --color-surface-subtle: var(--pui-obsidian);
+  --color-surface-hover:  var(--pui-forest-active);
+
+  --color-text:          var(--pui-text-primary);
+  --color-text-secondary: var(--pui-text-secondary);
+  --color-text-muted:    var(--pui-text-muted);
+  --color-text-disabled: rgba(230, 238, 232, 0.25);
+
+  --color-border:        var(--pui-border-active);
+  --color-border-subtle: var(--pui-border-subtle);
+  --color-border-strong: var(--pui-moss-bright);
+
+  --color-brand:          var(--pui-moss-bright);
+  --color-brand-contrast: var(--pui-black);
+}
+
+/* ----------------------------------------------------------
+ * 4. WHITE-LABEL BRAND OVERRIDES
+ * ---------------------------------------------------------- */
+
+[data-brand="planetary"] {
+  --color-brand:          var(--pui-moss-bright);
+  --color-brand-contrast: var(--pui-lab-deep);
+}
+
+[data-brand="enterprise"] {
+  --color-brand:          #2563eb;
+  --color-brand-contrast: var(--pui-white);
+}

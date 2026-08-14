@@ -1,0 +1,48 @@
+{
+  "title": "Planetary UI Platform — Observability & SLO Control Plane",
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "version": 1,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Core Web Vitals — LCP (Sub-1s Target)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 0 },
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum(rate(holokai_lcp_bucket[5m])) by (le))" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 800 },
+              { "color": "red", "value": 1000 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Edge Worker Latency (PoP Performance)",
+      "type": "timeseries",
+      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 0 },
+      "targets": [
+        { "expr": "rate(holokai_edge_latency_ms_sum[1m]) / rate(holokai_edge_latency_ms_count[1m])" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Micro-Frontend EventBus Throughput",
+      "type": "timeseries",
+      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 0 },
+      "targets": [
+        { "expr": "sum(rate(holokai_eventbus_events_total[1m])) by (event_type)" }
+      ]
+    }
+  ]
+}

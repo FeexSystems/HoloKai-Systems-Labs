@@ -1,0 +1,42 @@
+{
+  "name": "holokai-civilization-core",
+  "private": true,
+  "packageManager": "pnpm@10.15.0",
+  "description": "HoloKai monorepo. Active frontend: holo-kai/. Orbital lab entry: HoloKai - landingpage/.",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "edge/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter @holokai/shell dev",
+    "dev:bff": "pnpm --filter @holokai/bff dev",
+    "dev:all": "pnpm exec turbo dev",
+    "dev:app": "pnpm --filter @holokai/shell dev",
+    "build": "pnpm --filter @holokai/branding build && pnpm --filter @holokai/contracts build && pnpm --filter @holokai/design-system build && pnpm --filter @holokai/event-bus build && pnpm --filter @holokai/mfe-orchestrator build && pnpm --filter @holokai/runtime build && pnpm --filter @holokai/ui build && pnpm --filter @holokai/ui-composer build && pnpm --filter @holokai/shell build",
+    "deploy:hosting": "pnpm --filter @holokai/shell build && firebase deploy --only hosting",
+    "deploy:firestore": "firebase deploy --only firestore",
+    "deploy:firebase": "pnpm --filter @holokai/shell build && firebase deploy",
+    "lint": "pnpm --filter @holokai/shell lint",
+    "preview": "pnpm --filter @holokai/shell start"
+  },
+  "dependencies": {
+    "@genkit-ai/googleai": "^1.28.0",
+    "@google/genai": "^2.13.0",
+    "d3": "^7.9.0",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
+    "firebase": "^12.17.0",
+    "firebase-admin": "^14.2.0",
+    "genkit": "^1.40.1",
+    "leaflet": "^1.9.4",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.10",
+    "@types/d3": "^7.4.3",
+    "@types/leaflet": "^1.9.21",
+    "@types/pg": "^8.20.3",
+    "turbo": "^2.4.0"
+  }
+}
