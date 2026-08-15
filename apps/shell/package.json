@@ -20,9 +20,11 @@
     "@holokai/ui": "workspace:*",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
+    "@splinetool/react-spline": "^4.1.0",
+    "framer-motion": "12.43.0",
     "lucide-react": "^0.475.0",
     "motion": "^13.0.0",
-    "next": "^15.1.0",
+    "next": "^16.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "three": "~0.177.0"

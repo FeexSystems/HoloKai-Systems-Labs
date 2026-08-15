@@ -1,7 +1,8 @@
 'use client';
 
 import React, { Suspense, useState } from 'react';
-import { motion } from 'motion/react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { DomainSearch, ancientEpistemicTransition, holokaiVariants } from '@holokai/ui';
 import dynamic from 'next/dynamic';
 
@@ -98,8 +99,8 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
-              <a
-                href="/home"
+              <Link
+                href="/oracle"
                 data-track-el="hero-get-started"
                 data-track-ec="hero"
                 data-track-ea="click"
@@ -109,7 +110,7 @@ export function HeroSection() {
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                   <path d="M1 7h12M8 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </a>
+              </Link>
               <a
                 href="/oracle"
                 data-track-el="hero-learn-more"

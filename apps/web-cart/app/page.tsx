@@ -2,7 +2,7 @@
 
 import React, { Suspense, useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { MFEErrorBoundary, MFELoadingSkeleton, ProductCard, SubscriptionCard, Button, Spinner, holokaiVariants } from '@holokai/ui';
 
 interface Product {

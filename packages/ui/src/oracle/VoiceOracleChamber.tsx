@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Spline from '@splinetool/react-spline';
 import { Mic, MicOff, Brain, ShieldCheck, Cpu, HeartPulse, Database, Loader2, Volume2, Activity } from 'lucide-react';
 import { HoloKaiEntranceVariants, holokaiVariants } from '../motion/profiles';
@@ -14,14 +14,14 @@ export interface VoiceOracleChamberProps {
 const SPLINE_SCENE = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode';
 
 const GUARDIAN_PERSONAS = [
-  { id: '01', name: 'Kemet-Alpha', role: 'Archivist & Epigrapher', voiceId: '21m00Tcm4TlvDq8ikWAM', engine: 'elevenlabs' },
-  { id: '02', name: 'Kush-Prime', role: 'Nexus Synchronizer', voiceId: 't0jbNlBVZ17f02VDIeMI', engine: 'elevenlabs' },
-  { id: '03', name: 'Asante-V', role: 'The Oracle Visionary', voiceId: 'MF3mGyEYCl7XYWbV9V6O', engine: 'elevenlabs' },
+  { id: '01', name: 'Kemet-Alpha', role: 'Archivist & Epigrapher', voiceId: 'Woqh9nzF1s8TxOxMqlo0', engine: 'elevenlabs' },
+  { id: '02', name: 'Kush-Prime', role: 'Nexus Synchronizer', voiceId: 'Woqh9nzF1s8TxOxMqlo0', engine: 'elevenlabs' },
+  { id: '03', name: 'Asante-V', role: 'The Oracle Visionary', voiceId: 'Woqh9nzF1s8TxOxMqlo0', engine: 'elevenlabs' },
   { id: '04', name: 'Bantu-Node', role: 'Great Zimbabwe Navigator', engine: 'deepgram' },
   { id: '05', name: 'Sika-Gold', role: 'Artisan & Metallurgist', engine: 'deepgram' },
-  { id: '06', name: 'Zamani', role: 'Scholar & Dialectician', voiceId: 'ErXwobaYiN019PkySvjV', engine: 'elevenlabs' },
+  { id: '06', name: 'Zamani', role: 'Scholar & Dialectician', voiceId: 'Woqh9nzF1s8TxOxMqlo0', engine: 'elevenlabs' },
   { id: '07', name: 'Naja-7', role: 'Dahomey Vanguard Guard', engine: 'deepgram' },
-  { id: '08', name: 'Oluwa-Core', role: 'Ifá Binary Oracle', voiceId: 'EXAVITQu4vr4xnSDxMaL', engine: 'elevenlabs' },
+  { id: '08', name: 'Oluwa-Core', role: 'Ifá Binary Oracle', voiceId: 'Woqh9nzF1s8TxOxMqlo0', engine: 'elevenlabs' },
 ];
 
 const DEFAULT_EMOTIONS = {
@@ -66,6 +66,8 @@ export function VoiceOracleChamber({ className = '', motionProfile = 'visibleHum
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const splineRef = useRef<any>(null);
   const micStreamRef = useRef<MediaStream | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
   
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -184,7 +186,15 @@ export function VoiceOracleChamber({ className = '', motionProfile = 'visibleHum
   // ---------- Toggle Mic ----------
   const handleMicToggle = async () => {
     if (systemState === 'listening') {
-      if (recognitionRef.current) try { recognitionRef.current.stop(); } catch {}
+      // STOP LISTENING
+      if (vocalEngineChoice === 'deepgram') {
+        if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+          mediaRecorderRef.current.stop();
+        }
+      } else {
+        if (recognitionRef.current) try { recognitionRef.current.stop(); } catch {}
+      }
+      
       stopAudioAnalysis();
       if (micStreamRef.current) {
         micStreamRef.current.getTracks().forEach(t => t.stop());
@@ -192,19 +202,63 @@ export function VoiceOracleChamber({ className = '', motionProfile = 'visibleHum
       }
       setSystemState('idle');
     } else {
+      // START LISTENING
       setMicError('');
       setQuery('');
       
       try {
-        // Request actual mic stream for the visualizer
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         micStreamRef.current = stream;
         startAudioAnalysis(stream);
         
-        if (recognitionRef.current) {
-          recognitionRef.current.start();
-        } else {
+        if (vocalEngineChoice === 'deepgram') {
+          audioChunksRef.current = [];
+          const mediaRecorder = new MediaRecorder(stream);
+          mediaRecorderRef.current = mediaRecorder;
+
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) audioChunksRef.current.push(e.data);
+          };
+
+          mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+            setSystemState('thinking');
+            
+            try {
+              const formData = new FormData();
+              formData.append('audio', audioBlob, 'recording.webm');
+              
+              const res = await fetch('/api/oracle/listen', {
+                method: 'POST',
+                body: formData
+              });
+              
+              if (res.ok) {
+                const data = await res.json();
+                if (data.transcript) {
+                  setQuery(data.transcript);
+                  // Automatically trigger synthesis after Deepgram gets transcript
+                  setTimeout(() => handleSynthesizeQuery(data.transcript), 500);
+                  return; // prevent setting to idle
+                }
+              } else {
+                setMicError('Deepgram STT failed.');
+              }
+            } catch (err) {
+              setMicError('Failed to transcribe audio.');
+              console.error(err);
+            }
+            setSystemState('idle');
+          };
+
+          mediaRecorder.start();
           setSystemState('listening');
+        } else {
+          if (recognitionRef.current) {
+            recognitionRef.current.start();
+          } else {
+            setSystemState('listening');
+          }
         }
       } catch (err) {
         setMicError('Microphone permission denied. Please allow access.');
@@ -218,8 +272,14 @@ export function VoiceOracleChamber({ className = '', motionProfile = 'visibleHum
     if (!userQuery.trim()) return;
     
     // Stop listening if we were listening
-    if (recognitionRef.current && systemState === 'listening') {
-      try { recognitionRef.current.stop(); } catch {}
+    if (vocalEngineChoice === 'deepgram') {
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+        mediaRecorderRef.current.stop();
+      }
+    } else {
+      if (recognitionRef.current && systemState === 'listening') {
+        try { recognitionRef.current.stop(); } catch {}
+      }
     }
     stopAudioAnalysis();
     if (micStreamRef.current) {

@@ -81,10 +81,10 @@ export const Logo: React.FC<LogoProps> = ({
         alt={alt}
         width={width}
         height={height}
-        className="object-contain"
+        className="object-contain max-h-full"
         style={{
           maxWidth: '100%',
-          height: 'auto'
+          height: '100%'
         }}
       />
     </div>

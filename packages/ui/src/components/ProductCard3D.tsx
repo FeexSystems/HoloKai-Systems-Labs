@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'motion/react';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Button } from './Button';
 import { Badge } from './Badge';
 import { holokaiVariants, humanoidSyncTransition } from '../motion/profiles';

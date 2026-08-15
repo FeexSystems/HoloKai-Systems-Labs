@@ -1,111 +1,25 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import VanguardCard from '../../components/vanguards/VanguardCard';
-
-const VANGUARDS = [
-  {
-    id: 'kemet-alpha',
-    name: 'Kemet-Alpha',
-    role: 'The Archivist (Preserver & Scanner)',
-    image: '/images/vanguard/kemet-alpha-fullbody.png',
-    discipline: 'Epigraphy & Papyrus Digitization',
-    origin: 'Nile Valley & Alexandrian Library Codex',
-    lore: 'Master of hieroglyphic codices, optical epigraphy, and high-frequency document restoration.',
-    badge: 'LEAD ARCHIVIST',
-    color: 'emerald',
-  },
-  {
-    id: 'kush-prime',
-    name: 'Kush-Prime',
-    role: 'The Metallurgist (Iron & Pyramids)',
-    image: '/images/vanguard/kush-prime-fullbody.png',
-    discipline: 'Meroitic Iron Smelting & Masonry',
-    origin: 'Kingdom of Kush & Meroe',
-    lore: 'Protector of royal funerary pyramids, bloomery iron furnaces, and high-density defensive structures.',
-    badge: 'CHIEF ENGINEER',
-    color: 'amber',
-  },
-  {
-    id: 'asante-v',
-    name: 'Asante-V',
-    role: 'The Oracle (Predictor & Visionary)',
-    image: '/images/vanguard/asante-v-fullbody.jpg',
-    discipline: 'Golden Stool Sovereignty & Adinkra Logic',
-    origin: 'Asante Empire & Kumasi Citadel',
-    lore: 'Engineered with quantum Adinkra symbol processing to compute probabilistic future timelines.',
-    badge: 'VISIONARY ORACLE',
-    color: 'amber',
-  },
-  {
-    id: 'bantu-node',
-    name: 'Bantu-Node',
-    role: 'The Navigator (Explorer & Mapper)',
-    image: '/images/vanguard/bantu-node-fullbody.png',
-    discipline: 'Sub-Saharan Migrations & Geodesic Navigation',
-    origin: 'Great Lakes & Congo Basin',
-    lore: 'Specializes in geodesic star-mapping, forest acoustic communications, and trans-continental routes.',
-    badge: 'GEODESIC MAPPER',
-    color: 'blue',
-  },
-  {
-    id: 'oluwa-core',
-    name: 'Oluwa-Core',
-    role: 'The Griot (Oral Lineage & Memory)',
-    image: '/images/vanguard/oluwa-core-fullbody.png',
-    discipline: 'Ifa Binary Divination & Sonic Memory',
-    origin: 'Yoruba & Benin Kingdom',
-    lore: 'Preserves 256 Odù Ifá binary matrices and acoustic drum speech frequencies.',
-    badge: 'SONIC GRIOT',
-    color: 'purple',
-  },
-  {
-    id: 'sika-gold',
-    name: 'Sika-Gold',
-    role: 'The Artisan (Creator & Craftsman)',
-    image: '/images/vanguard/sika-gold-fullbody.png',
-    discipline: 'Lost-Wax Bronze Casting & Metallurgy',
-    origin: 'Kingdom of Benin & Ife',
-    lore: 'Master craftsman of terracotta heads, bronze reliefs, and ceremonial goldweights.',
-    badge: 'MASTER ARTISAN',
-    color: 'amber',
-  },
-  {
-    id: 'zamani-scholar',
-    name: 'Zamani',
-    role: 'The Scholar (Dialectician & Historian)',
-    image: '/images/vanguard/zamani-fullbody.png',
-    discipline: 'Timbuktu Manuscripts & Astronomical Tables',
-    origin: 'Sankore University & Mali Empire',
-    lore: 'Decipherer of Ajami scripts, mathematical treatises, and medieval African star charts.',
-    badge: 'CHIEF SCHOLAR',
-    color: 'blue',
-  },
-  {
-    id: 'naja-7',
-    name: 'Naja-7',
-    role: 'The Sentinel (Defensive Guardian)',
-    image: '/images/vanguard/naja-7-fullbody.png',
-    discipline: 'Sungbo Eredo Ramparts & Defense Systems',
-    origin: 'Ijebu Kingdom Eredo Enclosure',
-    lore: 'Defensive guardian over 100-mile earthen ramparts and moat fortification networks.',
-    badge: 'RAMPART GUARDIAN',
-    color: 'rose',
-  },
-];
+import UnitModal from '../../components/vanguards/UnitModal';
+import { units } from '@holokai/ui';
+import { Unit } from '@holokai/contracts';
 
 export default function VanguardsPage() {
-  const [selectedDiscipline, setSelectedDiscipline] = useState<string>('ALL');
+  const [selectedSpec, setSelectedSpec] = useState<string>('ALL');
   const [toastMessage, setToastMessage] = useState<string>('');
+  const [selectedUnit, setSelectedUnit] = useState<Unit | null>(null);
 
-  const disciplines = ['ALL', 'Epigraphy', 'Metallurgy', 'Oracle', 'Navigation'];
+  // Extract unique specs for filtering
+  const allSpecs = Array.from(new Set(units.flatMap(u => u.specs)));
+  const filterSpecs = ['ALL', 'Optical', 'Logic', 'Geo-spatial', 'Fluid dynamics', 'Acoustic synthesis'];
 
-  const filteredVanguards = selectedDiscipline === 'ALL'
-    ? VANGUARDS
-    : VANGUARDS.filter((v) => v.discipline.toLowerCase().includes(selectedDiscipline.toLowerCase()) || v.badge.toLowerCase().includes(selectedDiscipline.toLowerCase()));
+  const filteredVanguards = selectedSpec === 'ALL'
+    ? units
+    : units.filter((v) => v.specs.some(spec => spec.toLowerCase().includes(selectedSpec.toLowerCase()) || selectedSpec.toLowerCase().includes(spec.toLowerCase())));
 
   const handleAddToRequisition = (name: string) => {
     if (typeof window !== 'undefined') {
@@ -151,12 +65,12 @@ export default function VanguardsPage() {
 
       {/* Discipline Filter Tabs */}
       <div className="flex flex-wrap gap-2 pb-2">
-        {disciplines.map((d) => (
+        {filterSpecs.map((d) => (
           <button
             key={d}
-            onClick={() => setSelectedDiscipline(d)}
+            onClick={() => setSelectedSpec(d)}
             className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
-              selectedDiscipline === d
+              selectedSpec === d
                 ? 'bg-brand text-black shadow-lg shadow-brand/20'
                 : 'bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10'
             }`}
@@ -171,11 +85,15 @@ export default function VanguardsPage() {
         <AnimatePresence mode="popLayout">
           {filteredVanguards.map((vanguard) => (
             <motion.div layout key={vanguard.id} className="h-[480px]" style={{ perspective: 1000 }}>
-              <VanguardCard vanguard={vanguard} onAdd={handleAddToRequisition} />
+              <VanguardCard vanguard={vanguard} onAdd={handleAddToRequisition} onClick={() => setSelectedUnit(vanguard)} />
             </motion.div>
           ))}
         </AnimatePresence>
       </div>
+
+      {selectedUnit && (
+        <UnitModal unit={selectedUnit} onClose={() => setSelectedUnit(null)} onAdd={handleAddToRequisition} />
+      )}
     </main>
   );
 }

@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY || process.env.VITE_ELEVENLABS_API_KEY;
       if (!ELEVENLABS_API_KEY) throw new Error('ElevenLabs API Key not configured');
 
-      const vId = voiceId || '21m00Tcm4TlvDq8ikWAM'; // Default voice
+      const vId = voiceId || 'Woqh9nzF1s8TxOxMqlo0'; // Default voice (HoloKai Oracle)
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${vId}`, {
         method: 'POST',
         headers: {
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       const DEEPGRAM_API_KEY = process.env.DEEPGRAM_API_KEY || process.env.VITE_DEEPGRAM_API_KEY;
       if (!DEEPGRAM_API_KEY) throw new Error('Deepgram API Key not configured');
 
-      const response = await fetch('https://api.deepgram.com/v1/speak?model=aura-asteria-en', {
+      const response = await fetch('https://api.deepgram.com/v1/speak?model=aura-zeus-en', {
         method: 'POST',
         headers: {
           'Authorization': `Token ${DEEPGRAM_API_KEY}`,

@@ -20,6 +20,21 @@ const PLATFORM_ITEMS = [
     ),
   },
   {
+    id: 'voice',
+    name: 'Voice Oracle Chamber',
+    description: 'Speak to 8 AI Vanguard personas with 3D visualization and TTS.',
+    href: '/oracle/voice',
+    category: 'Research',
+    badge: 'NEW',
+    featured: true,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M9 2v10M6 5v4M12 4v6M3 8v2M15 7v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M5 14h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  {
     id: 'archive',
     name: '16-Volume Archive',
     description: 'Pan-African codex spanning epigraphy, astronomy & oral records.',

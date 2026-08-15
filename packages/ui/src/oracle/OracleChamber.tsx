@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { OracleQueryResponse, EpistemicStance } from '@holokai/contracts';
 import { EpistemicBadge } from '../epistemology/EpistemicBadge';
 import { EvidenceMatrix } from '../epistemology/EvidenceMatrix';

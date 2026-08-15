@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ancientEpistemicTransition, humanoidSyncTransition } from '../motion/profiles';
 
 export interface MegaMenuItem {
@@ -80,7 +80,7 @@ export function MegaMenu({ categories = DEFAULT_CATEGORIES, onClose }: MegaMenuP
     >
       <div className="mx-auto max-w-[1440px] p-6 md:p-10 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Category Sidebar Column */}
-        <div className="space-y-2 border-r border-white/5 pr-6">
+        <div className="flex flex-col gap-2 border-r border-white/5 pr-6">
           <span className="text-xs font-mono text-[var(--color-brand)] font-bold uppercase tracking-widest block mb-4">
             Research Categories
           </span>

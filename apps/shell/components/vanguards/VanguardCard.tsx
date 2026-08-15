@@ -3,25 +3,19 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { Unit } from '@holokai/contracts';
 
 interface VanguardCardProps {
-  vanguard: {
-    id: string;
-    name: string;
-    role: string;
-    image: string;
-    discipline: string;
-    origin: string;
-    lore: string;
-    badge: string;
-    color: string;
-  };
+  vanguard: Unit;
   onAdd: (name: string) => void;
+  onClick?: () => void;
 }
 
-export default function VanguardCard({ vanguard, onAdd }: VanguardCardProps) {
+export default function VanguardCard({ vanguard, onAdd, onClick }: VanguardCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Mouse position values
   const mouseX = useMotionValue(0);
@@ -49,12 +43,21 @@ export default function VanguardCard({ vanguard, onAdd }: VanguardCardProps) {
 
   const handleMouseLeave = () => {
     setIsHovered(false);
+    setIsPlaying(false);
     mouseX.set(0);
     mouseY.set(0);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
   };
 
   const handleMouseEnter = () => {
     setIsHovered(true);
+    setIsPlaying(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
   };
 
   return (
@@ -63,6 +66,7 @@ export default function VanguardCard({ vanguard, onAdd }: VanguardCardProps) {
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={onClick}
       initial={{ opacity: 0, scale: 0.9, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9, y: -20 }}
@@ -72,7 +76,7 @@ export default function VanguardCard({ vanguard, onAdd }: VanguardCardProps) {
         rotateY,
         transformStyle: "preserve-3d",
       }}
-      className="relative rounded-2xl bg-[#0a0a0f] border border-brand/20 overflow-hidden flex flex-col cursor-crosshair group h-full shadow-2xl"
+      className="relative rounded-2xl bg-[#0a0a0f] border border-brand/20 overflow-hidden flex flex-col cursor-pointer group h-full shadow-2xl"
     >
       {/* Glare Effect */}
       <motion.div
@@ -90,6 +94,28 @@ export default function VanguardCard({ vanguard, onAdd }: VanguardCardProps) {
         {/* Animated Background Grid / Particles */}
         <div className="absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity duration-1000 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]" />
 
+        {/* Cinematic MP4 Video Loop */}
+        {vanguard.video && (
+          <video
+            ref={videoRef}
+            src={vanguard.video}
+            muted
+            loop
+            playsInline
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 z-0 ${
+              isPlaying ? 'opacity-40' : 'opacity-0 pointer-events-none'
+            }`}
+          />
+        )}
+
+        {/* Live Video Indicator Badge */}
+        {vanguard.video && (
+          <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full bg-black/75 border border-brand/40 text-[9px] font-mono font-bold text-brand-light flex items-center gap-1.5 backdrop-blur-md transition-opacity duration-300">
+            <span className={`size-1.5 rounded-full ${isPlaying ? 'bg-emerald-400 animate-ping' : 'bg-brand'}`} />
+            <span>{isPlaying ? 'ORBIT ACTIVE' : 'HOVER 3D'}</span>
+          </div>
+        )}
+
         {/* 3D Floating Image */}
         <motion.div 
           className="relative w-full h-full"
@@ -99,7 +125,7 @@ export default function VanguardCard({ vanguard, onAdd }: VanguardCardProps) {
           }}
         >
           <Image
-            src={vanguard.image}
+            src={vanguard.fullbodyImage || vanguard.image}
             alt={vanguard.name}
             fill
             unoptimized
@@ -115,7 +141,7 @@ export default function VanguardCard({ vanguard, onAdd }: VanguardCardProps) {
           }}
           className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-brand/20 border border-brand/40 text-brand-light text-[10px] font-mono tracking-wider font-semibold backdrop-blur-md shadow-[0_0_10px_rgba(200,149,42,0.3)]"
         >
-          {vanguard.badge}
+          {vanguard.role.toUpperCase()}
         </motion.span>
       </div>
 
@@ -132,18 +158,18 @@ export default function VanguardCard({ vanguard, onAdd }: VanguardCardProps) {
             {vanguard.name}
           </h3>
           <span className="text-xs text-brand-light/90 font-medium block mt-0.5 uppercase tracking-wide">{vanguard.role}</span>
-          <p className="text-xs text-zinc-400 mt-2.5 leading-relaxed font-light">{vanguard.lore}</p>
+          <p className="text-xs text-zinc-400 mt-2.5 leading-relaxed font-light line-clamp-3">{vanguard.description}</p>
         </div>
 
         <div className="border-t border-white/5 pt-3 space-y-2">
           <div className="text-[11px] font-mono text-zinc-400">
-            <span className="text-zinc-500">Origin:</span> {vanguard.origin}
-          </div>
-          <div className="text-[11px] font-mono text-zinc-400">
-            <span className="text-zinc-500">Field:</span> {vanguard.discipline}
+            <span className="text-zinc-500">Specs:</span> {vanguard.specs.join(' • ')}
           </div>
           <button
-            onClick={() => onAdd(vanguard.name)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onAdd(vanguard.name);
+            }}
             className="w-full mt-2 py-2 rounded-xl bg-white/5 hover:bg-brand hover:text-black border border-brand/30 text-brand-light text-xs font-mono font-extrabold transition-all duration-300 relative overflow-hidden group/btn"
           >
             <span className="relative z-10">+ ADD TO REQUISITION</span>

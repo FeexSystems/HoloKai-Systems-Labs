@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { VanguardCarousel } from '@holokai/ui';
 
 const TICKER_ITEMS = [
   { label: 'Kemet', value: 'Nile Valley · 3100 BCE' },
@@ -18,43 +19,51 @@ export function ProductTicker() {
   const items = [...TICKER_ITEMS, ...TICKER_ITEMS];
 
   return (
-    <div
-      className="w-full overflow-hidden border-y border-brand/15 py-3 bg-[#08080e]"
-      aria-label="Civilization index ticker"
-    >
+    <div className="flex flex-col w-full">
       <div
-        className="flex gap-8 items-center"
-        style={{
-          animation: 'ticker-scroll 40s linear infinite',
-          width: `max-content`,
-        }}
+        className="w-full overflow-hidden border-y border-brand/15 py-3 bg-[#08080e]"
+        aria-label="Civilization index ticker"
       >
-        {items.map((item, i) => (
-          <div
-            key={`${item.label}-${i}`}
-            className="flex items-center gap-3 shrink-0"
-            aria-hidden={i >= TICKER_ITEMS.length}
-          >
-            <span className="size-1 rounded-full bg-brand/60" aria-hidden="true" />
-            <span className="text-xs font-mono font-bold text-brand-light uppercase tracking-widest">
-              {item.label}
-            </span>
-            <span className="text-xs text-zinc-600">
-              {item.value}
-            </span>
-          </div>
-        ))}
+        <div
+          className="flex gap-8 items-center"
+          style={{
+            animation: 'ticker-scroll 40s linear infinite',
+            width: `max-content`,
+          }}
+        >
+          {items.map((item, i) => (
+            <div
+              key={`${item.label}-${i}`}
+              className="flex items-center gap-3 shrink-0"
+              aria-hidden={i >= TICKER_ITEMS.length}
+            >
+              <span className="size-1 rounded-full bg-brand/60" aria-hidden="true" />
+              <span className="text-xs font-mono font-bold text-brand-light uppercase tracking-widest">
+                {item.label}
+              </span>
+              <span className="text-xs text-zinc-600">
+                {item.value}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <style jsx>{`
+          @keyframes ticker-scroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            div { animation: none !important; }
+          }
+        `}</style>
       </div>
 
-      <style jsx>{`
-        @keyframes ticker-scroll {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          div { animation: none !important; }
-        }
-      `}</style>
+      <div className="w-full bg-[#05050a] py-12 px-4 md:px-8">
+        <div className="max-w-[1440px] mx-auto">
+          <VanguardCarousel />
+        </div>
+      </div>
     </div>
   );
 }

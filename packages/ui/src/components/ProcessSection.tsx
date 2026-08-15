@@ -99,14 +99,27 @@ export function ProcessSection({ title, steps = DEFAULT_STEPS, className = '' }:
           </p>
         </div>
 
-        <div className="h-64 md:h-80 rounded-xl bg-zinc-950 flex items-center justify-center p-4 overflow-hidden border border-white/5">
+        <div className="h-64 md:h-80 rounded-xl bg-zinc-950 flex flex-col items-center justify-center p-4 overflow-hidden border border-white/5 relative group cursor-pointer hover:bg-zinc-900 hover:border-white/20 transition-all duration-200">
           {activeStep.image && (
             <img
               src={activeStep.image}
               alt={activeStep.title}
-              className="h-full w-auto object-contain transition-all duration-500 animate-in fade-in zoom-in-95"
+              className="absolute inset-0 h-full w-full object-contain opacity-20 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
             />
           )}
+          <form className="w-full max-w-sm space-y-4 relative z-10" onSubmit={(e) => e.preventDefault()}>
+            <input 
+              type="text" 
+              placeholder={`Query ${activeStep.title}...`}
+              className="w-full bg-transparent border-b border-white/20 text-white p-2 focus:outline-none focus:border-[var(--color-brand)] transition-colors placeholder:text-zinc-600"
+            />
+            <button 
+              type="submit" 
+              className="w-full bg-[var(--color-brand)] hover:bg-[var(--color-brand-light)] text-black font-bold rounded py-2 transition-colors shadow-glow-brand"
+            >
+              Submit Query
+            </button>
+          </form>
         </div>
       </div>
     </div>

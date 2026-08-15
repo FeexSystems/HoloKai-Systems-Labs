@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Check, X, Info } from 'lucide-react';
 import type { FeatureComparison, PricingTier } from '@holokai/contracts';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion, type HTMLMotionProps } from 'motion/react';
+import { motion, type HTMLMotionProps } from 'framer-motion';
 import { holokaiVariants } from './profiles';
 
 export interface ScrollRevealProps extends HTMLMotionProps<'div'> {

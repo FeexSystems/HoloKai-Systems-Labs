@@ -66,6 +66,9 @@ export * from './navigation/Launchpad';
 // ── Epistemology ─────────────────────────────────────────────────────────────
 export * from './epistemology/EpistemicBadge';
 export * from './epistemology/EvidenceMatrix';
+export * from './epistemology/TriangulationReasoningPanel';
+export * from './epistemology/SourceDrawer';
+export * from './epistemology/CitationChainViewer';
 
 // ── Civilization ─────────────────────────────────────────────────────────────
 export * from './civilization/CivilizationCard';
@@ -80,6 +83,12 @@ export * from './oracle/VoiceVisualizer';
 export * from './oracle/AncientScriptVoiceVisualizer';
 export * from './oracle/VoiceOracleChamber';
 export * from './oracle/KnowledgeParticleField';
+export * from './oracle/OracleDataPanel';
+export * from './oracle/OracleKnowledgeGraph';
+export * from './oracle/MultiAgentVoiceDebate';
+export * from './oracle/OracleTimelineScrubber';
+export * from './oracle/WolframComputationPanel';
+export * from './oracle/ComputationResult';
 
 // ── Navigation ────────────────────────────────────────────────────────────────
 export * from './navigation/GlobalHeader';
@@ -101,3 +110,10 @@ export * from './motion/ScrollReveal';
 
 // ── Data Layer ────────────────────────────────────────────────────────────────
 export * from './data/homepageData';
+export * from './data/vanguardUnits';
+export * from './data/marketingData';
+export * from './data/civilizationsData';
+
+// ── Libs ──────────────────────────────────────────────────────
+export * from './lib/audioFeedback';
+export * from './lib/oracleVoiceEngine';

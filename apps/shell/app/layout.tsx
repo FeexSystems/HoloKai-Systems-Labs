@@ -1,23 +1,14 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
-import { Header, Footer, MetaTags } from '@holokai/branding';
-import { GlobalHeader, GlobalFooter, AIChatLauncher } from '@holokai/ui';
+import { Footer } from '@holokai/branding';
+import { GlobalHeader, AIChatLauncher } from '@holokai/ui';
 import { RuntimeProvider } from '@holokai/runtime';
-import { Cinzel, Inter } from 'next/font/google';
-import { ClerkProvider, SignInButton, SignUpButton, UserButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { ClerkProvider } from '@clerk/nextjs';
+import GalacticBackground from '../components/GalacticBackground';
 import './global.css';
 
-const cinzel = Cinzel({
-  weight: ['400', '500', '600', '700', '900'],
-  subsets: ['latin'],
-  variable: '--font-display',
-});
-
-const inter = Inter({
-  weight: ['400', '500', '600', '700', '900'],
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
+const cinzel = { variable: 'font-cinzel', style: { fontFamily: '"Cinzel", serif' } };
+const inter = { variable: 'font-inter', style: { fontFamily: '"Inter", sans-serif' } };
 
 const siteUrl = 'https://holokai.io';
 
@@ -128,6 +119,9 @@ export default function RootLayout({
       <body className="antialiased bg-background text-foreground min-h-screen flex flex-col font-sans selection:bg-brand/30 selection:text-brand-contrast">
         <ClerkProvider>
           <RuntimeProvider>
+            {/* Global galactic starfield — fixed behind all content */}
+            <GalacticBackground />
+
             {/* Skip-to-main accessibility landmark (§37) */}
             <a
               href="#main-content"
@@ -136,23 +130,9 @@ export default function RootLayout({
               Skip to main content
             </a>
 
-            <Header logoVariant="auto" showBrand={true} />
-            
-            <div className="w-full bg-[#05050a] border-b border-[var(--color-border)] py-2 px-6 flex justify-end items-center gap-4">
-              <SignedOut>
-                <div className="text-sm font-bold text-brand hover:text-brand-light">
-                  <SignInButton />
-                </div>
-                <div className="px-3 py-1 bg-[var(--color-brand)] text-black text-sm font-extrabold rounded-full hover:bg-[var(--color-brand-light)]">
-                  <SignUpButton />
-                </div>
-              </SignedOut>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-            </div>
+            {/* Single unified header — GlobalHeader contains all nav + auth */}
             <GlobalHeader />
-            <div className="flex-1">{children}</div>
+            <div id="main-content" className="flex-1">{children}</div>
             <AIChatLauncher />
             <Footer showCopyright={true} />
           </RuntimeProvider>
