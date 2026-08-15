@@ -1,0 +1,88 @@
+steps:
+  # Build the shell container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/holokai-shell', '-f', 'apps/shell/Dockerfile', '.']
+    id: 'build-shell'
+    waitFor: ['-']
+
+  # Build the BFF container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/holokai-bff', '-f', 'apps/bff/Dockerfile', '.']
+    id: 'build-bff'
+    waitFor: ['-']
+
+  # Build the python-engine container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/holokai-python-engine', '-f', 'services/python-engine/Dockerfile', 'services/python-engine']
+    id: 'build-python-engine'
+    waitFor: ['-']
+
+  # Push the images to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/holokai-shell']
+    id: 'push-shell'
+    waitFor: ['build-shell']
+    
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/holokai-bff']
+    id: 'push-bff'
+    waitFor: ['build-bff']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/holokai-python-engine']
+    id: 'push-python-engine'
+    waitFor: ['build-python-engine']
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'holokai-shell'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/holokai-shell'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+    id: 'deploy-shell'
+    waitFor: ['push-shell']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'holokai-bff'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/holokai-bff'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+    id: 'deploy-bff'
+    waitFor: ['push-bff']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'holokai-python-engine'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/holokai-python-engine'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+    id: 'deploy-python-engine'
+    waitFor: ['push-python-engine']
+
+images:
+  - 'gcr.io/$PROJECT_ID/holokai-shell'
+  - 'gcr.io/$PROJECT_ID/holokai-bff'
+  - 'gcr.io/$PROJECT_ID/holokai-python-engine'

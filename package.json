@@ -17,6 +17,8 @@
     "deploy:hosting": "pnpm --filter @holokai/shell build && firebase deploy --only hosting",
     "deploy:firestore": "firebase deploy --only firestore",
     "deploy:firebase": "pnpm --filter @holokai/shell build && firebase deploy",
+    "deploy:gcp": "powershell infra/gcp/deploy.ps1",
+    "deploy:gcp:preview": "powershell infra/gcp/deploy.ps1 -Preview",
     "lint": "pnpm --filter @holokai/shell lint",
     "preview": "pnpm --filter @holokai/shell start"
   },

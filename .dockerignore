@@ -1,17 +1,12 @@
 node_modules
+.next
+out
 .git
-.gitignore
+.DS_Store
+*.md
+.claude
+.gemini
+_archive
 .env
-.env.local
-__pycache__
-*.pyc
-*.pyo
-*.pyd
-.pytest_cache
-.vscode
-.idea
-holo-kai/node_modules
-HoloKai - landingpage/node_modules
-dist
-build
-.data
+.env.*
+!.env.example
