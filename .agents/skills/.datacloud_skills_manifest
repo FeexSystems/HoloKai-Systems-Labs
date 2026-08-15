@@ -69,9 +69,17 @@
       "status": "installed",
       "checksum": "ff2362809250302d2cbca19835af3f7114480e4e4a6cdea794979a97dd6ca6d4"
     },
+    "gcp-managed-airflow-dag-authoring": {
+      "status": "installed",
+      "checksum": "42c5b4daf03d4ecc6f71f4e7108e279aba97c8c3b425ac06f2da21a246c602ad"
+    },
     "gcp-managed-airflow-migrations": {
       "status": "installed",
       "checksum": "f558527e1d46e9b22449a2da8e723cbda19c3afe6f5216bb5c25054bfc3b2b0a"
+    },
+    "gcp-managed-airflow-recommendations": {
+      "status": "installed",
+      "checksum": "7c125f4de3a7d2589cb6e7d10edcc1592effcf68653be5fd674ff155c674b13a"
     },
     "gcp-pipeline-orchestration": {
       "status": "installed",
@@ -80,6 +88,10 @@
     "gcp-pipeline-resource-provisioning": {
       "status": "installed",
       "checksum": "d9f68d99f5d7e291868a2968ba9483b73f520c61108fcdbdfc7e65f21c0c232c"
+    },
+    "google-cloud-storage-basics": {
+      "status": "installed",
+      "checksum": "127e786ba347333e8b0e232cf88fcf1a7de4f7aae0db80b669684d215673a7ef"
     },
     "managing-python-dependencies": {
       "status": "installed",
@@ -97,25 +109,13 @@
       "status": "installed",
       "checksum": "276efcab0cdeb25cb412644bcf0fd5fb827f4873b44a6ba24f4e49e035d25c3e"
     },
-    "gcp-managed-airflow-dag-authoring": {
-      "status": "installed",
-      "checksum": "42c5b4daf03d4ecc6f71f4e7108e279aba97c8c3b425ac06f2da21a246c602ad"
-    },
-    "gcp-managed-airflow-recommendations": {
-      "status": "installed",
-      "checksum": "7c125f4de3a7d2589cb6e7d10edcc1592effcf68653be5fd674ff155c674b13a"
-    },
     "gcp-spark": {
-      "status": "conflict",
+      "status": "installed",
       "checksum": "e736069b736fc212df40564edb2149450dd90a293035d7f51816583617ac54ff"
     },
     "gcs-security-assessment": {
-      "status": "conflict",
-      "checksum": "48dc5311949f7e03d1c81572dd85006dd3d1a227d9fbb1cbedf35968dc00d125"
-    },
-    "google-cloud-storage-basics": {
       "status": "installed",
-      "checksum": "127e786ba347333e8b0e232cf88fcf1a7de4f7aae0db80b669684d215673a7ef"
+      "checksum": "48dc5311949f7e03d1c81572dd85006dd3d1a227d9fbb1cbedf35968dc00d125"
     }
   }
 }
