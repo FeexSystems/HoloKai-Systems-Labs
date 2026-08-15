@@ -2,7 +2,7 @@
   "name": "holokai-civilization-core",
   "private": true,
   "packageManager": "pnpm@10.15.0",
-  "description": "HoloKai monorepo. Active frontend: holo-kai/. Orbital lab entry: HoloKai - landingpage/.",
+  "description": "HoloKai Planetary UI Platform & Civilization Research OS (Next.js 15 Monorepo).",
   "workspaces": [
     "apps/*",
     "packages/*",

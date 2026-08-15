@@ -50,6 +50,5 @@ Thumbs.db
 dist/
 build/
 
-# Local Netlify folder
-.netlify/
-**/.netlify/
+# Archived legacy apps
+_archive/
