@@ -19,7 +19,7 @@ const CSRF_CONFIG = {
 /**
  * Generate a random CSRF token
  */
-function generateCSRFToken(): string {
+function createCSRFTokenString(): string {
   return crypto.randomBytes(CSRF_CONFIG.tokenLength).toString('hex');
 }
 
@@ -28,15 +28,15 @@ function generateCSRFToken(): string {
  */
 function generateCSRFTokenWithTimestamp(): { token: string; timestamp: number } {
   return {
-    token: generateCSRFToken(),
+    token: createCSRFTokenString(),
     timestamp: Date.now()
   };
 }
 
 /**
- * Validate CSRF token
+ * Validate CSRF token string format
  */
-function validateCSRFToken(token: string, sessionToken: string): boolean {
+function checkCSRFTokenFormat(token: string, sessionToken: string): boolean {
   // In production, tokens should be stored in session/database
   // For now, we'll do basic validation
   if (!token || !sessionToken) {

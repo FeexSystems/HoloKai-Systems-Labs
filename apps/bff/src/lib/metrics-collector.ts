@@ -296,7 +296,7 @@ export function metricsMiddleware(req: any, res: any, next: any) {
 /**
  * Get metrics summary for dashboard
  */
-export function getMetricsSummary(): {
+export function getMetricsSummary() {
   return {
     api: {
       totalRequests: metrics.getCounter(MetricNames.API_REQUESTS_TOTAL),

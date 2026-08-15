@@ -108,7 +108,7 @@ async function checkPythonEngine(): Promise<HealthCheckResult> {
 async function checkGeminiAPI(): Promise<HealthCheckResult> {
   const start = Date.now();
   try {
-    const { GoogleGenAI } = await import('@google/genai");
+    const { GoogleGenAI } = await import('@google/genai');
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     
     // Simple test query
@@ -117,7 +117,7 @@ async function checkGeminiAPI(): Promise<HealthCheckResult> {
       contents: 'Health check'
     });
 
-    const duration = Date.now - start;
+    const duration = Date.now() - start;
 
     return {
       service: 'gemini_api',

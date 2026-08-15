@@ -86,7 +86,7 @@ router.get('/stream', async (req: Request, res: Response) => {
         options.voiceId = preset.voiceId;
         options.modelId = preset.modelId;
         options.stability = preset.stability;
-        options similarityBoost = preset.similarityBoost;
+        options.similarityBoost = preset.similarityBoost;
       }
     }
 

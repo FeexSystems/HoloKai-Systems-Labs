@@ -1,0 +1,1 @@
+SYNTAX ERROR IN: C:\Users\ENGR BILLI\HoloKai-Systems-Labs\node_modules\.pnpm\next@15.5.23_@babel+core@7._67bf74568554757262be03eb47d46b86\node_modules\next\dist\compiled\webpack\bundle5.js

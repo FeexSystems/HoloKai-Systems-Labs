@@ -36,7 +36,7 @@ oracleRouter.post('/query', async (req: Request<{}, {}, OracleQueryRequest>, res
     // Validate request body with Zod
     const parseResult = OracleQuerySchema.safeParse(req.body);
     if (!parseResult.success) {
-      return res.status(400).json({ error: 'Validation failed', issues: parseResult.error. });
+      return res.status(400).json({ error: 'Validation failed', issues: parseResult.error.errors });
     }
 
     const { prompt, civilizationFocus } = parseResult.data;
