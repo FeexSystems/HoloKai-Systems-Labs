@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Check, X, Info } from 'lucide-react';

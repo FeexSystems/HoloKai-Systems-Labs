@@ -23,7 +23,7 @@ export const cartItems = pgTable('cart_items', {
 }, (table) => ({
   userIdIdx: index('user_id_idx').on(table.userId),
   productIdIdx: index('product_id_idx').on(table.productId),
-  userIdProductIdIdx: pgIndex('user_product_idx').on(table.userId, table.productId),
+  userIdProductIdIdx: index('user_product_idx').on(table.userId, table.productId),
 }));
 
 export const archives = pgTable('archives', {
@@ -42,7 +42,7 @@ export const archives = pgTable('archives', {
   regionIdx: index('region_idx').on(table.region),
   titleIdx: index('title_idx').on(table.title),
   createdAtIdx: index('created_at_idx').on(table.createdAt),
-  categoryCivilizationIdx: pgIndex('category_civilization_idx').on(table.category, table.civilizationId),
+  categoryCivilizationIdx: index('category_civilization_idx').on(table.category, table.civilizationId),
 }));
 
 export const products = pgTable('products', {
@@ -107,5 +107,5 @@ export const researchLogs = pgTable('research_logs', {
   regionIdx: index('research_region_idx').on(table.region),
   titleIdx: index('research_title_idx').on(table.title),
   createdAtIdx: index('research_created_at_idx').on(table.createdAt),
-  domainEraIdx: pgIndex('domain_era_idx').on(table.domain, table.era),
+  domainEraIdx: index('domain_era_idx').on(table.domain, table.era),
 }));
