@@ -98,3 +98,6 @@ export * from './providers/QueryProvider';
 // ── Motion Profiles ───────────────────────────────────────────────────────────
 export * from './motion/profiles';
 export * from './motion/ScrollReveal';
+
+// ── Data Layer ────────────────────────────────────────────────────────────────
+export * from './data/homepageData';

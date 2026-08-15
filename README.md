@@ -116,4 +116,7 @@ cmd /c "pnpm --filter @holokai/design-system build && pnpm --filter @holokai/ui 
 
 - **System Architecture Specification**: [ARCHITECTURE.md](ARCHITECTURE.md)
 - **Master Implementation Roadmap**: [PLANETARY_IMPLEMENTATION.md](PLANETARY_IMPLEMENTATION.md)
+- **HoloKai Platform Enhancement Initiative**: [HOLOKAI-ENHANCEMENT-INITIATIVE.md](HOLOKAI-ENHANCEMENT-INITIATIVE.md)
+- **Homepage Enrichment Tasks**: [.kiro/specs/holokai-homepage-enrichment/tasks.md](.kiro/specs/holokai-homepage-enrichment/tasks.md)
+- **Specialized AI Agents**: [.claude/agents/](.claude/agents/)
 - **Walkthrough & Verification Log**: [walkthrough.md](walkthrough.md)
