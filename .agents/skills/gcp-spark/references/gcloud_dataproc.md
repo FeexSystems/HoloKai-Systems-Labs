@@ -233,3 +233,6 @@ Tips:
     produce too much output to process.
 -   Add a `--filter` to limit results, e.g. `state = ACTIVE AND
     labels.env = staging AND create_time >= "2023-01-01T00:00:00Z"`
+    produce too much output to process.
+-   Add a `--filter` to limit results, e.g. `state = ACTIVE AND labels.env =
+    staging AND create_time >= "2023-01-01T00:00:00Z"`

@@ -90,3 +90,15 @@ The Dataproc service account needs:
 
 Refer to `references/gcloud_dataproc.md` for detailed guidelines on managing
 Spark clusters, jobs, batches, and interactive sessions.
+*   `roles/dataproc.worker`: Job execution
+*   `roles/biglake.admin`: Iceberg table management
+*   `roles/bigquery.jobUser`: Query materialization
+*   `roles/storage.objectUser`: Read/write GCS
+*   `roles/spanner.databaseUser`: Spanner writes
+
+--------------------------------------------------------------------------------
+
+## Spark resource management
+
+Refer to `references/gcloud_dataproc.md` for detailed guidelines on managing
+Spark clusters, jobs, batches, and interactive sessions.

@@ -423,3 +423,70 @@ API.
     ```
 
 
+  .option("instanceId", "<INSTANCE_ID>") \
+  .option("databaseId", "<DATABASE_ID>") \
+  .option("table", "<TABLE_NAME>")
+  .load()
+```
+
+### Writing to Spanner
+The connector supports writing to Spanner tables using the DataFrame `write`
+API.
+
+#### Write Modes
+
+*   **`Append`**: Inserts rows into the existing Spanner table. This is the
+    default write mode.
+
+    ```python
+    df.write.format("cloud-spanner") \
+        .option("projectId", "<PROJECT_ID>") \
+        .option("instanceId", "<INSTANCE_ID>") \
+        .option("databaseId", "<DATABASE_ID>") \
+        .option("table", "<TABLE_NAME>") \
+        .mode("append") \
+        .save()
+    ```
+
+*   **`Overwrite`**: Clears the existing data before writing.
+
+    ```python
+    df.write.format("cloud-spanner") \
+        .option("projectId", "<PROJECT_ID>") \
+        .option("instanceId", "<INSTANCE_ID>") \
+        .option("databaseId", "<DATABASE_ID>") \
+        .option("table", "<TABLE_NAME>") \
+        .mode("overwrite") \
+        .save()
+    ```
+
+## Cloud SQL (PostgreSQL / MySQL)
+
+### Reading from Cloud SQL via JDBC
+
+```python
+df = spark.read.format("jdbc") \
+    .option("url", "jdbc:postgresql://<HOST_OR_PRIVATE_IP>:5432/<DATABASE>") \
+    .option("dbtable", "<TABLE_NAME>") \
+    .option("user", "<USER>") \
+    .option("password", "<PASSWORD>") \
+    .option("driver", "org.postgresql.Driver") \
+    .load()
+```
+
+## Google Cloud Pub/Sub
+
+### Batch Ingestion via Pub/Sub Client
+
+```python
+from google.cloud import pubsub_v1
+import json
+
+subscriber = pubsub_v1.SubscriberClient()
+sub = f"projects/{PROJECT_ID}/subscriptions/{SUBSCRIPTION_NAME}"
+response = subscriber.pull(request={"subscription": sub, "max_messages": 100}, timeout=10.0)
+records = [json.loads(m.message.data.decode("utf-8")) for m in response.received_messages]
+if response.received_messages:
+    subscriber.acknowledge(request={"subscription": sub, "ack_ids": [m.ack_id for m in response.received_messages]})
+df = spark.createDataFrame(records)
+```
