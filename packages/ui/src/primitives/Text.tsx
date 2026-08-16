@@ -39,7 +39,7 @@ const colorStyles: Record<NonNullable<TextProps['color']>, string> = {
   secondary: 'text-zinc-300',
   muted: 'text-zinc-400',
   gold: 'text-[#c8952a]',
-  goldLight: 'text-[#e8b84b]',
+  goldLight: 'text-[#39826F]',
   amber: 'text-[var(--color-brand)]',
 };
 

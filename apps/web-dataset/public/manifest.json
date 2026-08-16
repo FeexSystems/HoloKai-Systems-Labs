@@ -1,0 +1,16 @@
+{
+  "name": "HoloKai — Where Civilization Remembers",
+  "short_name": "HoloKai",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#f59e0b",
+  "description": "An immersive research platform for Pan-African civilization studies.",
+  "icons": [
+    {
+      "src": "/logos/holokai-favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

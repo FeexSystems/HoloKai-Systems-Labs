@@ -48,7 +48,7 @@ export function TabsList({ children, className = '' }: { children: React.ReactNo
   return (
     <div
       role="tablist"
-      className={`flex gap-1 rounded-2xl bg-[#12121a] border border-white/10 p-1 ${className}`}
+      className={`flex gap-1 rounded-2xl bg-surface border border-white/10 p-1 ${className}`}
     >
       {children}
     </div>
@@ -78,9 +78,9 @@ export function TabsTrigger({ value, children, disabled = false, className = '' 
       onClick={() => setActiveTab(value)}
       className={[
         'relative flex-1 rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 outline-none',
-        'focus-visible:ring-2 focus-visible:ring-[var(--color-border)]/60',
+        'focus-visible:ring-2 focus-visible:ring-border/60',
         isActive
-          ? 'bg-[var(--color-brand)]/15 text-[var(--color-brand-light)] border border-[var(--color-border)]'
+          ? 'bg-brand/15 text-brand-contrast border border-border'
           : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5 border border-transparent',
         disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer',
         className,
@@ -88,7 +88,7 @@ export function TabsTrigger({ value, children, disabled = false, className = '' 
     >
       {children}
       {isActive && (
-        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-6 rounded-full bg-[var(--color-brand)]" aria-hidden="true" />
+        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-6 rounded-full bg-brand" aria-hidden="true" />
       )}
     </button>
   );

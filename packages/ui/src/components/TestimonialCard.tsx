@@ -21,15 +21,15 @@ export function TestimonialCard({ testimonial, className = '' }: TestimonialCard
   return (
     <figure
       className={[
-        'group relative rounded-3xl border border-[var(--color-border)] bg-[#12121a]',
+        'group relative rounded-3xl border border-border bg-surface',
         'p-6 md:p-8 flex flex-col gap-5',
-        'hover:border-[var(--color-border)] hover:-translate-y-1 transition-all duration-300 shadow-xl',
+        'hover:border-border hover:-translate-y-1 transition-all duration-300 shadow-xl',
         className,
       ].join(' ')}
     >
       {/* Quote mark */}
       <span
-        className="absolute top-5 right-6 text-5xl font-serif text-[var(--color-brand)]/15 leading-none select-none pointer-events-none"
+        className="absolute top-5 right-6 text-5xl font-serif text-brand/15 leading-none select-none pointer-events-none"
         aria-hidden="true"
       >
         "
@@ -42,7 +42,7 @@ export function TestimonialCard({ testimonial, className = '' }: TestimonialCard
             <svg
               key={i}
               width="14" height="14" viewBox="0 0 14 14"
-              className={i < testimonial.rating! ? 'text-[var(--color-brand)]' : 'text-zinc-700'}
+              className={i < testimonial.rating! ? 'text-brand' : 'text-zinc-700'}
               aria-hidden="true"
             >
               <path
@@ -65,11 +65,11 @@ export function TestimonialCard({ testimonial, className = '' }: TestimonialCard
           <img
             src={testimonial.avatarUrl}
             alt={testimonial.author}
-            className="size-10 rounded-full object-cover border border-[var(--color-border)]"
+            className="size-10 rounded-full object-cover border border-border"
           />
         ) : (
           <div
-            className="size-10 rounded-full bg-gradient-to-br from-[var(--color-surface-hover)] to-[var(--color-surface-hover)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-brand)] text-sm font-bold"
+            className="size-10 rounded-full bg-gradient-to-br from-surface-hover to-surface-hover border border-border flex items-center justify-center text-brand text-sm font-bold"
             aria-hidden="true"
           >
             {testimonial.author[0]}

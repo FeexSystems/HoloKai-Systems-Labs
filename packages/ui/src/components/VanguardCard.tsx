@@ -44,7 +44,7 @@ export function VanguardCard({ unit, onSelect, className = '' }: VanguardCardPro
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={() => onSelect && onSelect(unit)}
-      className={`group relative overflow-hidden rounded-[28px] border border-[var(--color-border)] bg-gradient-to-b from-[#12121a] via-[#0a0a0f] to-[#05050a] p-6 text-white cursor-pointer transition-all duration-500 hover:-translate-y-2 hover:border-[var(--color-border)] hover:shadow-2xl hover:shadow-glow-brand ${className}`}
+      className={`group relative overflow-hidden rounded-[28px] border border-border bg-gradient-to-b from-surface via-background to-background p-6 text-white cursor-pointer transition-all duration-500 hover:-translate-y-2 hover:border-border hover:shadow-2xl hover:shadow-glow-brand ${className}`}
     >
       {/* Visual Container: Video + Image Switch */}
       <div className="relative h-72 w-full overflow-hidden rounded-2xl bg-black flex items-center justify-center border border-white/5">
@@ -72,8 +72,8 @@ export function VanguardCard({ unit, onSelect, className = '' }: VanguardCardPro
         />
 
         {/* Live Video Indicator Badge */}
-        <div className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full bg-black/70 border border-[var(--color-brand)]/40 text-[10px] font-mono font-bold text-[var(--color-brand)] flex items-center gap-1.5 backdrop-blur-md">
-          <span className={`size-1.5 rounded-full ${isPlaying ? 'bg-emerald-400 animate-ping' : 'bg-[var(--color-brand)]'}`} />
+        <div className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full bg-black/70 border border-brand/40 text-[10px] font-mono font-bold text-brand flex items-center gap-1.5 backdrop-blur-md">
+          <span className={`size-1.5 rounded-full ${isPlaying ? 'bg-emerald-400 animate-ping' : 'bg-brand'}`} />
           <span>{isPlaying ? 'LIVE STREAM' : 'HOVER 3D'}</span>
         </div>
       </div>
@@ -81,13 +81,13 @@ export function VanguardCard({ unit, onSelect, className = '' }: VanguardCardPro
       {/* Unit Meta Info */}
       <div className="mt-5 space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest text-[var(--color-brand)]">
+          <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest text-brand">
             {unit.archetype}
           </span>
           <span className="text-[10px] font-mono text-zinc-500">{unit.id}</span>
         </div>
 
-        <h3 className="text-xl font-extrabold text-white group-hover:text-[var(--color-brand)] transition-colors">
+        <h3 className="text-xl font-extrabold text-white group-hover:text-brand transition-colors">
           {unit.name}
         </h3>
 
@@ -101,7 +101,7 @@ export function VanguardCard({ unit, onSelect, className = '' }: VanguardCardPro
       </div>
 
       {/* Action CTA Indicator */}
-      <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs font-bold text-[var(--color-brand)] group-hover:text-[var(--color-brand)]">
+      <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs font-bold text-brand group-hover:text-brand">
         <span>Inspect Unit Matrix</span>
         <span className="font-mono text-sm transition-transform group-hover:translate-x-1">→</span>
       </div>

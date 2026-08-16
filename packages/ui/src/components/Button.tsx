@@ -15,13 +15,13 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary:
-    'h-12 rounded-full px-6 text-sm font-extrabold text-black bg-gradient-to-r from-[var(--color-brand)] to-[var(--color-brand-contrast)] hover:brightness-110 shadow-glow-brand hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200',
+    'h-12 rounded-full px-6 text-sm font-extrabold text-black bg-gradient-to-r from-brand to-brand-contrast hover:brightness-110 shadow-glow-brand hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200',
   secondary:
-    'h-12 rounded-full px-6 text-sm font-bold text-white border border-[var(--color-border)] bg-[#12121a] hover:bg-[#1a1a26] hover:border-[var(--color-border)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200',
+    'h-12 rounded-full px-6 text-sm font-bold text-white border border-border bg-surface hover:bg-surface-hover hover:border-border hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200',
   ghost:
     'h-12 rounded-full px-6 text-sm font-semibold text-zinc-300 hover:text-white hover:bg-white/5 transition-all duration-200',
   icon:
-    'grid size-10 place-items-center rounded-full bg-white/5 border border-white/10 text-white hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-border)] transition-all duration-200',
+    'grid size-10 place-items-center rounded-full bg-white/5 border border-white/10 text-white hover:bg-surface-hover hover:border-border transition-all duration-200',
 };
 
 const sizeStyles: Record<NonNullable<ButtonProps['size']>, string> = {

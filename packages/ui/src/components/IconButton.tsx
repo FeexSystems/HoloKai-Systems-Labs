@@ -19,7 +19,7 @@ const sizeStyles: Record<NonNullable<IconButtonProps['size']>, string> = {
 };
 
 const accentStyles: Record<NonNullable<IconButtonProps['accent']>, string> = {
-  amber: 'hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-border)] hover:text-[var(--color-brand)]',
+  amber: 'hover:bg-surface-hover hover:border-border hover:text-brand',
   white: 'hover:bg-white/10 hover:border-white/20 hover:text-white',
   red: 'hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300',
   emerald: 'hover:bg-emerald-500/20 hover:border-emerald-500/40 hover:text-emerald-300',
@@ -46,7 +46,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           'grid place-items-center rounded-full',
           'bg-white/5 border border-white/10 text-zinc-400',
           'transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]/70',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/70',
           'select-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0',
           sizeStyles[size],
           accentStyles[accent],

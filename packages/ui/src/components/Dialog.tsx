@@ -77,8 +77,8 @@ export function Dialog({
         aria-describedby={description ? 'dialog-description' : undefined}
         tabIndex={-1}
         className={[
-          'relative z-10 w-full rounded-3xl border border-[var(--color-border)]',
-          'bg-gradient-to-b from-[#181826] to-[#0a0a0f]',
+          'relative z-10 w-full rounded-3xl border border-border',
+          'bg-gradient-to-b from-[#181826] to-background',
           'shadow-2xl p-6 md:p-8 outline-none',
           'animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-200',
           sizeStyles[size],

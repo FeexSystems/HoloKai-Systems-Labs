@@ -1,0 +1,17 @@
+{
+  "project": "HoloKai",
+  "volume": "V17",
+  "revision": "17.1",
+  "records": 43,
+  "files": [
+    "holokai_v17_1_neo4j.cypher",
+    "holokai_v17_1_neo4j_nodes.csv",
+    "holokai_v17_1_embeddings.jsonl",
+    "holokai_v17_1_neo4j_edges.csv",
+    "README.md",
+    "holokai_v17_1_pgvector.sql"
+  ],
+  "embedding_dimension": 1536,
+  "embedding_values_generated": false,
+  "provenance_source": "V17.0"
+}

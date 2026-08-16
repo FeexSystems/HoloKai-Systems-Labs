@@ -14,7 +14,7 @@ export interface ToastItem {
 
 const variantStyles: Record<ToastVariant, { wrapper: string; icon: React.ReactNode }> = {
   default: {
-    wrapper: 'border-white/15 bg-[#1a1a26]',
+    wrapper: 'border-white/15 bg-surface-hover',
     icon: (
       <svg className="text-zinc-400" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5"/>
@@ -32,9 +32,9 @@ const variantStyles: Record<ToastVariant, { wrapper: string; icon: React.ReactNo
     ),
   },
   warning: {
-    wrapper: 'border-[var(--color-border)]/30 bg-[#1a1204]',
+    wrapper: 'border-border/30 bg-surface-elevated',
     icon: (
-      <svg className="text-[var(--color-brand)]" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <svg className="text-brand" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <path d="M8 2L15 14H1L8 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
         <path d="M8 7v3M8 12v.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
       </svg>

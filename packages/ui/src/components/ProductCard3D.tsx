@@ -58,9 +58,9 @@ export function ProductCard3D({ product, featured, onLearnMore }: ProductCard3DP
       onMouseLeave={handleMouseLeave}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className={`relative flex flex-col p-6 rounded-2xl bg-[#0a0a0f] border transition-all duration-300 cursor-pointer ${
+      className={`relative flex flex-col p-6 rounded-2xl bg-background border transition-all duration-300 cursor-pointer ${
         featured 
-          ? 'border-[var(--color-border-strong)] shadow-glow-brand' 
+          ? 'border-border-strong shadow-glow-brand' 
           : 'border-white/10 hover:border-white/30'
       }`}
       onClick={() => onLearnMore?.(product)}
@@ -94,7 +94,7 @@ export function ProductCard3D({ product, featured, onLearnMore }: ProductCard3DP
         {/* Icon/Visual */}
         <div className="w-full h-32 mb-4 rounded-xl bg-gradient-to-br from-white/5 to-white/0 border border-white/5 flex items-center justify-center relative overflow-hidden">
           {product.icon && (
-            <div className="text-4xl text-[var(--color-brand)]">
+            <div className="text-4xl text-brand">
               {/* Icon would be rendered here using lucide-react */}
               <span className="opacity-50">ICON</span>
             </div>
@@ -121,7 +121,7 @@ export function ProductCard3D({ product, featured, onLearnMore }: ProductCard3DP
             <div className="space-y-2">
               {product.useCases.slice(0, 2).map((useCase) => (
                 <div key={useCase.id} className="text-xs text-zinc-400 flex items-start gap-2">
-                  <span className="text-[var(--color-brand)] mt-0.5">•</span>
+                  <span className="text-brand mt-0.5">•</span>
                   <span className="line-clamp-1">{useCase.title}</span>
                 </div>
               ))}
@@ -137,7 +137,7 @@ export function ProductCard3D({ product, featured, onLearnMore }: ProductCard3DP
         {/* Pricing */}
         {product.price && (
           <div className="mb-4">
-            <span className="text-2xl font-bold text-[var(--color-brand)]">
+            <span className="text-2xl font-bold text-brand">
               {product.price.displayString || `$${product.price.amount}`}
             </span>
             {product.price.period && (

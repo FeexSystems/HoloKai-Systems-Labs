@@ -32,7 +32,7 @@ export function SubscriptionCard({
     <motion.div 
       variants={holokaiVariants.cardEntrance}
       whileHover={{ scale: popular ? 1.08 : 1.02, transition: humanoidSyncTransition as any }}
-      className={`relative flex flex-col p-8 rounded-2xl bg-[#0a0a0f] border transition-colors duration-300 ${popular ? 'border-[var(--color-border-strong)] shadow-glow-active scale-105 z-10' : 'border-white/10 hover:border-white/30'}`}
+      className={`relative flex flex-col p-8 rounded-2xl bg-background border transition-colors duration-300 ${popular ? 'border-border-strong shadow-glow-active scale-105 z-10' : 'border-white/10 hover:border-white/30'}`}
     >
       {popular && (
         <motion.div 
@@ -53,7 +53,7 @@ export function SubscriptionCard({
 
       <div className="text-center mb-8">
         <div className="flex items-end justify-center gap-1">
-          <span className="text-4xl font-black text-[var(--color-brand)]">${price.toFixed(2)}</span>
+          <span className="text-4xl font-black text-brand">${price.toFixed(2)}</span>
           <span className="text-sm font-mono text-zinc-500 mb-1">/{billingPeriod}</span>
         </div>
       </div>
@@ -61,7 +61,7 @@ export function SubscriptionCard({
       <ul className="space-y-4 mb-8 flex-1">
         {features.map((feature, i) => (
           <li key={i} className="flex items-start gap-3">
-            <Check className="w-5 h-5 text-[var(--color-brand)] shrink-0 mt-0.5" />
+            <Check className="w-5 h-5 text-brand shrink-0 mt-0.5" />
             <span className="text-sm text-zinc-300 leading-tight">{feature}</span>
           </li>
         ))}

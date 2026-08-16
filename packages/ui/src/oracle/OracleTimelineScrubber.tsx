@@ -169,16 +169,16 @@ export function OracleTimelineScrubber({
   }, [isPlaying]);
 
   return (
-    <div className={`glass-panel p-4 rounded-2xl border border-amber-500/30 space-y-3 ${className}`}>
+    <div className={`glass-panel p-4 rounded-2xl border border-[var(--color-border)] space-y-3 ${className}`}>
       {/* Top Controls & Current Period Badge */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-400/30 text-amber-400">
+          <div className="p-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[var(--color-brand)]">
             <Clock className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-amber-400 font-bold uppercase tracking-wider">
+              <span className="text-xs font-mono text-[var(--color-brand)] font-bold uppercase tracking-wider">
                 HISTORICAL TIMELINE SCRUBBER
               </span>
               <span className="text-[10px] font-mono text-zinc-400 bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-700">
@@ -196,7 +196,7 @@ export function OracleTimelineScrubber({
           <button
             onClick={() => handleSelectIndex(activeIndex - 1)}
             disabled={activeIndex === 0}
-            className="p-1.5 rounded-lg bg-zinc-900 border border-amber-500/20 text-amber-300 disabled:opacity-30 hover:bg-amber-500/20 text-xs transition-colors"
+            className="p-1.5 rounded-lg bg-zinc-900 border border-[var(--color-border)] text-[var(--color-brand)] disabled:opacity-30 hover:bg-[var(--color-surface-hover)] text-xs transition-colors"
             title="Previous Period"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -206,8 +206,8 @@ export function OracleTimelineScrubber({
             onClick={toggleAutoPlay}
             className={`px-3 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-1.5 transition-all ${
               isPlaying
-                ? 'bg-amber-500/20 border-amber-400 text-amber-300 font-bold shadow-[0_0_12px_rgba(232,184,75,0.3)] animate-pulse'
-                : 'bg-zinc-900 border-amber-500/30 text-amber-400 hover:bg-amber-500/10'
+                ? 'bg-[var(--color-surface-hover)] border-[var(--color-border)] text-[var(--color-brand)] font-bold shadow-[0_0_12px_rgba(232,184,75,0.3)] animate-pulse'
+                : 'bg-zinc-900 border-[var(--color-border)] text-[var(--color-brand)] hover:bg-[var(--color-surface-hover)]'
             }`}
           >
             {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
@@ -217,7 +217,7 @@ export function OracleTimelineScrubber({
           <button
             onClick={() => handleSelectIndex(activeIndex + 1)}
             disabled={activeIndex === HISTORICAL_PERIODS.length - 1}
-            className="p-1.5 rounded-lg bg-zinc-900 border border-amber-500/20 text-amber-300 disabled:opacity-30 hover:bg-amber-500/20 text-xs transition-colors"
+            className="p-1.5 rounded-lg bg-zinc-900 border border-[var(--color-border)] text-[var(--color-brand)] disabled:opacity-30 hover:bg-[var(--color-surface-hover)] text-xs transition-colors"
             title="Next Period"
           >
             <ChevronRight className="w-4 h-4" />
@@ -237,7 +237,7 @@ export function OracleTimelineScrubber({
             step="1"
             value={activeIndex}
             onChange={handleSliderChange}
-            className="w-full accent-amber-400 cursor-pointer h-2 bg-zinc-950 rounded-lg appearance-none border border-amber-500/30"
+            className="w-full accent-amber-400 cursor-pointer h-2 bg-zinc-950 rounded-lg appearance-none border border-[var(--color-border)]"
           />
         </div>
 
@@ -252,8 +252,8 @@ export function OracleTimelineScrubber({
                 onMouseEnter={() => retroAudio.playGlassHoverHum()}
                 className={`py-1 rounded-lg text-[10px] font-mono transition-all border ${
                   isActive
-                    ? 'bg-amber-500/20 border-amber-400 text-amber-300 font-bold shadow-[0_0_8px_rgba(232,184,75,0.3)]'
-                    : 'bg-zinc-900/40 border-transparent text-zinc-400 hover:text-white hover:border-amber-500/20'
+                    ? 'bg-[var(--color-surface-hover)] border-[var(--color-border)] text-[var(--color-brand)] font-bold shadow-[0_0_8px_rgba(232,184,75,0.3)]'
+                    : 'bg-zinc-900/40 border-transparent text-zinc-400 hover:text-white hover:border-[var(--color-border)]'
                 }`}
               >
                 {period.label}
@@ -264,8 +264,8 @@ export function OracleTimelineScrubber({
       </div>
 
       {/* Highlight Description Box */}
-      <div className="p-2.5 rounded-xl bg-zinc-950/60 border border-amber-500/20 text-xs text-zinc-300 font-body flex items-center gap-2">
-        <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+      <div className="p-2.5 rounded-xl bg-zinc-950/60 border border-[var(--color-border)] text-xs text-zinc-300 font-body flex items-center gap-2">
+        <Sparkles className="w-4 h-4 text-[var(--color-brand)] shrink-0" />
         <span className="truncate">{currentPeriod.highlight}</span>
       </div>
     </div>

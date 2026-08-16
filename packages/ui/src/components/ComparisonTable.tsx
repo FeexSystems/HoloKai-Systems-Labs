@@ -23,7 +23,7 @@ export function ComparisonTable({
       <table className="w-full border-collapse">
         <thead>
           <tr className="border-b border-white/10">
-            <th className="text-left py-4 px-6 text-zinc-400 font-medium sticky left-0 bg-[#0a0a0f] z-10 min-w-[250px]">
+            <th className="text-left py-4 px-6 text-zinc-400 font-medium sticky left-0 bg-background z-10 min-w-[250px]">
               Feature
             </th>
             {comparison.tiers.map((tier) => (
@@ -31,7 +31,7 @@ export function ComparisonTable({
                 key={tier.id}
                 className={`text-center py-4 px-6 font-medium cursor-pointer transition-colors ${
                   tier.id === highlightedTier
-                    ? 'text-[var(--color-brand)] bg-[var(--color-brand)]/5'
+                    ? 'text-brand bg-brand/5'
                     : 'text-white hover:bg-white/5'
                 }`}
                 onClick={() => onTierSelect?.(tier.id)}
@@ -39,7 +39,7 @@ export function ComparisonTable({
                 <div className="flex flex-col items-center gap-2">
                   <span>{tier.name}</span>
                   {tier.popular && (
-                    <span className="text-xs px-2 py-1 rounded-full bg-[var(--color-brand)]/20 text-[var(--color-brand)]">
+                    <span className="text-xs px-2 py-1 rounded-full bg-brand/20 text-brand">
                       Popular
                     </span>
                   )}
@@ -65,10 +65,10 @@ export function ComparisonTable({
                 }`}
               >
                 {/* Feature Name */}
-                <td className="py-4 px-6 sticky left-0 bg-[#0a0a0f] z-10 min-w-[250px]">
+                <td className="py-4 px-6 sticky left-0 bg-background z-10 min-w-[250px]">
                   <div className="flex items-start gap-3">
                     {feature.icon && (
-                      <div className="mt-0.5 text-[var(--color-brand)]">
+                      <div className="mt-0.5 text-brand">
                         <span className="text-xs">ICON</span>
                       </div>
                     )}
@@ -89,7 +89,7 @@ export function ComparisonTable({
                     <td
                       key={tier.id}
                       className={`text-center py-4 px-6 ${
-                        isHighlighted && hasFeature ? 'bg-[var(--color-brand)]/5' : ''
+                        isHighlighted && hasFeature ? 'bg-brand/5' : ''
                       }`}
                     >
                       {hasFeature ? (
@@ -98,7 +98,7 @@ export function ComparisonTable({
                           animate={{ scale: 1, opacity: 1 }}
                           className="flex justify-center"
                         >
-                          <Check className="w-5 h-5 text-[var(--color-brand)]" />
+                          <Check className="w-5 h-5 text-brand" />
                         </motion.div>
                       ) : (
                         <motion.div
@@ -121,7 +121,7 @@ export function ComparisonTable({
       {/* Legend */}
       <div className="flex items-center justify-center gap-6 mt-6 text-xs text-zinc-400">
         <div className="flex items-center gap-2">
-          <Check className="w-4 h-4 text-[var(--color-brand)]" />
+          <Check className="w-4 h-4 text-brand" />
           <span>Available</span>
         </div>
         <div className="flex items-center gap-2">
@@ -129,7 +129,7 @@ export function ComparisonTable({
           <span>Not Available</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-[var(--color-brand)]" />
+          <div className="w-4 h-4 rounded-full bg-brand" />
           <span>Highlighted Tier</span>
         </div>
       </div>

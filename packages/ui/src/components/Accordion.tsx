@@ -34,16 +34,16 @@ export function Accordion({ items, allowMultiple = false, className = '' }: Acco
         return (
           <div
             key={item.id}
-            className="rounded-2xl border border-[var(--color-border)] bg-[#12121a] overflow-hidden transition-colors"
+            className="rounded-2xl border border-border bg-surface overflow-hidden transition-colors"
           >
             <button
               onClick={() => toggle(item.id)}
               aria-expanded={isOpen}
-              className="w-full px-6 py-5 text-left text-base md:text-lg font-bold text-white hover:text-[var(--color-brand)] flex items-center justify-between gap-4 transition-colors"
+              className="w-full px-6 py-5 text-left text-base md:text-lg font-bold text-white hover:text-brand flex items-center justify-between gap-4 transition-colors"
             >
               <span>{item.question}</span>
               <span
-                className={`text-[var(--color-brand)] font-mono text-xl transition-transform duration-300 ${
+                className={`text-brand font-mono text-xl transition-transform duration-300 ${
                   isOpen ? 'rotate-180' : ''
                 }`}
               >

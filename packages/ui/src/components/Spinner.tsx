@@ -22,7 +22,7 @@ const strokeMap = {
 };
 
 const colorMap = {
-  gold:  'text-[var(--color-brand)]',
+  gold:  'text-brand',
   white: 'text-white',
   muted: 'text-zinc-500',
 };

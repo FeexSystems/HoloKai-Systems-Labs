@@ -9,6 +9,16 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   outputFileTracingRoot: path.resolve(__dirname, '../../'),
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
+  },
   transpilePackages: [
     '@holokai/ui',
     '@holokai/design-system',
@@ -69,6 +79,14 @@ const nextConfig = {
       {
         source: '/cart/:path*',
         destination: 'http://localhost:3005/cart/:path*',
+      },
+      {
+        source: '/dataset',
+        destination: 'http://localhost:3006/dataset',
+      },
+      {
+        source: '/dataset/:path*',
+        destination: 'http://localhost:3006/dataset/:path*',
       }
     ];
   }

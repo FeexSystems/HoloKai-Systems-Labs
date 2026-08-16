@@ -48,7 +48,7 @@ export function Tooltip({
           className={[
             'absolute z-50 whitespace-nowrap px-3 py-1.5 rounded-xl',
             'text-xs font-medium text-zinc-200',
-            'bg-[#1a1a26] border border-white/10 shadow-xl',
+            'bg-surface-hover border border-white/10 shadow-xl',
             'animate-in fade-in zoom-in-95 duration-150',
             sideStyles[side],
             className,

@@ -60,16 +60,16 @@ export function MultiAgentVoiceDebate() {
   };
 
   return (
-    <div className="my-6 p-6 rounded-2xl bg-zinc-950/80 border border-amber-500/30 shadow-2xl backdrop-blur-xl">
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-5 pb-3 border-b border-amber-500/20">
+    <div className="my-6 p-6 rounded-2xl bg-zinc-950/80 border border-[var(--color-border)] shadow-2xl backdrop-blur-xl">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-5 pb-3 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+          <div className="w-10 h-10 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-brand)]">
             <Users className="w-5 h-5 animate-pulse" />
           </div>
           <div>
             <h3 className="text-base font-semibold text-white flex items-center gap-2 font-display">
               Multi-Agent Vanguard Voice Debate Engine
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 font-mono">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--color-surface-hover)] text-[var(--color-brand)] border border-[var(--color-border)] font-mono">
                 8 Guardians
               </span>
             </h3>
@@ -82,14 +82,14 @@ export function MultiAgentVoiceDebate() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         {/* Speaker A */}
         <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 space-y-2">
-          <label className="text-[10px] uppercase font-mono text-amber-400 block">Select Guardian A (Opener):</label>
+          <label className="text-[10px] uppercase font-mono text-[var(--color-brand)] block">Select Guardian A (Opener):</label>
           <select
             value={speakerA.id}
             onChange={(e) => {
               retroAudio.playGlassHoverHum();
               setSpeakerA(ALL_8_VANGUARDS.find(v => v.id === e.target.value) || ALL_8_VANGUARDS[0]);
             }}
-            className="w-full bg-zinc-950 border border-amber-500/20 text-zinc-200 text-xs rounded-lg p-2 font-mono focus:border-amber-400"
+            className="w-full bg-zinc-950 border border-[var(--color-border)] text-zinc-200 text-xs rounded-lg p-2 font-mono focus:border-[var(--color-border)]"
           >
             {ALL_8_VANGUARDS.map(v => (
               <option key={v.id} value={v.id} className="bg-zinc-950 text-zinc-200">{v.name} ({v.role})</option>
@@ -100,14 +100,14 @@ export function MultiAgentVoiceDebate() {
 
         {/* Speaker B */}
         <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 space-y-2">
-          <label className="text-[10px] uppercase font-mono text-amber-400 block">Select Guardian B (Respondent):</label>
+          <label className="text-[10px] uppercase font-mono text-[var(--color-brand)] block">Select Guardian B (Respondent):</label>
           <select
             value={speakerB.id}
             onChange={(e) => {
               retroAudio.playGlassHoverHum();
               setSpeakerB(ALL_8_VANGUARDS.find(v => v.id === e.target.value) || ALL_8_VANGUARDS[1]);
             }}
-            className="w-full bg-zinc-950 border border-amber-500/20 text-zinc-200 text-xs rounded-lg p-2 font-mono focus:border-amber-400"
+            className="w-full bg-zinc-950 border border-[var(--color-border)] text-zinc-200 text-xs rounded-lg p-2 font-mono focus:border-[var(--color-border)]"
           >
             {ALL_8_VANGUARDS.map(v => (
               <option key={v.id} value={v.id} className="bg-zinc-950 text-zinc-200">{v.name} ({v.role})</option>
@@ -120,8 +120,8 @@ export function MultiAgentVoiceDebate() {
       {/* Start Debate Control */}
       <div className="flex items-center justify-between">
         {activeSpeaker ? (
-          <div className="flex items-center gap-2 text-xs font-mono text-amber-300">
-            <Radio className="w-4 h-4 text-amber-400 animate-pulse" />
+          <div className="flex items-center gap-2 text-xs font-mono text-[var(--color-brand)]">
+            <Radio className="w-4 h-4 text-[var(--color-brand)] animate-pulse" />
             <span>Active Speaker: <strong>{activeSpeaker}</strong></span>
           </div>
         ) : (
@@ -133,7 +133,7 @@ export function MultiAgentVoiceDebate() {
           className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs transition shadow-lg ${
             isDebating
               ? 'bg-rose-500 hover:bg-rose-600 text-white border border-rose-400/40'
-              : 'bg-amber-500 hover:bg-amber-400 text-zinc-950 border border-amber-400/40 shadow-[0_0_15px_rgba(232,184,75,0.25)]'
+              : 'bg-[var(--color-brand)] hover:bg-[var(--color-brand)] text-zinc-950 border border-[var(--color-border)] shadow-[0_0_15px_rgba(232,184,75,0.25)]'
           }`}
         >
           {isDebating ? <Square className="w-4 h-4" /> : <Play className="w-4 h-4" />}

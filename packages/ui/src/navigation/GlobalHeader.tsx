@@ -79,6 +79,7 @@ export function GlobalHeader({ onNavigate, cartCount: propCartCount }: GlobalHea
     { label: 'Civilization OS', path: '/' },
     { label: 'Civilizations', path: '/civilizations' },
     { label: 'Oracle AI', path: '/oracle' },
+    { label: 'Dataset Explorer', path: '/dataset' },
     { label: 'Voice Oracle', path: '/oracle/voice' },
     { label: 'Archive Codex', path: '/archive' },
     { label: 'Vanguards', path: '/vanguards' },

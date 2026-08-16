@@ -1,0 +1,63 @@
+id,label,name,type,epistemic_status,source_version
+Plant_Moringa_Oleifera,Entity,Moringa oleifera,Plant,TRADITION,V17.0
+Plant_Acacia_Senegal,Entity,Acacia senegal,Plant,TRADITION,V17.0
+Plant_Vernonia_Amygdalina,Entity,Vernonia amygdalina,Plant,TRADITION,V17.0
+Plant_Ocimum_Gratissimum,Entity,Ocimum gratissimum,Plant,CULTURAL_TRADITION,V17.0
+Plant_Azadirachta_Indica,Entity,Azadirachta indica,Plant,TRADITION,V17.0
+Plant_Curcuma_Longa,Entity,Curcuma longa,Plant,TRADITION,V17.0
+Plant_Carica_Papaya,Entity,Carica papaya,Plant,TRADITION,V17.0
+Plant_Persea_Americana,Entity,Persea americana,Plant,TRADITION,V17.0
+Plant_Solanum_Melongena,Entity,Solanum melongena,Plant,TRADITION,V17.0
+Plant_Telfairia_Occidentalis,Entity,Telfairia occidentalis,Plant,TRADITION,V17.0
+Plant_Pearl_Millet,Entity,Pearl millet,Plant,NUTRITIONAL_CLAIM,V17.0
+Plant_Fonio,Entity,Fonio,Plant,NUTRITIONAL_CLAIM,V17.0
+Plant_Teff,Entity,Teff,Plant,NUTRITIONAL_CLAIM,V17.0
+Plant_Finger_Millet,Entity,Finger millet,Plant,NUTRITIONAL_CLAIM,V17.0
+Plant_Baobab_Fruit,Entity,Baobab fruit,Plant,NUTRITIONAL_CLAIM,V17.0
+Plant_Tamarind,Entity,Tamarind,Plant,TRADITION,V17.0
+Plant_Vigna_Subterranea,Entity,Vigna subterranea,Plant,NUTRITIONAL_CLAIM,V17.0
+Plant_Ewedu,Entity,Jute mallow,Plant,TRADITION,V17.0
+v17.1:Plant_Moringa_Oleifera:profile,Chunk,v17.1:Plant_Moringa_Oleifera:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:Plant_Acacia_Senegal:profile,Chunk,v17.1:Plant_Acacia_Senegal:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:Plant_Vernonia_Amygdalina:profile,Chunk,v17.1:Plant_Vernonia_Amygdalina:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:Plant_Ocimum_Gratissimum:profile,Chunk,v17.1:Plant_Ocimum_Gratissimum:profile,PLANT_PROFILE,CULTURAL_TRADITION,V17.0
+v17.1:Plant_Azadirachta_Indica:profile,Chunk,v17.1:Plant_Azadirachta_Indica:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:Plant_Curcuma_Longa:profile,Chunk,v17.1:Plant_Curcuma_Longa:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:Plant_Carica_Papaya:profile,Chunk,v17.1:Plant_Carica_Papaya:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:Plant_Persea_Americana:profile,Chunk,v17.1:Plant_Persea_Americana:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:Plant_Solanum_Melongena:profile,Chunk,v17.1:Plant_Solanum_Melongena:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:Plant_Telfairia_Occidentalis:profile,Chunk,v17.1:Plant_Telfairia_Occidentalis:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:Plant_Pearl_Millet:profile,Chunk,v17.1:Plant_Pearl_Millet:profile,PLANT_PROFILE,NUTRITIONAL_CLAIM,V17.0
+v17.1:Plant_Fonio:profile,Chunk,v17.1:Plant_Fonio:profile,PLANT_PROFILE,NUTRITIONAL_CLAIM,V17.0
+v17.1:Plant_Teff:profile,Chunk,v17.1:Plant_Teff:profile,PLANT_PROFILE,NUTRITIONAL_CLAIM,V17.0
+v17.1:Plant_Finger_Millet:profile,Chunk,v17.1:Plant_Finger_Millet:profile,PLANT_PROFILE,NUTRITIONAL_CLAIM,V17.0
+v17.1:Plant_Baobab_Fruit:profile,Chunk,v17.1:Plant_Baobab_Fruit:profile,PLANT_PROFILE,NUTRITIONAL_CLAIM,V17.0
+v17.1:Plant_Tamarind:profile,Chunk,v17.1:Plant_Tamarind:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:Plant_Vigna_Subterranea:profile,Chunk,v17.1:Plant_Vigna_Subterranea:profile,PLANT_PROFILE,NUTRITIONAL_CLAIM,V17.0
+v17.1:Plant_Ewedu:profile,Chunk,v17.1:Plant_Ewedu:profile,PLANT_PROFILE,TRADITION,V17.0
+v17.1:qa:001,Chunk,v17.1:qa:001,Q_AND_A,TRADITION,V17.0
+v17.1:qa:002,Chunk,v17.1:qa:002,Q_AND_A,TRADITION,V17.0
+v17.1:qa:003,Chunk,v17.1:qa:003,Q_AND_A,TRADITION,V17.0
+v17.1:qa:004,Chunk,v17.1:qa:004,Q_AND_A,TRADITION,V17.0
+v17.1:qa:005,Chunk,v17.1:qa:005,Q_AND_A,TRADITION,V17.0
+v17.1:qa:006,Chunk,v17.1:qa:006,Q_AND_A,TRADITION,V17.0
+v17.1:qa:007,Chunk,v17.1:qa:007,Q_AND_A,TRADITION,V17.0
+v17.1:qa:008,Chunk,v17.1:qa:008,Q_AND_A,TRADITION,V17.0
+v17.1:qa:009,Chunk,v17.1:qa:009,Q_AND_A,TRADITION,V17.0
+v17.1:qa:010,Chunk,v17.1:qa:010,Q_AND_A,TRADITION,V17.0
+v17.1:qa:011,Chunk,v17.1:qa:011,Q_AND_A,TRADITION,V17.0
+v17.1:qa:012,Chunk,v17.1:qa:012,Q_AND_A,TRADITION,V17.0
+v17.1:qa:013,Chunk,v17.1:qa:013,Q_AND_A,TRADITION,V17.0
+v17.1:qa:014,Chunk,v17.1:qa:014,Q_AND_A,TRADITION,V17.0
+v17.1:qa:015,Chunk,v17.1:qa:015,Q_AND_A,TRADITION,V17.0
+v17.1:qa:016,Chunk,v17.1:qa:016,Q_AND_A,TRADITION,V17.0
+v17.1:Diet_Maat_Dietary_System:system,Chunk,v17.1:Diet_Maat_Dietary_System:system,KNOWLEDGE_SYSTEM,TRADITION,V17.0
+v17.1:System_Igbo_Traditional_Medicine:system,Chunk,v17.1:System_Igbo_Traditional_Medicine:system,KNOWLEDGE_SYSTEM,TRADITION,V17.0
+v17.1:System_Uganda_Spices_And_Herbs:system,Chunk,v17.1:System_Uganda_Spices_And_Herbs:system,KNOWLEDGE_SYSTEM,CULTURAL_TRADITION,V17.0
+v17.1:System_Uganda_Remedies:system,Chunk,v17.1:System_Uganda_Remedies:system,KNOWLEDGE_SYSTEM,TRADITION,V17.0
+v17.1:Process_Decoction:process,Chunk,v17.1:Process_Decoction:process,PREPARATION,TRADITION,V17.0
+v17.1:Process_Poultice:process,Chunk,v17.1:Process_Poultice:process,PREPARATION,TRADITION,V17.0
+v17.1:Process_Baths:process,Chunk,v17.1:Process_Baths:process,PREPARATION,TRADITION,V17.0
+v17.1:Process_Preservation:process,Chunk,v17.1:Process_Preservation:process,PREPARATION,TRADITION,V17.0
+v17.1:Process_Incense:process,Chunk,v17.1:Process_Incense:process,PREPARATION,TRADITION,V17.0
+V17.0,Source,HoloKai Volume 17.0 original corpus,Source,ORIGINAL,V17.0

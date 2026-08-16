@@ -25,8 +25,8 @@ export function PricingCard({ tier, className = '' }: PricingCardProps) {
       className={[
         'relative flex flex-col rounded-3xl border p-6 md:p-8 transition-all duration-300',
         tier.featured
-          ? 'border-[var(--color-border-strong)] bg-gradient-to-b from-[var(--color-surface-hover)] via-[#0e0e18] to-[#05050a] shadow-glow-brand hover:-translate-y-1'
-          : 'border-[var(--color-border)] bg-[#12121a] hover:border-[var(--color-border)] hover:-translate-y-0.5',
+          ? 'border-border-strong bg-gradient-to-b from-surface-hover via-[#0e0e18] to-background shadow-glow-brand hover:-translate-y-1'
+          : 'border-border bg-surface hover:border-border hover:-translate-y-0.5',
         className,
       ].join(' ')}
     >
@@ -44,14 +44,14 @@ export function PricingCard({ tier, className = '' }: PricingCardProps) {
 
       {tier.badge && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-widest bg-[var(--color-brand)] text-black">
+          <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-widest bg-brand text-black">
             {tier.badge}
           </span>
         </div>
       )}
 
       <div className="mb-6">
-        <span className="text-xs font-mono text-[var(--color-brand)] uppercase tracking-widest">{tier.name}</span>
+        <span className="text-xs font-mono text-brand uppercase tracking-widest">{tier.name}</span>
         <div className="mt-3 flex items-end gap-1">
           <span className="text-4xl font-extrabold text-white tracking-tight">{tier.price}</span>
           {tier.period && (
@@ -65,7 +65,7 @@ export function PricingCard({ tier, className = '' }: PricingCardProps) {
         {tier.features.map((feature) => (
           <li key={feature} className="flex items-start gap-2.5 text-sm text-zinc-300">
             <svg
-              className="shrink-0 mt-0.5 text-[var(--color-brand)]"
+              className="shrink-0 mt-0.5 text-brand"
               width="14" height="14" viewBox="0 0 14 14" fill="none"
               aria-hidden="true"
             >
@@ -84,8 +84,8 @@ export function PricingCard({ tier, className = '' }: PricingCardProps) {
         className={[
           'block w-full rounded-full h-12 text-sm font-extrabold text-center leading-[3rem] transition-all duration-200',
           tier.featured
-            ? 'bg-gradient-to-r from-[var(--color-brand)] to-[var(--color-brand-contrast)] text-black hover:brightness-110 hover:-translate-y-0.5 shadow-glow-brand'
-            : 'border border-[var(--color-border)] bg-transparent text-[var(--color-brand)] hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-border)]',
+            ? 'bg-gradient-to-r from-brand to-brand-contrast text-black hover:brightness-110 hover:-translate-y-0.5 shadow-glow-brand'
+            : 'border border-border bg-transparent text-brand hover:bg-surface-hover hover:border-border',
         ].join(' ')}
       >
         {tier.cta.label}

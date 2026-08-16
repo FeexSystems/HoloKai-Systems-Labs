@@ -20,23 +20,23 @@ export function ComputationResult({ data, className = '' }: ComputationResultPro
   const { domain, wolframExpression, result, provenance, referenceYear } = data;
 
   return (
-    <div className={`p-4 rounded-xl border border-amber-500/30 bg-zinc-950/90 text-zinc-105 space-y-3 font-mono text-xs ${className}`}>
+    <div className={`p-4 rounded-xl border border-[var(--color-border)] bg-zinc-950/90 text-zinc-105 space-y-3 font-mono text-xs ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between border-b border-white/10 pb-2">
         <div className="flex items-center gap-2">
-          <Cpu className="w-4 h-4 text-amber-400 animate-pulse" />
-          <span className="font-bold text-amber-300 uppercase tracking-wider text-[11px]">
+          <Cpu className="w-4 h-4 text-[var(--color-brand)] animate-pulse" />
+          <span className="font-bold text-[var(--color-brand)] uppercase tracking-wider text-[11px]">
             WOLFRAM COMPUTATIONAL LAYER — {domain}
           </span>
         </div>
-        <span className="text-[10px] text-zinc-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+        <span className="text-[10px] text-zinc-400 bg-[var(--color-surface-hover)] px-2 py-0.5 rounded border border-[var(--color-border)]">
           VERIFIED
         </span>
       </div>
 
       {/* Wolfram WL Code Expression */}
       {wolframExpression && (
-        <div className="bg-zinc-900 p-2.5 rounded-lg border border-white/5 text-[11px] text-amber-200/90 overflow-x-auto scrollbar-thin">
+        <div className="bg-zinc-900 p-2.5 rounded-lg border border-white/5 text-[11px] text-[var(--color-brand)]/90 overflow-x-auto scrollbar-thin">
           <span className="text-zinc-500 select-none">wl&gt; </span>
           <code>{wolframExpression}</code>
         </div>
@@ -53,7 +53,7 @@ export function ComputationResult({ data, className = '' }: ComputationResultPro
                   {Object.entries(val).map(([subK, subV]) => (
                     <div key={subK} className="flex justify-between">
                       <span className="text-zinc-400">{subK}:</span>
-                      <span className="text-amber-300 font-bold">{String(subV)}</span>
+                      <span className="text-[var(--color-brand)] font-bold">{String(subV)}</span>
                     </div>
                   ))}
                 </div>
@@ -63,7 +63,7 @@ export function ComputationResult({ data, className = '' }: ComputationResultPro
           return (
             <div key={key} className="bg-zinc-900/60 p-2 rounded border border-white/5 flex items-center justify-between">
               <span className="text-zinc-400 uppercase tracking-wide text-[10px]">{key}:</span>
-              <span className="text-amber-300 font-bold text-right ml-2 truncate max-w-[200px]" title={String(val)}>
+              <span className="text-[var(--color-brand)] font-bold text-right ml-2 truncate max-w-[200px]" title={String(val)}>
                 {String(val)}
               </span>
             </div>
@@ -78,7 +78,7 @@ export function ComputationResult({ data, className = '' }: ComputationResultPro
           <span>Provenance: {provenance}</span>
         </div>
         {referenceYear && (
-          <div className="flex items-center gap-1 text-amber-400/90 font-bold">
+          <div className="flex items-center gap-1 text-[var(--color-brand)]/90 font-bold">
             <Clock className="w-3 h-3" />
             <span>Ref Year: {referenceYear}</span>
           </div>

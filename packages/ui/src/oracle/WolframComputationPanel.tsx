@@ -62,7 +62,7 @@ export function WolframComputationPanel({ computationData, query }: WolframCompu
       case 'ESTABLISHED':
         return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
       case 'SCHOLARLY_DEBATE':
-        return 'bg-amber-500/10 text-amber-400 border-amber-500/30';
+        return 'bg-[var(--color-surface-hover)] text-[var(--color-brand)] border-[var(--color-border)]';
       case 'TRADITION':
         return 'bg-sky-500/10 text-sky-400 border-sky-500/30';
       case 'SPECULATIVE':
@@ -72,11 +72,11 @@ export function WolframComputationPanel({ computationData, query }: WolframCompu
   };
 
   return (
-    <div className="my-4 p-4 rounded-xl bg-zinc-950/90 border border-amber-500/20 shadow-xl backdrop-blur-md text-zinc-200">
+    <div className="my-4 p-4 rounded-xl bg-zinc-950/90 border border-[var(--color-border)] shadow-xl backdrop-blur-md text-zinc-200">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-zinc-800">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+          <div className="w-8 h-8 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-brand)]">
             <Cpu className="w-4.5 h-4.5" />
           </div>
           <div>
@@ -94,11 +94,11 @@ export function WolframComputationPanel({ computationData, query }: WolframCompu
         <div className="flex items-center gap-3">
           <div className="text-right">
             <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-medium block">Verification Confidence</span>
-            <span className="text-xs font-mono font-bold text-amber-300">{(sampleData.confidenceScore * 100).toFixed(1)}%</span>
+            <span className="text-xs font-mono font-bold text-[var(--color-brand)]">{(sampleData.confidenceScore * 100).toFixed(1)}%</span>
           </div>
           <div className="w-12 h-1.5 bg-zinc-805 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full"
+              className="h-full bg-gradient-to-r from-[var(--pui-forest-active)] to-emerald-400 rounded-full"
               style={{ width: `${sampleData.confidenceScore * 100}%` }}
             />
           </div>
@@ -110,7 +110,7 @@ export function WolframComputationPanel({ computationData, query }: WolframCompu
         <button
           onClick={() => setActiveTab('computation')}
           className={`flex items-center gap-1.5 px-3 py-1 rounded-md transition ${
-            activeTab === 'computation' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'text-zinc-400 hover:text-zinc-200'
+            activeTab === 'computation' ? 'bg-[var(--color-surface-hover)] text-[var(--color-brand)] border border-[var(--color-border)]' : 'text-zinc-400 hover:text-zinc-200'
           }`}
         >
           <Hash className="w-3.5 h-3.5" />
@@ -119,7 +119,7 @@ export function WolframComputationPanel({ computationData, query }: WolframCompu
         <button
           onClick={() => setActiveTab('evidence')}
           className={`flex items-center gap-1.5 px-3 py-1 rounded-md transition ${
-            activeTab === 'evidence' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'text-zinc-400 hover:text-zinc-200'
+            activeTab === 'evidence' ? 'bg-[var(--color-surface-hover)] text-[var(--color-brand)] border border-[var(--color-border)]' : 'text-zinc-400 hover:text-zinc-200'
           }`}
         >
           <ShieldCheck className="w-3.5 h-3.5" />
@@ -133,9 +133,9 @@ export function WolframComputationPanel({ computationData, query }: WolframCompu
           <div className="p-3 rounded-lg bg-zinc-900 border border-zinc-800 space-y-1.5">
             <div className="text-zinc-400 text-[11px] flex items-center justify-between">
               <span>Verified Formula / Equation:</span>
-              <span className="text-amber-400/80 text-[10px]">Wolfram Language Output</span>
+              <span className="text-[var(--color-brand)]/80 text-[10px]">Wolfram Language Output</span>
             </div>
-            <div className="text-amber-200 bg-amber-950/30 p-2 rounded border border-amber-500/20 overflow-x-auto text-[11px]">
+            <div className="text-[var(--color-brand)] bg-[var(--color-brand)]/30 p-2 rounded border border-[var(--color-border)] overflow-x-auto text-[11px]">
               {sampleData.wolframResult.formula}
             </div>
           </div>
@@ -147,7 +147,7 @@ export function WolframComputationPanel({ computationData, query }: WolframCompu
             </div>
             <div className="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-between">
               <span className="text-zinc-400">Calculated Dimension:</span>
-              <span className="text-amber-300 font-semibold">{sampleData.wolframResult.dimension}</span>
+              <span className="text-[var(--color-brand)] font-semibold">{sampleData.wolframResult.dimension}</span>
             </div>
           </div>
         </div>
@@ -162,7 +162,7 @@ export function WolframComputationPanel({ computationData, query }: WolframCompu
                   <span className="text-[10px] text-zinc-400 font-mono">{item.type}</span>
                 </div>
               </div>
-              <span className="text-[11px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+              <span className="text-[11px] font-mono text-[var(--color-brand)] bg-[var(--color-surface-hover)] px-2 py-0.5 rounded border border-[var(--color-border)]">
                 {(item.weight * 100).toFixed(0)}% weight
               </span>
             </div>

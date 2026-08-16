@@ -11,7 +11,7 @@ export interface GlassPanelProps {
 export function GlassPanel({ children, className = '', variant = 'amber', glow = false }: GlassPanelProps) {
   const borderStyles =
     variant === 'amber'
-      ? 'border-[var(--color-border)] bg-[#12121a]/90'
+      ? 'border-border bg-surface/90'
       : variant === 'blue'
       ? 'border-blue-500/20 bg-[#0f121d]/90'
       : variant === 'emerald'

@@ -58,7 +58,7 @@ export function TestimonialCarousel({
       <Star
         key={i}
         className={`w-4 h-4 ${
-          i < rating ? 'text-[var(--color-brand)] fill-[var(--color-brand)]' : 'text-zinc-600'
+          i < rating ? 'text-brand fill-brand' : 'text-zinc-600'
         }`}
       />
     ));
@@ -71,7 +71,7 @@ export function TestimonialCarousel({
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Testimonial Card */}
-      <div className="relative overflow-hidden rounded-2xl bg-[#0a0a0f] border border-white/10 p-8">
+      <div className="relative overflow-hidden rounded-2xl bg-background border border-white/10 p-8">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={currentIndex}
@@ -82,14 +82,14 @@ export function TestimonialCarousel({
             className="relative"
           >
             {/* Quote Icon */}
-            <Quote className="absolute top-4 right-4 w-12 h-12 text-[var(--color-brand)]/10" />
+            <Quote className="absolute top-4 right-4 w-12 h-12 text-brand/10" />
 
             {/* Content */}
             <div className="flex flex-col md:flex-row gap-6">
               {/* Avatar */}
               <div className="flex-shrink-0">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--color-brand)]/20 to-transparent border border-white/10 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-[var(--color-brand)]">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-brand/20 to-transparent border border-white/10 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-brand">
                     {currentTestimonial.name.split(' ').map(n => n[0]).join('')}
                   </span>
                 </div>
@@ -144,14 +144,14 @@ export function TestimonialCarousel({
           <>
             <button
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#0a0a0f] border border-white/10 flex items-center justify-center text-white hover:border-[var(--color-brand)] hover:text-[var(--color-brand)] transition-colors z-10"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background border border-white/10 flex items-center justify-center text-white hover:border-brand hover:text-brand transition-colors z-10"
               aria-label="Previous testimonial"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#0a0a0f] border border-white/10 flex items-center justify-center text-white hover:border-[var(--color-brand)] hover:text-[var(--color-brand)] transition-colors z-10"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background border border-white/10 flex items-center justify-center text-white hover:border-brand hover:text-brand transition-colors z-10"
               aria-label="Next testimonial"
             >
               <ChevronRight className="w-5 h-5" />
@@ -169,7 +169,7 @@ export function TestimonialCarousel({
               onClick={() => goToSlide(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 index === currentIndex
-                  ? 'bg-[var(--color-brand)] w-8'
+                  ? 'bg-brand w-8'
                   : 'bg-white/20 hover:bg-white/40'
               }`}
               aria-label={`Go to testimonial ${index + 1}`}

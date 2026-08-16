@@ -81,7 +81,7 @@ export function Drawer({
         aria-label={title || 'Drawer'}
         className={[
           'relative z-10 flex flex-col',
-          'bg-[#0e0e18] border border-[var(--color-border)] shadow-2xl overflow-y-auto',
+          'bg-[#0e0e18] border border-border shadow-2xl overflow-y-auto',
           config.panel,
           config.enter,
           className,

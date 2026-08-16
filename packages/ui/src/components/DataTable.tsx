@@ -79,7 +79,7 @@ export function DataTable<T>({ data, columns, pageSize = 10 }: DataTableProps<T>
                 <button
                   key={idx}
                   onClick={() => setCurrentPage(idx + 1)}
-                  className={`w-8 h-8 rounded text-sm flex items-center justify-center transition-colors ${currentPage === idx + 1 ? 'bg-[var(--color-surface-hover)] text-[var(--color-brand)] border border-[var(--color-border)]' : 'bg-white/5 text-zinc-400 hover:bg-white/10'}`}
+                  className={`w-8 h-8 rounded text-sm flex items-center justify-center transition-colors ${currentPage === idx + 1 ? 'bg-surface-hover text-brand border border-border' : 'bg-white/5 text-zinc-400 hover:bg-white/10'}`}
                 >
                   {idx + 1}
                 </button>

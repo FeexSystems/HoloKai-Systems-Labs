@@ -37,7 +37,7 @@ export function ProductDetailModal({
           {/* Icon/Visual */}
           <div className="aspect-square rounded-2xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 flex items-center justify-center">
             {product.icon && (
-              <div className="text-6xl text-[var(--color-brand)]">
+              <div className="text-6xl text-brand">
                 <span className="opacity-50">ICON</span>
               </div>
             )}
@@ -61,7 +61,7 @@ export function ProductDetailModal({
             {product.price && (
               <div>
                 <div className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Starting Price</div>
-                <div className="text-2xl font-bold text-[var(--color-brand)]">
+                <div className="text-2xl font-bold text-brand">
                   {product.price.displayString || `$${product.price.amount}`}
                 </div>
                 {product.price.period && (
@@ -130,7 +130,7 @@ export function ProductDetailModal({
                 transition={{ delay: index * 0.1 }}
                 className="flex items-center gap-3"
               >
-                <Check className="w-5 h-5 text-[var(--color-brand)] flex-shrink-0" />
+                <Check className="w-5 h-5 text-brand flex-shrink-0" />
                 <span className="text-sm text-zinc-300">{feature}</span>
               </motion.div>
             ))}
@@ -150,7 +150,7 @@ export function ProductDetailModal({
                   whileHover={{ scale: 1.02 }}
                   className={`p-4 rounded-xl border transition-all cursor-pointer ${
                     tier === 'pro'
-                      ? 'border-[var(--color-brand)] bg-[var(--color-brand)]/5'
+                      ? 'border-brand bg-brand/5'
                       : 'border-white/10 bg-white/5 hover:border-white/30'
                   }`}
                   onClick={() => onSubscribe?.(tier)}

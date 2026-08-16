@@ -28,7 +28,7 @@ export const VANGUARD_ROSTER: VanguardUnitData[] = [
     role: 'Preserver & Scanner',
     image: '/assets/vanguard-orbit/KEMET-ALPHA full body.JPG',
     video: '/assets/vanguard-orbit/KEMET-ALPHA.MP4',
-    color: 'text-[var(--color-brand)]',
+    color: 'text-brand',
     archetype: 'Nile Epigraphy Specialist',
     description: 'Scans, digitizes, and reconstructs damaged papyri, stelae, and hieroglyphic inscriptions with sub-millimeter precision.',
     metrics: { epistemicIndex: '99.8%', vectorMemory: '18.4 TB', ingestionSpeed: '5.2k folios/s', primaryDomain: 'Nile Valley Epigraphy' },
@@ -76,7 +76,7 @@ export const VANGUARD_ROSTER: VanguardUnitData[] = [
     role: 'Creator & Craftsman',
     image: '/assets/vanguard-orbit/SIKA-GOLD fullbody.JPG',
     video: '/assets/vanguard-orbit/SIKA-GOLD (1).MP4',
-    color: 'text-[var(--color-brand-light)]',
+    color: 'text-brand-contrast',
     archetype: 'Metallurgical Master',
     description: 'Analyzes ancient lost-wax casting, bronze metallurgy, and goldsmithing techniques across Ife, Benin, and Ashanti.',
     metrics: { epistemicIndex: '99.1%', vectorMemory: '16.5 TB', ingestionSpeed: '4.5k folios/s', primaryDomain: 'Benin & Ife Bronze Craft' },
@@ -147,11 +147,11 @@ export function VanguardCarousel({ onSelectUnit, className = '' }: VanguardCarou
   };
 
   return (
-    <div className={`rounded-[36px] border border-[var(--color-border)] bg-gradient-to-b from-[#12121e] via-[#0a0a0f] to-[#05050a] p-8 lg:p-12 text-white shadow-2xl space-y-8 backdrop-blur-2xl ${className}`}>
+    <div className={`rounded-[36px] border border-border bg-gradient-to-b from-[#12121e] via-background to-background p-8 lg:p-12 text-white shadow-2xl space-y-8 backdrop-blur-2xl ${className}`}>
       {/* Header Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--color-border-subtle)] pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border-subtle pb-6">
         <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-brand)] font-bold">
+          <span className="text-xs font-mono uppercase tracking-widest text-brand font-bold">
             Cinematic 3D Vanguard Gallery
           </span>
           <h2 className="text-3xl md:text-5xl font-extrabold text-white mt-1">
@@ -163,17 +163,17 @@ export function VanguardCarousel({ onSelectUnit, className = '' }: VanguardCarou
         <div className="flex items-center gap-3">
           <button
             onClick={handlePrev}
-            className="size-12 rounded-full border border-white/10 bg-white/5 text-white hover:bg-[var(--color-brand)] hover:text-black font-mono text-lg transition-all flex items-center justify-center shadow-lg"
+            className="size-12 rounded-full border border-white/10 bg-white/5 text-white hover:bg-brand hover:text-black font-mono text-lg transition-all flex items-center justify-center shadow-lg"
             aria-label="Previous Vanguard Unit"
           >
             ←
           </button>
-          <span className="font-mono text-xs text-[var(--color-brand)] font-bold px-2">
+          <span className="font-mono text-xs text-brand font-bold px-2">
             {activeIndex + 1} / {VANGUARD_ROSTER.length}
           </span>
           <button
             onClick={handleNext}
-            className="size-12 rounded-full border border-white/10 bg-white/5 text-white hover:bg-[var(--color-brand)] hover:text-black font-mono text-lg transition-all flex items-center justify-center shadow-lg"
+            className="size-12 rounded-full border border-white/10 bg-white/5 text-white hover:bg-brand hover:text-black font-mono text-lg transition-all flex items-center justify-center shadow-lg"
             aria-label="Next Vanguard Unit"
           >
             →
@@ -184,7 +184,7 @@ export function VanguardCarousel({ onSelectUnit, className = '' }: VanguardCarou
       {/* Main 3D Coverflow Display & Spec Sheet */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Left Column: 3D Video & Artwork Showcase */}
-        <div className="lg:col-span-7 relative h-96 md:h-[460px] rounded-3xl overflow-hidden bg-black border border-[var(--color-border-strong)] shadow-2xl group flex items-center justify-center">
+        <div className="lg:col-span-7 relative h-96 md:h-[460px] rounded-3xl overflow-hidden bg-black border border-border-strong shadow-2xl group flex items-center justify-center">
           {/* Static Fullbody Artwork */}
           <img
             src={activeUnit.image}
@@ -204,7 +204,7 @@ export function VanguardCarousel({ onSelectUnit, className = '' }: VanguardCarou
           />
 
           {/* Overlay Status Badge */}
-          <div className="absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-black/80 border border-[var(--color-border-strong)] text-xs font-mono font-bold text-[var(--color-brand)] backdrop-blur-md flex items-center gap-2">
+          <div className="absolute top-4 left-4 z-10 px-3 py-1.5 rounded-full bg-black/80 border border-border-strong text-xs font-mono font-bold text-brand backdrop-blur-md flex items-center gap-2">
             <span className="size-2 rounded-full bg-emerald-400 animate-ping" />
             <span>UNIT {activeUnit.id} · {activeUnit.archetype.toUpperCase()}</span>
           </div>
@@ -213,7 +213,7 @@ export function VanguardCarousel({ onSelectUnit, className = '' }: VanguardCarou
         {/* Right Column: Character Specs & Metrics */}
         <div className="lg:col-span-5 space-y-6">
           <div>
-            <span className="text-xs font-mono font-extrabold uppercase tracking-widest text-[var(--color-brand)]">
+            <span className="text-xs font-mono font-extrabold uppercase tracking-widest text-brand">
               Vanguard Guardian Persona
             </span>
             <h3 className="text-3xl md:text-5xl font-extrabold text-white mt-1">
@@ -232,11 +232,11 @@ export function VanguardCarousel({ onSelectUnit, className = '' }: VanguardCarou
           <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 font-mono">
             <div>
               <span className="text-[10px] text-zinc-400 uppercase font-bold block">Epistemic Rigor</span>
-              <span className="text-lg font-extrabold text-[var(--color-brand)]">{activeUnit.metrics.epistemicIndex}</span>
+              <span className="text-lg font-extrabold text-brand">{activeUnit.metrics.epistemicIndex}</span>
             </div>
             <div>
               <span className="text-[10px] text-zinc-400 uppercase font-bold block">Vector Memory</span>
-              <span className="text-lg font-extrabold text-[var(--color-brand)]">{activeUnit.metrics.vectorMemory}</span>
+              <span className="text-lg font-extrabold text-brand">{activeUnit.metrics.vectorMemory}</span>
             </div>
             <div>
               <span className="text-[10px] text-zinc-400 uppercase font-bold block">Ingestion Speed</span>
@@ -252,14 +252,14 @@ export function VanguardCarousel({ onSelectUnit, className = '' }: VanguardCarou
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               onClick={handleVoiceSample}
-              className="h-12 px-6 rounded-xl bg-[var(--color-brand)] text-black font-extrabold text-xs hover:brightness-110 shadow-lg shadow-glow-brand transition-all flex items-center justify-center gap-2"
+              className="h-12 px-6 rounded-xl bg-brand text-black font-extrabold text-xs hover:brightness-110 shadow-lg shadow-glow-brand transition-all flex items-center justify-center gap-2"
             >
               <span>🔊</span>
               <span>Listen ElevenLabs Voice</span>
             </button>
             <button
               onClick={() => onSelectUnit && onSelectUnit(activeUnit)}
-              className="h-12 px-6 rounded-xl border border-[var(--color-border-strong)] bg-white/5 text-[var(--color-brand)] font-bold text-xs hover:bg-white/10 transition-all flex items-center justify-center"
+              className="h-12 px-6 rounded-xl border border-border-strong bg-white/5 text-brand font-bold text-xs hover:bg-white/10 transition-all flex items-center justify-center"
             >
               Inspect Matrix Dossier →
             </button>
@@ -274,7 +274,7 @@ export function VanguardCarousel({ onSelectUnit, className = '' }: VanguardCarou
             key={unit.id}
             onClick={() => setActiveIndex(idx)}
             className={`h-2 rounded-full transition-all ${
-              idx === activeIndex ? 'w-8 bg-[var(--color-brand)]' : 'w-2 bg-white/20 hover:bg-white/40'
+              idx === activeIndex ? 'w-8 bg-brand' : 'w-2 bg-white/20 hover:bg-white/40'
             }`}
             aria-label={`Go to slide ${idx + 1}`}
           />

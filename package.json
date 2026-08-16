@@ -19,7 +19,7 @@
     "deploy:firebase": "pnpm --filter @holokai/shell build && firebase deploy",
     "deploy:gcp": "powershell infra/gcp/deploy.ps1",
     "deploy:gcp:preview": "powershell infra/gcp/deploy.ps1 -Preview",
-    "lint": "pnpm --filter @holokai/shell lint",
+    "lint": "pnpm --filter @holokai/shell run lint-app",
     "preview": "pnpm --filter @holokai/shell start"
   },
   "dependencies": {

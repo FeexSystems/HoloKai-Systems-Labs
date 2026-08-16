@@ -48,7 +48,7 @@ export function TriangulationReasoningPanel({ response }: TriangulationReasoning
     >
       <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
         <div className="flex items-center gap-2">
-          <Brain className="w-4 h-4 text-amber-500" />
+          <Brain className="w-4 h-4 text-[var(--color-brand)]" />
           <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-100">
             Triangulation & Evidence Reasoning Chain
           </h3>
@@ -63,7 +63,7 @@ export function TriangulationReasoningPanel({ response }: TriangulationReasoning
           const Icon = step.icon;
           return (
             <div key={i} className="p-3 rounded-xl border border-zinc-800 bg-white/5 space-y-1.5">
-              <div className="flex items-center justify-between text-amber-500">
+              <div className="flex items-center justify-between text-[var(--color-brand)]">
                 <Icon className="w-4 h-4" />
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
               </div>

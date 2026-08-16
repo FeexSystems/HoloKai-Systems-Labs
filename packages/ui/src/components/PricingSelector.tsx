@@ -26,7 +26,7 @@ export function PricingSelector({
     <div className="w-full">
       {/* Tier Toggle */}
       <div className="flex justify-center mb-8">
-        <div className="inline-flex bg-[#0a0a0f] border border-white/10 rounded-full p-1">
+        <div className="inline-flex bg-background border border-white/10 rounded-full p-1">
           {tiers.map((tier) => (
             <button
               key={tier.id}
@@ -35,7 +35,7 @@ export function PricingSelector({
               onMouseLeave={() => setHoveredTier(null)}
               className={`relative px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 selectedTier === tier.id
-                  ? 'bg-[var(--color-brand)] text-white'
+                  ? 'bg-brand text-white'
                   : 'text-zinc-400 hover:text-white'
               }`}
             >
@@ -66,8 +66,8 @@ export function PricingSelector({
               onClick={() => onSelectTier?.(tier.id)}
               className={`relative p-6 rounded-2xl border transition-all duration-300 cursor-pointer ${
                 isSelected
-                  ? 'border-[var(--color-brand)] bg-[var(--color-brand)]/5 shadow-glow-brand'
-                  : 'border-white/10 bg-[#0a0a0f] hover:border-white/30'
+                  ? 'border-brand bg-brand/5 shadow-glow-brand'
+                  : 'border-white/10 bg-background hover:border-white/30'
               }`}
             >
               {/* Popular Badge */}
@@ -81,7 +81,7 @@ export function PricingSelector({
               <div className="text-center mb-6">
                 <h3 className="text-xl font-bold text-white mb-2">{tier.name}</h3>
                 <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-4xl font-bold text-[var(--color-brand)]">
+                  <span className="text-4xl font-bold text-brand">
                     ${tier.price.amount}
                   </span>
                   {tier.price.period && (
@@ -96,7 +96,7 @@ export function PricingSelector({
                 {tier.features.map((feature) => (
                   <div key={feature.id} className="flex items-start gap-3">
                     <div className="mt-0.5 flex-shrink-0">
-                      <Check className="w-4 h-4 text-[var(--color-brand)]" />
+                      <Check className="w-4 h-4 text-brand" />
                     </div>
                     <div>
                       <div className="text-sm text-white font-medium">{feature.name}</div>
@@ -175,7 +175,7 @@ export function PricingSelector({
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-3">
                         {feature.icon && (
-                          <span className="text-[var(--color-brand)]">ICON</span>
+                          <span className="text-brand">ICON</span>
                         )}
                         <div>
                           <div className="text-sm text-white font-medium">{feature.name}</div>
@@ -188,7 +188,7 @@ export function PricingSelector({
                       return (
                         <td key={tier.id} className="text-center py-4 px-4">
                           {hasFeature ? (
-                            <Check className="w-5 h-5 text-[var(--color-brand)] mx-auto" />
+                            <Check className="w-5 h-5 text-brand mx-auto" />
                           ) : (
                             <X className="w-5 h-5 text-zinc-600 mx-auto" />
                           )}

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Footer } from '@holokai/branding';
-import { GlobalHeader, AIChatLauncher } from '@holokai/ui';
+import { GlobalHeader, AIChatLauncher, AncientDustCursor, AmbientSoundscapeToggle, CulturalGlossary, ChatWidget, CommandPalette } from '@holokai/ui';
 import { RuntimeProvider } from '@holokai/runtime';
 import { ClerkProvider } from '@clerk/nextjs';
 import GalacticBackground from '../components/GalacticBackground';
@@ -133,7 +133,14 @@ export default function RootLayout({
             {/* Single unified header — GlobalHeader contains all nav + auth */}
             <GlobalHeader />
             <div id="main-content" className="flex-1">{children}</div>
-            <AIChatLauncher />
+            
+            {/* Global UX Immersion Suite */}
+            <AncientDustCursor />
+            <AmbientSoundscapeToggle />
+            <CulturalGlossary />
+            <ChatWidget />
+            <CommandPalette />
+            
             <Footer showCopyright={true} />
           </RuntimeProvider>
         </ClerkProvider>

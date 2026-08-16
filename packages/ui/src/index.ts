@@ -31,6 +31,8 @@ export * from './components/VanguardCarousel';
 export * from './components/IconButton';
 export * from './components/Skeleton';
 export * from './components/Spinner';
+export * from './components/Surface';
+export * from './components/Dropdown';
 
 // ── HoloKai Composites (Phase C) ────────────────────────────────────────────
 export * from './components/FeatureSection';
@@ -44,6 +46,12 @@ export * from './components/ResearchLogCard';
 export * from './components/ProductCard';
 export * from './components/ProductGrid';
 export * from './components/SubscriptionCard';
+
+// ── AI Composites ─────────────────────────────────────────────────────────────
+export * from './components/ChatMessage';
+export * from './components/ChatFeed';
+export * from './components/ChatWidget';
+export * from './components/CommandPalette';
 
 // ── Wave 2 Components ───────────────────────────────────────────────────────
 export * from './components/ProductCard3D';
@@ -76,6 +84,7 @@ export * from './civilization/CivilizationDossier';
 
 // ── Artifact ─────────────────────────────────────────────────────────────────
 export * from './artifact/ArtifactCard';
+export { default as Artifact3DGallery } from './artifact/Artifact3DGallery';
 
 // ── Oracle ────────────────────────────────────────────────────────────────────
 export * from './oracle/OracleChamber';
@@ -89,6 +98,7 @@ export * from './oracle/MultiAgentVoiceDebate';
 export * from './oracle/OracleTimelineScrubber';
 export * from './oracle/WolframComputationPanel';
 export * from './oracle/ComputationResult';
+export { default as CelestialObservatory } from './observatory/CelestialObservatory';
 
 // ── Navigation ────────────────────────────────────────────────────────────────
 export * from './navigation/GlobalHeader';
@@ -117,3 +127,32 @@ export * from './data/civilizationsData';
 // ── Libs ──────────────────────────────────────────────────────
 export * from './lib/audioFeedback';
 export * from './lib/oracleVoiceEngine';
+// -- Lab -----------------------------------------------------------------------
+export * from './lab/UnitLabViewer';
+export * from './lab/LabCanvas';
+export * from './lab/UnitModel';
+export * from './lab/ProceduralUnit';
+export * from './lab/RealisticHumanoid';
+export * from './lab/SplineStage';
+export * from './lab/FullBodyOrbital';
+export * from './lab/VideoPortrait';
+export * from './lab/ImagePortrait';
+export * from './components/HoloKaiLogo';
+// -- Landing -------------------------------------------------------------------
+export * from './landing/VisionSection';
+export * from './landing/AnatomySection';
+export * from './landing/IntelligenceSection';
+export * from './landing/EpistemicMatrixSection';
+export * from './landing/MeetTheVanguard';
+
+// Immersion
+export * from './immersion/CulturalGlossary';
+export * from './immersion/AmbientSoundscapeToggle';
+export * from './immersion/AncientDustCursor';
+
+// ── Intelligence ─────────────────────────────────────────────────────────────
+export * from './intelligence/KnowledgeNavigator';
+export * from './intelligence/AncientScriptSynthesizer';
+export * from './intelligence/QuantumTimeSimulator';
+export * from './intelligence/StudioEditor';
+export * from './intelligence/ManuscriptViewer';

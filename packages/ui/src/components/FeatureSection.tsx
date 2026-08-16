@@ -35,7 +35,7 @@ export function FeatureSection({
         {/* Text column (swapped by CSS order on reverse) */}
         <div className={`flex flex-col gap-6 ${reverse ? 'lg:order-2' : ''}`}>
           {eyebrow && (
-            <span className="text-[10px] font-mono text-[var(--color-brand)] uppercase tracking-[0.2em] font-semibold">
+            <span className="text-[10px] font-mono text-brand uppercase tracking-[0.2em] font-semibold">
               {eyebrow}
             </span>
           )}
@@ -54,7 +54,7 @@ export function FeatureSection({
               data-track-el={cta.label.toLowerCase().replace(/\s+/g, '-')}
               data-track-ec="feature-section"
               data-track-ea="click"
-              className="inline-flex items-center gap-2 rounded-full h-12 px-6 text-sm font-extrabold text-black bg-gradient-to-r from-[var(--color-brand)] to-[var(--color-brand-contrast)] hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 shadow-glow-brand w-fit"
+              className="inline-flex items-center gap-2 rounded-full h-12 px-6 text-sm font-extrabold text-black bg-gradient-to-r from-brand to-brand-contrast hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 shadow-glow-brand w-fit"
             >
               {cta.label}
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -69,12 +69,12 @@ export function FeatureSection({
           className={[
             'relative flex items-center justify-center',
             'rounded-[32px] overflow-hidden min-h-[360px] md:min-h-[480px]',
-            'border border-[var(--color-border)] bg-gradient-to-br from-[#181826] to-[#08080f]',
+            'border border-border bg-gradient-to-br from-[#181826] to-[#08080f]',
             reverse ? 'lg:order-1' : '',
           ].join(' ')}
         >
           {/* Ambient glow */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-brand)]/5 via-transparent to-transparent pointer-events-none" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-br from-brand/5 via-transparent to-transparent pointer-events-none" aria-hidden="true" />
           <div className="relative z-10 w-full h-full flex items-center justify-center p-6">
             {visual}
           </div>

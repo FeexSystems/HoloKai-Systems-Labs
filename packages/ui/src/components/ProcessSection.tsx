@@ -52,9 +52,9 @@ export function ProcessSection({ title, steps = DEFAULT_STEPS, className = '' }:
   const activeStep = steps[activeIdx] || steps[0];
 
   return (
-    <div className={`rounded-[32px] border border-[var(--color-border)] bg-[#0a0a0f] p-8 lg:p-12 space-y-10 shadow-2xl ${className}`}>
-      <div className="border-b border-[var(--color-border-subtle)] pb-6">
-        <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-brand)] font-bold">
+    <div className={`rounded-[32px] border border-border bg-background p-8 lg:p-12 space-y-10 shadow-2xl ${className}`}>
+      <div className="border-b border-border-subtle pb-6">
+        <span className="text-xs font-mono uppercase tracking-widest text-brand font-bold">
           Research Pipeline Workflow
         </span>
         <h2 className="text-3xl md:text-5xl font-extrabold text-white mt-1">
@@ -72,11 +72,11 @@ export function ProcessSection({ title, steps = DEFAULT_STEPS, className = '' }:
               onClick={() => setActiveIdx(idx)}
               className={`p-5 rounded-2xl border text-left transition-all duration-300 ${
                 isActive
-                  ? 'bg-[var(--color-surface-hover)] border-[var(--color-brand)] text-white shadow-glow-brand -translate-y-1'
-                  : 'bg-[#12121a] border-white/5 text-zinc-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-surface-hover border-brand text-white shadow-glow-brand -translate-y-1'
+                  : 'bg-surface border-white/5 text-zinc-400 hover:text-white hover:bg-white/5'
               }`}
             >
-              <span className={`text-xs font-mono font-bold block ${isActive ? 'text-[var(--color-brand)]' : 'text-zinc-500'}`}>
+              <span className={`text-xs font-mono font-bold block ${isActive ? 'text-brand' : 'text-zinc-500'}`}>
                 STEP {step.number}
               </span>
               <span className="text-sm font-bold mt-1 block">{step.title}</span>
@@ -86,9 +86,9 @@ export function ProcessSection({ title, steps = DEFAULT_STEPS, className = '' }:
       </div>
 
       {/* Active Step Panel & Visual Crossfade */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center p-8 rounded-2xl bg-[#12121a] border border-white/5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center p-8 rounded-2xl bg-surface border border-white/5">
         <div className="space-y-4">
-          <span className="text-xs font-mono text-[var(--color-brand)] uppercase font-bold tracking-widest">
+          <span className="text-xs font-mono text-brand uppercase font-bold tracking-widest">
             Phase {activeStep.number} · {activeStep.title}
           </span>
           <h3 className="text-2xl md:text-4xl font-extrabold text-white leading-tight">
@@ -111,11 +111,11 @@ export function ProcessSection({ title, steps = DEFAULT_STEPS, className = '' }:
             <input 
               type="text" 
               placeholder={`Query ${activeStep.title}...`}
-              className="w-full bg-transparent border-b border-white/20 text-white p-2 focus:outline-none focus:border-[var(--color-brand)] transition-colors placeholder:text-zinc-600"
+              className="w-full bg-transparent border-b border-white/20 text-white p-2 focus:outline-none focus:border-brand transition-colors placeholder:text-zinc-600"
             />
             <button 
               type="submit" 
-              className="w-full bg-[var(--color-brand)] hover:bg-[var(--color-brand-light)] text-black font-bold rounded py-2 transition-colors shadow-glow-brand"
+              className="w-full bg-brand hover:bg-brand-contrast text-black font-bold rounded py-2 transition-colors shadow-glow-brand"
             >
               Submit Query
             </button>

@@ -74,29 +74,29 @@ export function GridProductCard({
       className={[
         'group block rounded-3xl border p-6 transition-all duration-300 cursor-pointer',
         featured
-          ? 'border-[var(--color-border-strong)] bg-gradient-to-b from-[var(--color-surface-hover)] to-[#0a0a0f] hover:border-[var(--color-border-strong)] hover:-translate-y-1 shadow-glow-brand'
-          : 'border-[var(--color-border)] bg-[#12121a] hover:border-[var(--color-border)] hover:-translate-y-1',
+          ? 'border-border-strong bg-gradient-to-b from-surface-hover to-background hover:border-border-strong hover:-translate-y-1 shadow-glow-brand'
+          : 'border-border bg-surface hover:border-border hover:-translate-y-1',
         className,
       ].join(' ')}
     >
       {icon && (
-        <div className="mb-4 size-12 rounded-2xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-brand)] transition-all duration-200 group-hover:bg-[var(--color-surface-hover)]">
+        <div className="mb-4 size-12 rounded-2xl bg-surface-hover border border-border flex items-center justify-center text-brand transition-all duration-200 group-hover:bg-surface-hover">
           {icon}
         </div>
       )}
 
       <div className="flex items-start justify-between gap-2 mb-2">
-        <h3 className="text-base font-bold text-white group-hover:text-[var(--color-brand)] transition-colors">
+        <h3 className="text-base font-bold text-white group-hover:text-brand transition-colors">
           {name}
         </h3>
         <div className="flex flex-col items-end gap-1">
           {badge && (
-            <span className="shrink-0 text-[10px] font-mono uppercase px-2 py-0.5 rounded-md bg-[var(--color-surface-hover)] text-[var(--color-brand)] border border-[var(--color-border)]">
+            <span className="shrink-0 text-[10px] font-mono uppercase px-2 py-0.5 rounded-md bg-surface-hover text-brand border border-border">
               {badge}
             </span>
           )}
           {price && (
-            <span className="text-sm font-bold text-[var(--color-brand)]">
+            <span className="text-sm font-bold text-brand">
               {price}
             </span>
           )}
@@ -105,7 +105,7 @@ export function GridProductCard({
 
       <p className="text-sm text-zinc-400 leading-relaxed">{description}</p>
 
-      <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[var(--color-brand)] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-brand opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         <span>Explore</span>
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
           <path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

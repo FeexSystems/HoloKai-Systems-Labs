@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import { ErrorBoundary } from 'react-error-boundary';
 
 // Use the existing R3F CivilizationGlobe (R3F + Three.js are already in shell deps)
 const CivilizationGlobe = dynamic(
@@ -25,6 +26,42 @@ const CivilizationGlobe = dynamic(
   }
 );
 
+const MFEFallback = () => (
+  <div className="w-full h-full flex flex-col items-center justify-center bg-black/40 border border-white/10 rounded-xl p-8">
+    <div className="w-12 h-12 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin mb-4" />
+    <div className="text-xs font-mono tracking-widest text-amber-500 uppercase">Loading Module</div>
+  </div>
+);
+
+const ErrorFallback = ({ error, resetErrorBoundary }: any) => (
+  <div className="w-full h-full flex flex-col items-center justify-center bg-red-950/20 border border-red-500/30 rounded-xl p-8">
+    <div className="text-red-400 font-mono text-sm mb-2">Module Load Failed</div>
+    <div className="text-red-400/60 font-mono text-xs mb-4 max-w-md text-center">{error.message}</div>
+    <button 
+      onClick={resetErrorBoundary}
+      className="px-4 py-2 bg-red-500/20 text-red-300 rounded-lg text-xs font-mono hover:bg-red-500/30 transition-colors"
+    >
+      Retry Connection
+    </button>
+  </div>
+);
+
+const DynamicArtifactGallery = dynamic<any>(
+  () => import('@holokai/ui').then((mod) => mod.Artifact3DGallery as any),
+  { ssr: false, loading: () => <MFEFallback /> }
+);
+
+const DynamicCelestialObservatory = dynamic<any>(
+  () => import('@holokai/ui').then((mod) => mod.CelestialObservatory as any),
+  { ssr: false, loading: () => <MFEFallback /> }
+);
+
+const DynamicUnitLabViewer = dynamic<any>(
+  () => import('@holokai/ui').then((mod) => mod.UnitLabViewer as any),
+  { ssr: false, loading: () => <MFEFallback /> }
+);
+
+
 const VANGUARD_UNITS = [
   { id: 'kemet', name: 'Kemet-Alpha', role: 'Archivist', color: 'emerald', status: 'ACTIVE' },
   { id: 'kush', name: 'Kush-Prime', role: 'Metallurgist', color: 'amber', status: 'STANDBY' },
@@ -43,7 +80,8 @@ const colorMap: Record<string, string> = {
 
 export default function LabPage() {
   const [activeUnit, setActiveUnit] = useState('kemet');
-  const [viewMode, setViewMode] = useState<'orbital' | 'cinematic'>('orbital');
+  const [activeTab, setActiveTab] = useState<'orbital' | 'gallery' | 'observatory'>('orbital');
+  const [isUnitLabOpen, setIsUnitLabOpen] = useState(false);
 
   const selected = VANGUARD_UNITS.find((v) => v.id === activeUnit) ?? VANGUARD_UNITS[0];
 
@@ -72,17 +110,17 @@ export default function LabPage() {
           <div className="flex items-center gap-3">
             {/* View Mode Toggle */}
             <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-xl p-1">
-              {(['orbital', 'cinematic'] as const).map((mode) => (
+              {(['orbital', 'gallery', 'observatory'] as const).map((tab) => (
                 <button
-                  key={mode}
-                  onClick={() => setViewMode(mode)}
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all ${
-                    viewMode === mode
+                    activeTab === tab
                       ? 'bg-emerald-500 text-black'
                       : 'text-zinc-400 hover:text-white'
                   }`}
                 >
-                  {mode.toUpperCase()}
+                  {tab.toUpperCase()}
                 </button>
               ))}
             </div>
@@ -129,34 +167,52 @@ export default function LabPage() {
             ))}
           </aside>
 
-          {/* CENTER: 3D Spline Viewport */}
+          {/* CENTER: 3D Spline Viewport or Other Components */}
           <div className="flex-1 relative">
-            {/* Unit Info Overlay */}
-            <motion.div
-              key={activeUnit}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="absolute top-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
-            >
-              <div className="px-5 py-2 rounded-full bg-black/70 border border-white/10 backdrop-blur-md flex items-center gap-3">
-                <div className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-xs font-mono text-white font-bold">{selected.name}</span>
-                <span className="text-[10px] text-zinc-400 font-mono">{selected.role} · {selected.status}</span>
-              </div>
-            </motion.div>
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+              {activeTab === 'orbital' && (
+                <>
+                  {/* Unit Info Overlay */}
+                  <motion.div
+                    key={activeUnit}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute top-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
+                  >
+                    <div className="px-5 py-2 rounded-full bg-black/70 border border-white/10 backdrop-blur-md flex items-center gap-3">
+                      <div className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-xs font-mono text-white font-bold">{selected.name}</span>
+                      <span className="text-[10px] text-zinc-400 font-mono">{selected.role} · {selected.status}</span>
+                    </div>
+                  </motion.div>
 
-            {/* R3F CivilizationGlobe 3D Scene */}
-            <div className="absolute inset-0">
-              <CivilizationGlobe />
-            </div>
+                  {/* R3F CivilizationGlobe 3D Scene */}
+                  <div className="absolute inset-0">
+                    <CivilizationGlobe />
+                  </div>
 
-            {/* Corner decoration */}
-            <div className="absolute bottom-6 right-6 z-20 pointer-events-none">
-              <div className="px-4 py-2 rounded-xl bg-black/60 border border-white/5 backdrop-blur-md">
-                <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Orbital Stage</p>
-                <p className="text-xs font-mono text-emerald-400 font-bold">Pan-African Vanguard Series</p>
-              </div>
-            </div>
+                  {/* Corner decoration */}
+                  <div className="absolute bottom-6 right-6 z-20 pointer-events-none">
+                    <div className="px-4 py-2 rounded-xl bg-black/60 border border-white/5 backdrop-blur-md">
+                      <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Orbital Stage</p>
+                      <p className="text-xs font-mono text-emerald-400 font-bold">Pan-African Vanguard Series</p>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeTab === 'gallery' && (
+                <div className="absolute inset-0 p-8 overflow-y-auto">
+                  <DynamicArtifactGallery />
+                </div>
+              )}
+
+              {activeTab === 'observatory' && (
+                <div className="absolute inset-0 p-8 overflow-y-auto">
+                  <DynamicCelestialObservatory civId="kemet" />
+                </div>
+              )}
+            </ErrorBoundary>
           </div>
 
           {/* RIGHT: Stats & Intel Panel */}
@@ -208,22 +264,32 @@ export default function LabPage() {
 
             {/* Actions */}
             <div className="pt-2 space-y-2 mt-auto">
+              <button
+                onClick={() => setIsUnitLabOpen(true)}
+                className="block w-full py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono font-bold text-center hover:bg-amber-500/20 transition-all"
+              >
+                🔍 Enter 3D Unit Lab
+              </button>
               <Link
                 href="/oracle/voice"
                 className="block w-full py-2.5 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-mono font-bold text-center hover:bg-purple-500/20 transition-all"
               >
                 🎙 Activate Voice Oracle
               </Link>
-              <Link
-                href="/vanguards"
-                className="block w-full py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-300 text-xs font-mono font-bold text-center hover:bg-white/10 transition-all"
-              >
-                Full Roster →
-              </Link>
             </div>
           </aside>
         </div>
       </div>
+
+      {isUnitLabOpen && (
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <DynamicUnitLabViewer 
+            unit={selected as any} 
+            onClose={() => setIsUnitLabOpen(false)} 
+            onChangeUnit={(u: any) => setActiveUnit(u.id)}
+          />
+        </ErrorBoundary>
+      )}
     </main>
   );
 }

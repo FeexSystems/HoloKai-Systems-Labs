@@ -10,13 +10,13 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const variantStyles: Record<NonNullable<CardProps['variant']>, string> = {
   standard:
-    'rounded-3xl border border-[var(--color-border)] bg-[#12121a] p-6 text-white shadow-xl hover:border-[var(--color-border)]',
+    'rounded-3xl border border-border bg-surface p-6 text-white shadow-xl hover:border-border',
   feature:
-    'min-h-[480px] overflow-hidden rounded-[32px] border border-[var(--color-border-strong)] bg-gradient-to-b from-[#181826] via-[#0e0e16] to-[#05050a] p-8 lg:p-12 text-white shadow-2xl hover:border-[var(--color-border-strong)]',
+    'min-h-[480px] overflow-hidden rounded-[32px] border border-border-strong bg-gradient-to-b from-[#181826] via-[#0e0e16] to-background p-8 lg:p-12 text-white shadow-2xl hover:border-border-strong',
   elevated:
-    'rounded-3xl border border-white/10 bg-[#1a1a26] p-6 text-white shadow-xl hover:border-[var(--color-border)]',
+    'rounded-3xl border border-white/10 bg-surface-hover p-6 text-white shadow-xl hover:border-border',
   glass:
-    'rounded-3xl border border-[var(--color-border)] bg-[#0a0a0f]/85 backdrop-blur-2xl p-6 text-white shadow-2xl hover:border-[var(--color-border)]',
+    'rounded-3xl border border-border bg-background/85 backdrop-blur-2xl p-6 text-white shadow-2xl hover:border-border',
 };
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
@@ -84,7 +84,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
           )}
 
           {/* Animated Edge Shimmer */}
-          <div className="absolute inset-0 pointer-events-none z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border border-[var(--color-brand)]/30 rounded-[inherit]" />
+          <div className="absolute inset-0 pointer-events-none z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border border-brand/30 rounded-[inherit]" />
 
           <div className="relative z-10">{children}</div>
         </div>

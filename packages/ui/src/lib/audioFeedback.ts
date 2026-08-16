@@ -111,6 +111,11 @@ class RetroAudioSynthesizer {
     }
   }
 
+  // Play short success chime
+  playSuccessChime() {
+    this.playOracleChime();
+  }
+
   setAudioGuideEnabled(enabled: boolean) {
     this.audioGuideEnabled = enabled;
   }

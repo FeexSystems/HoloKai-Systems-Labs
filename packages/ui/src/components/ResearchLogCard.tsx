@@ -20,10 +20,10 @@ export function ResearchLogCard({ title, domain, era, region, text }: ResearchLo
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
       whileHover={{ scale: 1.01, transition: humanoidSyncTransition }}
-      className="p-6 rounded-2xl bg-[#0a0a0f] border border-white/5 hover:border-[var(--color-border)] transition-colors duration-300"
+      className="p-6 rounded-2xl bg-background border border-white/5 hover:border-border transition-colors duration-300"
     >
       <div className="flex flex-col gap-2 mb-4">
-        <h3 className="text-xl font-bold text-[var(--color-brand)]">{title}</h3>
+        <h3 className="text-xl font-bold text-brand">{title}</h3>
         <div className="flex flex-wrap gap-2 text-xs font-mono text-zinc-400">
           <span className="px-2 py-1 rounded bg-white/5 uppercase tracking-wider">{domain}</span>
           {era && <span className="px-2 py-1 rounded bg-white/5">{era}</span>}

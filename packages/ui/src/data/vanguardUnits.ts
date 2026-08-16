@@ -19,7 +19,7 @@ export const units: Unit[] = [
       "In an age of rapid language loss and narrative colonization, this unit restores agency to communities. It enables intergenerational transmission in schools and villages, supports diaspora reconnection rituals, and provides scholars with ethically governed, multi-vocal datasets.",
     humanoidDesign:
       "The humanoid form is deliberately approachable—slightly smaller stature, expressive articulated hands for gestural emphasis, and a softly luminous faceplate that shifts warmth and intensity to convey narrative emotion.",
-    accent: "#f59e0b",
+    accent: "#A9D5B0",
     modelPath: "/models/oluwa-core.glb",
   },
   {
@@ -145,7 +145,7 @@ export const units: Unit[] = [
       "Simulations inform policy, community resilience planning, and regenerative agriculture—centering African futures rather than imported models so the continent navigates the polycrisis with sovereignty.",
     humanoidDesign:
       "Ethereal translucent panels over a dense computational core. The head is a volumetric display projecting probability fields; movements are slow and contemplative.",
-    accent: "#f59e0b",
+    accent: "#A9D5B0",
     modelPath: "/models/asante-v.glb",
   },
   {

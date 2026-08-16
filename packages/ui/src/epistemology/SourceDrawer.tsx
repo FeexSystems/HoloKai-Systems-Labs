@@ -48,16 +48,16 @@ export function SourceDrawer({ open, onClose, citation }: SourceDrawerProps) {
 
             <div className="space-y-4 overflow-y-auto pb-10">
               {citation ? (
-                <section className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-[11px] text-amber-500 font-mono">
+                <section className="rounded-xl border border-[var(--color-border)] bg-[var(--color-brand)]/5 p-4">
+                  <div className="mb-2 flex items-center gap-2 text-[11px] text-[var(--color-brand)] font-mono">
                     <FileText className="h-3.5 w-3.5" /> Citation {citation.citation_id || citation.id}
                   </div>
                   <p className="text-sm text-zinc-100 font-medium">{citation.source_title || citation.title}</p>
                   <p className="mt-3 text-xs leading-relaxed text-zinc-300 italic">"{citation.passage || citation.text}"</p>
-                  <div className="mt-4 pt-3 border-t border-amber-500/10 flex items-center justify-between text-[11px] text-zinc-500">
+                  <div className="mt-4 pt-3 border-t border-[var(--color-border)] flex items-center justify-between text-[11px] text-zinc-500">
                     <span>Type: {citation.evidence_type || 'Primary Source'}</span>
                     {citation.url && (
-                      <a href={citation.url} target="_blank" rel="noreferrer" className="text-amber-400 hover:text-amber-300 flex items-center gap-1">
+                      <a href={citation.url} target="_blank" rel="noreferrer" className="text-[var(--color-brand)] hover:text-[var(--color-brand)] flex items-center gap-1">
                         View Source <ExternalLink className="h-3 w-3" />
                       </a>
                     )}

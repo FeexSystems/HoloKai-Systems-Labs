@@ -56,11 +56,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={[
-              'w-full rounded-2xl bg-[#12121a] border transition-all duration-200 outline-none text-white placeholder-zinc-600',
-              'focus:ring-2 focus:ring-[var(--color-brand)]/40 focus:border-[var(--color-brand)]/60',
+              'w-full rounded-2xl bg-surface border transition-all duration-200 outline-none text-white placeholder-zinc-600',
+              'focus:ring-2 focus:ring-brand/40 focus:border-brand/60',
               error
                 ? 'border-red-500/60 focus:ring-red-500/30'
-                : 'border-[var(--color-border)] hover:border-[var(--color-border)]',
+                : 'border-border hover:border-border',
               sizeStyles[inputSize],
               leftIcon ? 'pl-10' : '',
               rightIcon ? 'pr-10' : '',

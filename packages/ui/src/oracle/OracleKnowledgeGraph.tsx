@@ -25,8 +25,8 @@ export interface GraphLink extends d3.SimulationLinkDatum<GraphNode> {
 }
 
 const GRAPH_NODES: GraphNode[] = [
-  { id: 'kemet', label: 'Kemet (Nile Valley)', category: 'Civilization', era: '3000 BCE', color: '#E8B84B', desc: 'Archaic Nilotic solar calendars, papyrus medicine, and pyramid geometry.' },
-  { id: 'aksum', label: 'Aksumite Empire', category: 'Civilization', era: '300 BCE', color: '#F59E0B', desc: 'Trilingual granite stelae, Red Sea maritime coinage, and Ge\'ez epigraphy.' },
+  { id: 'kemet', label: 'Kemet (Nile Valley)', category: 'Civilization', era: '3000 BCE', color: '#39826F', desc: 'Archaic Nilotic solar calendars, papyrus medicine, and pyramid geometry.' },
+  { id: 'aksum', label: 'Aksumite Empire', category: 'Civilization', era: '300 BCE', color: '#A9D5B0', desc: 'Trilingual granite stelae, Red Sea maritime coinage, and Ge\'ez epigraphy.' },
   { id: 'mali', label: 'Mali & Timbuktu', category: 'Civilization', era: '1200 CE', color: '#D97706', desc: 'Shankore university scholastic scrolls, astronomy, and Sahelian trade hubs.' },
   { id: 'ifa', label: 'Ifá Oyo Corpus', category: 'Divination Matrix', era: '1000 CE', color: '#EC4899', desc: '256-state binary odu matrix for cosmological modeling and oral transmission.' },
   { id: 'zimbabwe', label: 'Great Zimbabwe', category: 'Architecture', era: '1100 CE', color: '#10B981', desc: 'Mortarless curved granite walls engineered for acoustic resonance and thermal isolation.' },
@@ -138,7 +138,7 @@ export function OracleKnowledgeGraph({ onSelectNode }: OracleKnowledgeGraphProps
 
     // Render Links
     const link = g.append('g')
-      .attr('stroke', '#E8B84B')
+      .attr('stroke', '#39826F')
       .attr('stroke-opacity', 0.3)
       .selectAll<SVGLineElement, GraphLink>('line')
       .data(linksData)
@@ -225,14 +225,14 @@ export function OracleKnowledgeGraph({ onSelectNode }: OracleKnowledgeGraphProps
         link
           .attr('stroke-opacity', (l: any) => (l.source.id === d.id || l.target.id === d.id ? 0.9 : 0.1))
           .attr('stroke-width', (l: any) => (l.source.id === d.id || l.target.id === d.id ? 2.5 : 1))
-          .attr('stroke', (l: any) => (l.source.id === d.id || l.target.id === d.id ? '#F59E0B' : '#52525B'));
+          .attr('stroke', (l: any) => (l.source.id === d.id || l.target.id === d.id ? '#A9D5B0' : '#52525B'));
       })
       .on('mouseleave', () => {
         setHoveredNode(null);
         link
           .attr('stroke-opacity', 0.3)
           .attr('stroke-width', 1.5)
-          .attr('stroke', '#E8B84B');
+          .attr('stroke', '#39826F');
       })
       .on('click', (event: any, d: GraphNode) => {
         retroAudio.playOracleChime();
@@ -281,13 +281,13 @@ export function OracleKnowledgeGraph({ onSelectNode }: OracleKnowledgeGraphProps
   };
 
   return (
-    <div className="glass-panel p-5 rounded-2xl border border-amber-500/30 space-y-4 relative" ref={containerRef}>
+    <div className="glass-panel p-5 rounded-2xl border border-[var(--color-border)] space-y-4 relative" ref={containerRef}>
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-amber-500/20">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-border)]">
         <div>
           <div className="flex items-center gap-2">
-            <GitBranch className="w-4 h-4 text-amber-400 animate-pulse" />
-            <span className="text-xs font-mono uppercase tracking-widest text-amber-400 font-semibold">
+            <GitBranch className="w-4 h-4 text-[var(--color-brand)] animate-pulse" />
+            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-brand)] font-semibold">
               INTERACTIVE D3 FORCE GRAPH
             </span>
           </div>
@@ -300,21 +300,21 @@ export function OracleKnowledgeGraph({ onSelectNode }: OracleKnowledgeGraphProps
         <div className="flex items-center gap-2">
           <button
             onClick={() => handleZoom('in')}
-            className="p-1.5 rounded-lg bg-zinc-900 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 text-xs transition-colors"
+            className="p-1.5 rounded-lg bg-zinc-900 border border-[var(--color-border)] text-[var(--color-brand)] hover:bg-[var(--color-surface-hover)] text-xs transition-colors"
             title="Zoom In"
           >
             <ZoomIn className="w-4 h-4" />
           </button>
           <button
             onClick={() => handleZoom('out')}
-            className="p-1.5 rounded-lg bg-zinc-900 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 text-xs transition-colors"
+            className="p-1.5 rounded-lg bg-zinc-900 border border-[var(--color-border)] text-[var(--color-brand)] hover:bg-[var(--color-surface-hover)] text-xs transition-colors"
             title="Zoom Out"
           >
             <ZoomOut className="w-4 h-4" />
           </button>
           <button
             onClick={() => handleZoom('reset')}
-            className="p-1.5 rounded-lg bg-zinc-900 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 text-xs transition-colors"
+            className="p-1.5 rounded-lg bg-zinc-900 border border-[var(--color-border)] text-[var(--color-brand)] hover:bg-[var(--color-surface-hover)] text-xs transition-colors"
             title="Reset View"
           >
             <RotateCcw className="w-4 h-4" />
@@ -325,7 +325,7 @@ export function OracleKnowledgeGraph({ onSelectNode }: OracleKnowledgeGraphProps
       {/* Filter Category Chips */}
       <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
         <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider shrink-0 flex items-center gap-1">
-          <Layers className="w-3.5 h-3.5 text-amber-400" /> Category:
+          <Layers className="w-3.5 h-3.5 text-[var(--color-brand)]" /> Category:
         </span>
         {categories.map((cat) => (
           <button
@@ -336,8 +336,8 @@ export function OracleKnowledgeGraph({ onSelectNode }: OracleKnowledgeGraphProps
             }}
             className={`text-[11px] font-mono px-2.5 py-1 rounded-lg shrink-0 border transition-all ${
               activeCategoryFilter === cat
-                ? 'bg-amber-500/20 border-amber-400 text-amber-300 font-bold shadow-[0_0_10px_rgba(232,184,75,0.2)]'
-                : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:text-white hover:border-amber-500/30'
+                ? 'bg-[var(--color-surface-hover)] border-[var(--color-border)] text-[var(--color-brand)] font-bold shadow-[0_0_10px_rgba(232,184,75,0.2)]'
+                : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:text-white hover:border-[var(--color-border)]'
             }`}
           >
             {cat}
@@ -346,7 +346,7 @@ export function OracleKnowledgeGraph({ onSelectNode }: OracleKnowledgeGraphProps
       </div>
 
       {/* D3 Graph SVG Container */}
-      <div className="relative w-full h-[460px] bg-zinc-950/80 rounded-xl border border-amber-500/20 overflow-hidden shadow-inner">
+      <div className="relative w-full h-[460px] bg-zinc-950/80 rounded-xl border border-[var(--color-border)] overflow-hidden shadow-inner">
         {/* Background Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f1f23_1px,transparent_1px),linear-gradient(to_bottom,#1f1f23_1px,transparent_1px)] bg-[size:2rem_2rem] opacity-20 pointer-events-none" />
 
@@ -359,10 +359,10 @@ export function OracleKnowledgeGraph({ onSelectNode }: OracleKnowledgeGraphProps
 
         {/* Hovered Node Quick Tooltip */}
         {hoveredNode && !selectedNode && (
-          <div className="absolute top-4 left-4 pointer-events-none glass-panel p-3 rounded-xl border border-amber-400/40 text-xs text-white z-20 max-w-xs shadow-[0_0_15px_rgba(232,184,75,0.2)]">
+          <div className="absolute top-4 left-4 pointer-events-none glass-panel p-3 rounded-xl border border-[var(--color-border)] text-xs text-white z-20 max-w-xs shadow-[0_0_15px_rgba(232,184,75,0.2)]">
             <div className="flex items-center gap-2 mb-1">
               <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: hoveredNode.color }} />
-              <span className="font-mono font-bold text-amber-300">{hoveredNode.label}</span>
+              <span className="font-mono font-bold text-[var(--color-brand)]">{hoveredNode.label}</span>
               <span className="text-[10px] font-mono text-zinc-400">({hoveredNode.era})</span>
             </div>
             <p className="text-zinc-300 text-[11px] font-body">{hoveredNode.desc}</p>
@@ -371,12 +371,12 @@ export function OracleKnowledgeGraph({ onSelectNode }: OracleKnowledgeGraphProps
 
         {/* Selected Node Details Drawer */}
         {selectedNode && (
-          <div className="absolute bottom-4 left-4 right-4 glass-panel p-4 rounded-xl border border-amber-400/50 z-30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fadeIn">
+          <div className="absolute bottom-4 left-4 right-4 glass-panel p-4 rounded-xl border border-[var(--color-border)] z-30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fadeIn">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full" style={{ backgroundColor: selectedNode.color }} />
                 <h4 className="text-sm font-display font-bold text-white">{selectedNode.label}</h4>
-                <span className="text-xs font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
+                <span className="text-xs font-mono text-[var(--color-brand)] bg-[var(--color-surface-hover)] px-2 py-0.5 rounded border border-[var(--color-border)]">
                   {selectedNode.category} • {selectedNode.era}
                 </span>
               </div>
@@ -386,7 +386,7 @@ export function OracleKnowledgeGraph({ onSelectNode }: OracleKnowledgeGraphProps
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => handleSpeakNode(selectedNode)}
-                className="px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-400/40 text-amber-300 hover:text-white text-xs font-mono flex items-center gap-1.5 transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[var(--color-brand)] hover:text-white text-xs font-mono flex items-center gap-1.5 transition-colors"
               >
                 <Volume2 className="w-3.5 h-3.5" />
                 Narrate Node

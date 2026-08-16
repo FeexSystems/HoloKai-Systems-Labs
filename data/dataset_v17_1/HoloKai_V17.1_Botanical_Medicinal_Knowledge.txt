@@ -1,0 +1,1497 @@
+# HoloKai Volume 17.1
+
+## Ancient African Botanical & Medicinal Knowledge
+
+**Version:** 17.1\
+**Status:** Normalized / Provenance-Preserving / Embedding-Ready Draft\
+**Project:** HoloKai\
+**Corpus Family:** FEEXARA\
+**Source Basis:** V17.0 user-supplied corpus\
+**Primary scope:** Herbs, foods, medicines, systems, healers,
+preparation processes\
+**Historical framing:** Kemet → pre-colonial African knowledge systems\
+**Revision principle:** Preserve every original claim while separating
+ontology, traditional-use claims, cultural claims, and verification
+status.
+
+------------------------------------------------------------------------
+
+# 0. Revision Contract
+
+V17.1 does **not delete or silently rewrite the original V17.0 knowledge
+claims**.
+
+Instead, every source assertion is assigned to one of three layers:
+
+1.  **NORMALIZED KNOWLEDGE LAYER** --- structurally cleaned
+    representation.
+2.  **PROVENANCE / ORIGINAL-CLAIM LAYER** --- preserves the original
+    V17.0 assertion and wording where material.
+3.  **VERIFICATION LAYER** --- records whether a claim is supported,
+    requires verification, is ambiguous, or has not been independently
+    assessed.
+
+### Epistemic rule
+
+A traditional medicinal-use claim is represented as a **traditional-use
+claim**, not automatically as a modern clinical efficacy claim.
+
+A cultural or spiritual claim is represented as **cultural/spiritual
+tradition**, not automatically as an empirical biomedical mechanism.
+
+No source claim is silently upgraded.
+
+------------------------------------------------------------------------
+
+# 1. Metadata
+
+``` yaml
+project: HoloKai
+volume: V17
+revision: 17.1
+title: Ancient African Botanical & Medicinal Knowledge
+corpus_family: FEEXARA
+source_version: V17.0
+format:
+  - normalized knowledge graph
+  - provenance-preserving claim registry
+  - retrieval corpus
+  - Q/A evaluation corpus
+
+domains:
+  - botanical
+  - medicinal
+  - dietary
+  - cultural
+  - spiritual
+  - ecological
+  - preparation
+  - healer_roles
+  - anatomy
+  - conditions
+  - historical_context
+
+ontology_nodes:
+  - E_PlantSpecies
+  - E_PlantPart
+  - E_Food
+  - E_System
+  - E_MedicalTradition
+  - E_DietarySystem
+  - E_Healer
+  - E_HealerRole
+  - E_Region
+  - E_Ecoregion
+  - E_Community
+  - E_Language
+  - E_ClassicalEra
+  - E_HistoricalPeriod
+  - E_Process
+  - E_PreparationMethod
+  - E_Anatomy
+  - E_PhysiologicalSystem
+  - E_Condition
+  - E_Disease
+  - E_Symptom
+  - E_Deficiency
+  - E_Context
+  - E_CulturalMeaning
+  - E_Claim
+  - E_Source
+  - E_Evidence
+
+epistemic_status:
+  - ESTABLISHED
+  - DOCUMENTED
+  - SCHOLARLY_CONSENSUS
+  - SCHOLARLY_DEBATE
+  - TRADITION
+  - ORAL_TRADITION
+  - CULTURAL_BELIEF
+  - SPIRITUAL_TRADITION
+  - HYPOTHESIS
+  - SPECULATIVE
+  - UNVERIFIED
+  - DISPUTED
+
+clinical_evidence_status:
+  - SUPPORTED
+  - MIXED
+  - LIMITED
+  - NOT_ASSESSED
+  - NOT_APPLICABLE
+
+claim_preservation:
+  original_v17_claims: PRESERVED
+  normalization: NON_DESTRUCTIVE
+```
+
+------------------------------------------------------------------------
+
+# 2. Normalized Relationship Ontology
+
+The original V17 relations are preserved as legacy relations in the
+provenance layer. V17.1 adds more precise production relations.
+
+``` text
+IS_A
+HAS_PART
+PART_OF
+ORIGINATES_IN
+NATIVE_TO
+FOUND_IN
+CULTIVATED_IN
+ASSOCIATED_WITH
+USED_BY
+USED_IN
+ATTESTED_DURING
+DOCUMENTED_IN
+TRADITIONALLY_USED_FOR
+HAS_BIOLOGICAL_PROPERTY
+HAS_NUTRITIONAL_PROPERTY
+HAS_DIETARY_USE
+HAS_CULTURAL_MEANING
+HAS_SPIRITUAL_MEANING
+HAS_PREPARATION
+PREPARED_BY
+AFFECTS_ANATOMY
+AFFECTS_SYSTEM
+ASSOCIATED_WITH_SYMPTOM
+HAS_ROLE
+HAS_SOURCE
+SUPPORTED_BY
+CONTESTED_BY
+REQUIRES_VERIFICATION
+SYNONYM_OF
+COMMON_NAME_OF
+```
+
+### Legacy relation normalization
+
+``` text
+HAS_PROPERTY
+  -> HAS_BIOLOGICAL_PROPERTY
+  -> HAS_NUTRITIONAL_PROPERTY
+  -> TRADITIONALLY_USED_FOR
+```
+
+depending on the semantic meaning of the original edge.
+
+``` text
+USED_FOR_CONDITION
+  -> TRADITIONALLY_USED_FOR
+```
+
+unless independent evidence establishes a different claim type.
+
+------------------------------------------------------------------------
+
+# 3. Epistemic Representation
+
+Every medicinal, historical, cultural, nutritional, or spiritual
+assertion should be represented with:
+
+``` yaml
+claim_id:
+subject:
+predicate:
+object:
+claim_type:
+knowledge_domain:
+region:
+community:
+era:
+epistemic_status:
+clinical_evidence_status:
+verification_status:
+source_reference:
+original_v17_reference:
+notes:
+```
+
+### Claim types
+
+``` text
+TRADITIONAL_MEDICINAL_USE
+TRADITIONAL_DIETARY_USE
+NUTRITIONAL_PROPERTY
+BOTANICAL_PROPERTY
+CULTURAL_ASSOCIATION
+SPIRITUAL_TRADITION
+HISTORICAL_ATTESTATION
+PREPARATION_METHOD
+ECOLOGICAL_USE
+QUANTITATIVE_CLAIM
+CHRONOLOGICAL_CLAIM
+REGIONAL_CLAIM
+HEALER_ROLE
+ANATOMICAL_ASSOCIATION
+```
+
+------------------------------------------------------------------------
+
+# 4. Knowledge System Graph
+
+## 4.1 Maat Dietary System --- Kemet
+
+``` yaml
+system_id: Diet_Maat_Dietary_System
+type: E_DietarySystem
+name: Maat Dietary System
+region: Kemet/Egypt
+era: Era_Kemet
+healers:
+  - Healer_Temple_Priest
+  - Healer_Physician
+principle: Maintain Maat through universal balance and dietary purity.
+dietary_use:
+  - FoodGroup_Staple_Grains
+```
+
+### Normalized relationships
+
+``` text
+Diet_Maat_Dietary_System
+  --USED_IN_ERA--> Era_Kemet
+  --ASSOCIATED_WITH--> Healer_Temple_Priest
+  --ASSOCIATED_WITH--> Healer_Physician
+  --HAS_DIETARY_USE--> FoodGroup_Staple_Grains
+```
+
+### Provenance note
+
+Original V17.0 describes this as a temple-codified dietary system used
+in classical Kemet and states that temple priests and physicians
+prioritized balance.
+
+**Verification status:** REQUIRES_VERIFICATION for the precise
+terminology "Maat Dietary System" and "temple codified."
+
+------------------------------------------------------------------------
+
+## 4.2 Igbo Traditional Medicine
+
+``` yaml
+system_id: System_Igbo_Traditional_Medicine
+type: E_MedicalTradition
+region:
+  macroregion: West/Central African rainforest
+plant:
+  - Plant_Vernonia_Amygdalina
+philosophy:
+  - "Food = Medicine, no separation"
+```
+
+``` text
+Plant_Vernonia_Amygdalina
+  --PART_OF--> System_Igbo_Traditional_Medicine
+```
+
+**Epistemic status:** TRADITION / CULTURAL_KNOWLEDGE\
+**Historical precision:** REQUIRES_VERIFICATION
+
+------------------------------------------------------------------------
+
+## 4.3 Uganda Spices and Herbs
+
+``` yaml
+system_id:
+  - System_Uganda_Spices_And_Herbs
+  - System_Uganda_Remedies
+  - System_Uganda_Spices
+region: East Africa
+```
+
+Original V17 identifies *Ocimum gratissimum* as the most sacred herb and
+associates red color with love/harmony rituals.
+
+**Status:** CULTURAL_TRADITION / REQUIRES_VERIFICATION of precise
+regional attribution and superlative "most sacred."
+
+------------------------------------------------------------------------
+
+## 4.4 Regional Specialization Model
+
+``` yaml
+Sahel:
+  ecological_specialization:
+    - drought_resistant_grains
+    - Acacia_Senegal
+
+Rainforest:
+  ecological_specialization:
+    - leafy_green_diversity
+    - Ewedu
+    - Vernonia_amygdalina
+
+Ethiopian_Highlands:
+  ecological_specialization:
+    - Teff
+    - high_altitude_flora
+```
+
+Original V17 also claims:
+
+``` text
+60–80% of current African populations still rely on these systems as primary healthcare.
+```
+
+**Claim ID:** V17-STAT-001\
+**Status:** REQUIRES_VERIFICATION\
+**Reason:** no source, date, country scope, or operational definition is
+supplied in V17.0.
+
+Original V17 also claims evidence tracing these systems to the Stone Age
+and advanced written records in Kemet/Kush.
+
+**Claim ID:** V17-HIST-001\
+**Status:** REQUIRES_VERIFICATION\
+**Rule:** preserve claim; do not convert to established chronology
+without source evidence.
+
+------------------------------------------------------------------------
+
+# 5. Plant Knowledge Graph
+
+## 5.1 Moringa oleifera
+
+``` yaml
+entity_id: Plant_Moringa_Oleifera
+scientific_name: Moringa oleifera
+common_name:
+  - Moringa
+  - Miracle Tree
+regional_context:
+  - Northeast Africa
+  - Sahel
+parts:
+  - Part_Leaves
+traditional_uses:
+  - Condition_Malnutrition
+  - Condition_Immune_Deficiency
+cultural_meanings:
+  - Context_Protection
+preparations:
+  - fresh_leaves
+  - dried_powder
+  - tea
+```
+
+``` text
+Plant_Moringa_Oleifera
+  --HAS_PART--> Part_Leaves
+  --TRADITIONALLY_USED_FOR--> Condition_Malnutrition
+  --TRADITIONALLY_USED_FOR--> Condition_Immune_Deficiency
+  --HAS_CULTURAL_MEANING--> Context_Protection
+  --FOUND_IN--> Region_Northeast_Africa
+```
+
+### Original V17 claim
+
+> Hailed across pre-colonial Sahelian and Northeast African history as
+> "miracle tree". Extreme nutrient density - packed with essential
+> vitamins, minerals, amino acids. Used to fight malnutrition, improve
+> immunity, boost energy. Cultural protection and ceremonial harmony.
+> Leaves most used.
+
+**Original claim status:** PRESERVED\
+**Epistemic status:** TRADITION + NUTRITIONAL_CLAIM\
+**Clinical evidence:** NOT_ASSESSED\
+**Historical scope:** REQUIRES_VERIFICATION
+
+------------------------------------------------------------------------
+
+## 5.2 Acacia senegal --- Gum Arabic
+
+``` yaml
+entity_id: Plant_Acacia_Senegal
+scientific_name: Acacia senegal
+part:
+  - Part_Gum
+era:
+  - Era_Kemet
+traditional_uses:
+  - Condition_Sore_Throat
+  - Condition_Inflammation
+historical_uses:
+  - mummification
+```
+
+``` text
+Plant_Acacia_Senegal
+  --ATTESTED_DURING--> Era_Kemet
+  --HAS_PART--> Part_Gum
+
+Part_Gum
+  --TRADITIONALLY_USED_FOR--> Condition_Sore_Throat
+  --ASSOCIATED_WITH--> Condition_Inflammation
+```
+
+Original V17 additionally claims use as a natural preservative and food
+stabilizer.
+
+**Status:** PRESERVED / REQUIRES_SOURCE-LEVEL_VERIFICATION.
+
+------------------------------------------------------------------------
+
+## 5.3 Vernonia amygdalina --- Bitter Leaf
+
+``` yaml
+entity_id: Plant_Vernonia_Amygdalina
+scientific_name: Vernonia amygdalina
+common_name:
+  - Bitter Leaf
+system:
+  - System_Igbo_Traditional_Medicine
+part:
+  - Part_Leaves
+preparation:
+  - Process_Decoction
+dietary_use:
+  - FoodGroup_Leafy_Green
+traditional_uses:
+  - Condition_Digestive_Issues
+  - Condition_Diarrhea
+  - stomachache
+```
+
+``` text
+Plant_Vernonia_Amygdalina
+  --PART_OF--> System_Igbo_Traditional_Medicine
+  --HAS_PART--> Part_Leaves
+  --HAS_DIETARY_USE--> FoodGroup_Leafy_Green
+
+Part_Leaves
+  --PREPARED_BY--> Process_Decoction
+  --TRADITIONALLY_USED_FOR--> Condition_Digestive_Issues
+  --TRADITIONALLY_USED_FOR--> Condition_Diarrhea
+```
+
+Original V17 says the leaves were boiled "strictly for severe digestive
+problems."
+
+**Normalization:** preserve the claim in provenance; do not encode
+"strictly" as a universal production rule unless source evidence
+supports it.
+
+Original V17 also says:
+
+> Bitter taste indicates potency.
+
+**Classification:** CULTURAL/TRADITIONAL INTERPRETATION;
+REQUIRES_VERIFICATION as a generalized pharmacological statement.
+
+------------------------------------------------------------------------
+
+## 5.4 Ocimum gratissimum --- African Basil
+
+``` yaml
+entity_id: Plant_Ocimum_Gratissimum
+scientific_name: Ocimum gratissimum
+common_name:
+  - African Basil
+  - Basil Spirit Leaves
+system:
+  - System_Uganda_Spices_And_Herbs
+part:
+  - Part_Leaves
+traditional_uses:
+  - Condition_Colds
+  - Condition_Stomachache
+  - Condition_Digestive_Issues
+cultural:
+  - Context_Ward_Off_Spirits
+preparations:
+  - tea
+  - poultice
+  - incense
+```
+
+``` text
+Plant_Ocimum_Gratissimum
+  --PART_OF--> System_Uganda_Spices_And_Herbs
+  --HAS_PART--> Part_Leaves
+  --HAS_CULTURAL_MEANING--> Context_Ward_Off_Spirits
+
+Part_Leaves
+  --TRADITIONALLY_USED_FOR--> Condition_Colds
+  --TRADITIONALLY_USED_FOR--> Condition_Stomachache
+  --TRADITIONALLY_USED_FOR--> Condition_Digestive_Issues
+```
+
+Original V17 claims traditional use for insomnia and malarial fever
+symptoms and burning dried leaves as incense.
+
+**Status:** PRESERVED / TRADITIONAL /
+REQUIRES_SOURCE-LEVEL_VERIFICATION.
+
+------------------------------------------------------------------------
+
+## 5.5 Azadirachta indica --- Neem
+
+``` yaml
+entity_id: Plant_Azadirachta_Indica
+scientific_name: Azadirachta indica
+common_name:
+  - Neem
+system:
+  - System_Uganda_Remedies
+part:
+  - Part_Leaves
+preparation:
+  - Process_Baths
+traditional_uses:
+  - Condition_Skin_Ailments
+  - mosquito_repellent
+cultural:
+  - spiritual_detoxification
+```
+
+``` text
+Plant_Azadirachta_Indica
+  --PART_OF--> System_Uganda_Remedies
+  --HAS_PART--> Part_Leaves
+  --HAS_PREPARATION--> Process_Baths
+
+Part_Leaves
+  --TRADITIONALLY_USED_FOR--> Condition_Skin_Ailments
+  --ASSOCIATED_WITH--> mosquito_repellent
+```
+
+Spiritual cleansing is represented separately:
+
+``` text
+Plant_Azadirachta_Indica
+  --HAS_SPIRITUAL_MEANING--> Context_Spiritual_Cleansing
+```
+
+Original V17 claim preserved: neem was described as a "Village
+Pharmacy."
+
+------------------------------------------------------------------------
+
+## 5.6 Curcuma longa --- Turmeric
+
+``` yaml
+entity_id: Plant_Curcuma_Longa
+scientific_name: Curcuma longa
+common_name:
+  - Turmeric
+system:
+  - System_Uganda_Spices
+part:
+  - Part_Rhizome
+traditional_uses:
+  - Condition_Joint_Pain
+  - Condition_Stomach_Problems
+cultural:
+  - Context_Protection
+preparation:
+  - Process_Decoction
+```
+
+``` text
+Part_Rhizome
+  --TRADITIONALLY_USED_FOR--> Condition_Joint_Pain
+  --TRADITIONALLY_USED_FOR--> Condition_Stomach_Problems
+  --PREPARED_BY--> Process_Decoction
+
+Plant_Curcuma_Longa
+  --HAS_CULTURAL_MEANING--> Context_Protection
+```
+
+Original golden-color/protection symbolism is preserved as cultural
+symbolism, not biological efficacy.
+
+------------------------------------------------------------------------
+
+## 5.7 Carica papaya --- Pawpaw
+
+``` yaml
+entity_id: Plant_Carica_Papaya
+scientific_name: Carica papaya
+common_name:
+  - Pawpaw
+part:
+  - Part_Leaves
+traditional_uses:
+  - Condition_Malaria
+  - Condition_Typhoid
+preparations:
+  - decoction
+  - juice
+```
+
+``` text
+Part_Leaves
+  --TRADITIONALLY_USED_FOR--> Condition_Malaria
+  --TRADITIONALLY_USED_FOR--> Condition_Typhoid
+```
+
+**Critical classification:** traditional-use claim only.\
+**Clinical evidence:** NOT_ASSESSED in V17.0.
+
+------------------------------------------------------------------------
+
+## 5.8 Persea americana --- Avocado Seed
+
+``` yaml
+entity_id: Plant_Persea_Americana
+scientific_name: Persea americana
+common_name:
+  - Avocado
+part:
+  - Part_Seed
+traditional_uses:
+  - Condition_Hypertension
+  - Condition_Arthritis
+  - menstrual_health
+  - post_childbirth_detoxification
+healer_role:
+  - Healer_Midwife
+preparation:
+  - poultice
+```
+
+Original V17 asserts:
+
+> Pre-colonial attestation West African local economies.
+
+**Status:** PRESERVED IN PROVENANCE / REQUIRES HISTORICAL VERIFICATION.
+
+The original claim must remain available for audit, but the normalized
+layer must not treat the pre-colonial African attribution as established
+without source evidence.
+
+------------------------------------------------------------------------
+
+## 5.9 Solanum melongena / Telfairia occidentalis
+
+V17.0 combines two species in one record. V17.1 separates them.
+
+``` yaml
+entities:
+  - Plant_Solanum_Melongena
+  - Plant_Telfairia_Occidentalis
+```
+
+Original claim:
+
+> Ancient knowledge East/Southern African foodways prioritized high iron
+> and nutritional density of fruited pumpkin leaves (Telfairia
+> occidentalis) and related. Crushed leaf juice served as primary blood
+> tonic.
+
+**Status:** PRESERVED / REQUIRES_VERIFICATION.
+
+The phrase "Solanum Melongena & Telfairia Occidentalis - Blood Builders"
+is retained in the provenance layer, while the normalized graph prevents
+species conflation.
+
+------------------------------------------------------------------------
+
+# 6. Foods & Dietary Systems
+
+## 6.1 Pearl Millet
+
+``` yaml
+entity_id: Plant_Pearl_Millet
+common_name: Pearl Millet
+region:
+  - Region_Sahel
+dietary_use:
+  - staple_grain
+  - porridge
+  - couscous
+system:
+  - Diet_Maat_Dietary_System
+traditional_association:
+  - immunity_building
+```
+
+``` text
+Plant_Pearl_Millet
+  --FOUND_IN--> Region_Sahel
+  --HAS_DIETARY_USE--> FoodGroup_Staple_Grains
+  --HAS_DIETARY_USE--> Diet_Maat_Dietary_System
+```
+
+The original "immunity building" and cardiovascular-health claims are
+preserved as source claims and classified for verification rather than
+converted directly into medical treatment edges.
+
+------------------------------------------------------------------------
+
+## 6.2 Fonio
+
+``` yaml
+entity_id: Plant_Fonio
+common_name: Fonio
+region:
+  - Region_West_Africa
+dietary_use:
+  - staple_grain
+traditional_associations:
+  - nutritional_density
+  - drought_resilience
+```
+
+Original quantitative claim:
+
+> Fastest growing cereal 6--8 weeks.
+
+**Claim ID:** V17-FONIO-001\
+**Status:** REQUIRES_VERIFICATION.
+
+------------------------------------------------------------------------
+
+## 6.3 Teff
+
+``` yaml
+entity_id: Plant_Teff
+region:
+  - Region_Ethiopian_Highlands
+  - Ethiopia
+  - Eritrea
+dietary_use:
+  - staple_grain
+traditional_associations:
+  - anemia
+  - mineral_deficiency
+```
+
+Original claims preserved:
+
+-   indigenous to Ethiopian Highlands and Eritrea
+-   mineral-rich staple
+-   traditionally associated with anemia
+-   traditionally associated with mineral deficiencies
+-   smallest grain in the world
+-   gluten-free
+-   used for injera
+
+**Quantitative/superlative claims:** REQUIRES_VERIFICATION.
+
+------------------------------------------------------------------------
+
+## 6.4 Finger Millet
+
+``` yaml
+entity_id: Plant_Finger_Millet
+region:
+  - Region_East_Africa
+dietary_use:
+  - staple_grain
+  - porridge
+  - brewing
+  - weaning_food
+nutritional_claim:
+  - high_calcium
+```
+
+All original claims preserved.
+
+------------------------------------------------------------------------
+
+## 6.5 Baobab Fruit
+
+``` yaml
+entity_id: Plant_Baobab_Fruit
+region:
+  - Region_Sahel_Rain_Forest
+dietary_use:
+  - fruit
+traditional_associations:
+  - immunity
+  - vitamin_c_deficiency
+```
+
+Original quantitative claim:
+
+> 6x vitamin C of orange.
+
+**Claim ID:** V17-BAOBAB-001\
+**Status:** REQUIRES_VERIFICATION.\
+**Reason:** comparison basis and source are absent.
+
+------------------------------------------------------------------------
+
+## 6.6 Tamarind
+
+``` yaml
+entity_id: Plant_Tamarind
+dietary_use:
+  - fruit
+  - condiment
+traditional_association:
+  - digestive_issues
+other_uses:
+  - beverage
+  - preservation
+```
+
+------------------------------------------------------------------------
+
+## 6.7 Bambara Groundnut
+
+``` yaml
+entity_id: Plant_Vigna_Subterranea
+scientific_name: Vigna subterranea
+common_name: Bambara Groundnut
+region:
+  - Region_Rain_Forest
+dietary_use:
+  - legume
+traditional_association:
+  - protein_deficiency
+  - drought_resilience
+```
+
+Original "complete plant food / all essential amino acids / meat
+substitute" claims are preserved in provenance and require
+nutritional-source verification before being treated as absolute
+nutritional classifications.
+
+------------------------------------------------------------------------
+
+## 6.8 Ewedu / Jute Mallow
+
+``` yaml
+entity_id: Plant_Ewedu
+common_name:
+  - Ewedu
+  - Jute Mallow
+region:
+  - Region_West_Africa
+dietary_use:
+  - leafy_green
+traditional_associations:
+  - nutritional_density
+  - blood_tonic
+midwife_association: true
+```
+
+Original claim:
+
+> one of oldest leafy greens.
+
+**Status:** REQUIRES_VERIFICATION.
+
+------------------------------------------------------------------------
+
+# 7. Preparation Ontology
+
+``` text
+Process_Decoction
+Process_Infusion
+Process_Poultice
+Process_Baths
+Process_Juice
+Process_Powder
+Process_Tea
+Process_Preservation
+Process_Fermentation
+Process_Incense
+Process_Drying
+```
+
+## 7.1 Decoction
+
+Original V17:
+
+> Boiling leaves, rhizomes, bark strictly for severe conditions.
+
+Normalized:
+
+``` text
+Process_Decoction
+  --USES--> plant_part
+  --HAS_METHOD--> boiling
+```
+
+The word "strictly" remains in provenance, not as an ontology
+constraint.
+
+------------------------------------------------------------------------
+
+## 7.2 Poultice and Baths
+
+``` text
+Part_Seed
+  --PREPARED_BY--> Process_Poultice
+
+Part_Leaves
+  --PREPARED_BY--> Process_Baths
+```
+
+Original associations with avocado/pawpaw seeds, neem/bitter leaf
+leaves, gynecological contexts, skin contexts, mosquito repellent, and
+spiritual cleansing are preserved.
+
+------------------------------------------------------------------------
+
+## 7.3 Preservation and Fermentation
+
+Original V17 claims:
+
+-   Citrus limon used as natural preservative in pre-colonial West
+    Africa.
+-   Citric acid associated with preservation of staple foods.
+-   Fermentation examples include ogi, iru, and injera.
+
+These remain **source claims** with verification metadata.
+
+------------------------------------------------------------------------
+
+## 7.4 Incense / Spiritual Cleansing
+
+``` text
+Plant_Ocimum_Gratissimum
+  --HAS_SPIRITUAL_MEANING--> Context_Ward_Off_Spirits
+
+Plant_Azadirachta_Indica
+  --HAS_SPIRITUAL_MEANING--> Context_Spiritual_Cleansing
+```
+
+Original burning/incense claims are preserved as spiritual/cultural
+tradition.
+
+------------------------------------------------------------------------
+
+# 8. Healer Ontology
+
+``` text
+Healer_Herbalist
+Healer_Spiritualist
+Healer_Midwife
+Healer_Temple_Priest
+Healer_Physician
+```
+
+### Roles
+
+``` yaml
+Herbalist:
+  role:
+    - plant_selection
+    - plant_part_specialization
+
+Spiritualist:
+  role:
+    - spiritual_practice
+    - incense
+    - protection_contexts
+
+Midwife:
+  role:
+    - gynecological_contexts
+    - childbirth_contexts
+    - blood_building_contexts
+
+Temple_Priest:
+  role:
+    - Maat_context
+    - Kemet_context
+
+Physician:
+  role:
+    - Kemet_medical_context
+```
+
+These are represented as **knowledge roles**, not assertions that every
+individual in a category performed every listed practice.
+
+------------------------------------------------------------------------
+
+# 9. Anatomy and Physiological Systems
+
+V17.0 includes:
+
+``` text
+Digestive system
+Liver
+Skin
+Blood
+Immune system
+```
+
+V17.1 distinguishes:
+
+``` text
+E_Anatomy
+E_PhysiologicalSystem
+E_Condition
+E_Symptom
+```
+
+### Digestive
+
+``` text
+Digestive_System
+  --ASSOCIATED_WITH--> Digestive_Issues
+  --ASSOCIATED_WITH--> Diarrhea
+  --ASSOCIATED_WITH--> Stomachache
+```
+
+### Skin
+
+``` text
+Skin
+  --ASSOCIATED_WITH--> Skin_Ailments
+```
+
+### Blood
+
+``` text
+Blood
+  --ASSOCIATED_WITH--> Blood_Building
+  --ASSOCIATED_WITH--> Anemia
+```
+
+### Immune
+
+``` text
+Immune_System
+  --ASSOCIATED_WITH--> Immunity
+  --ASSOCIATED_WITH--> Immune_Deficiency
+```
+
+### Liver
+
+The V17.0 line:
+
+> Liver -- affected by malaria? Actually immune
+
+is preserved as a provenance note but is **not promoted to a production
+graph edge**.
+
+**Status:** REQUIRES_REVIEW.
+
+------------------------------------------------------------------------
+
+# 10. Condition Taxonomy
+
+``` text
+E_Condition
+├── E_Disease
+│   ├── Malaria
+│   └── Typhoid
+│
+├── E_Symptom
+│   ├── Stomachache
+│   ├── Diarrhea
+│   └── Joint_Pain
+│
+├── E_Deficiency
+│   ├── Malnutrition
+│   ├── Vitamin_C_Deficiency
+│   ├── Protein_Deficiency
+│   ├── Mineral_Deficiency
+│   └── Iron_Deficiency/Anemia context
+│
+├── E_ChronicCondition
+│   ├── Hypertension
+│   └── Arthritis
+│
+└── E_DermatologicalCondition
+    └── Skin_Ailments
+```
+
+------------------------------------------------------------------------
+
+# 11. Complete Original Claim Registry
+
+The following registry preserves the V17.0 claims without silently
+upgrading them.
+
+  ------------------------------------------------------------------------
+  Claim ID                Original claim family    Status
+  ----------------------- ------------------------ -----------------------
+  V17-MAAT-001            Maat dietary system      PRESERVED / REQUIRES
+                          maintained universal     SOURCE
+                          balance                  
+
+  V17-MAAT-002            Temple priests and       PRESERVED / REQUIRES
+                          physicians prioritized   SOURCE
+                          balance                  
+
+  V17-IGBO-001            Food = Medicine, no      PRESERVED / TRADITION
+                          separation               
+
+  V17-UGANDA-001          Ocimum gratissimum       PRESERVED / REQUIRES
+                          considered most sacred   VERIFICATION
+
+  V17-REGION-001          Regional specialization  PRESERVED / REQUIRES
+                          model                    SOURCE
+
+  V17-STAT-001            60--80% current African  PRESERVED / UNVERIFIED
+                          reliance                 
+
+  V17-HIST-001            Evidence traced to Stone PRESERVED / UNVERIFIED
+                          Age                      
+
+  V17-MORINGA-001         Moringa as miracle tree  PRESERVED / CULTURAL
+
+  V17-MORINGA-002         Moringa nutritional      PRESERVED / SOURCE
+                          density                  REQUIRED
+
+  V17-MORINGA-003         Moringa traditional use  PRESERVED / TRADITION
+                          for malnutrition         
+
+  V17-ACACIA-001          Acacia gum for sore      PRESERVED / TRADITION
+                          throat/inflammation      
+
+  V17-ACACIA-002          Acacia gum in            PRESERVED / HISTORICAL
+                          mummification            VERIFICATION
+
+  V17-BITTER-001          Bitter leaf digestive    PRESERVED / TRADITION
+                          use                      
+
+  V17-BITTER-002          Bitter taste indicates   PRESERVED / CULTURAL
+                          potency                  INTERPRETATION
+
+  V17-OCIMUM-001          Sacred herb / spiritual  PRESERVED / TRADITION
+                          use                      
+
+  V17-NEEM-001            Neem "Village Pharmacy"  PRESERVED / CULTURAL
+
+  V17-NEEM-002            Neem leaf baths for skin PRESERVED / TRADITION
+
+  V17-TURMERIC-001        Turmeric joint/stomach   PRESERVED / TRADITION
+                          traditional use          
+
+  V17-PAPAYA-001          Papaya leaves for        PRESERVED / TRADITION /
+                          malaria/typhoid          CLINICAL NOT ASSESSED
+
+  V17-AVOCADO-001         Avocado seed             PRESERVED / TRADITION
+                          hypertension/arthritis   
+                          use                      
+
+  V17-AVOCADO-002         Pre-colonial West        PRESERVED / HISTORICAL
+                          African attestation      VERIFICATION
+
+  V17-TELFAIRIA-001       Pumpkin leaf blood tonic PRESERVED / TRADITION
+
+  V17-MILLET-001          Pearl millet immunity    PRESERVED / NUTRITIONAL
+                          association              CLAIM
+
+  V17-FONIO-001           Fonio 6--8 week growth   PRESERVED /
+                                                   QUANTITATIVE
+                                                   VERIFICATION
+
+  V17-TEFF-001            Teff anemia/mineral      PRESERVED /
+                          association              TRADITION/NUTRITION
+
+  V17-TEFF-002            Teff smallest grain      PRESERVED / SUPERLATIVE
+                                                   VERIFICATION
+
+  V17-BAOBAB-001          Baobab six-times-orange  PRESERVED /
+                          vitamin C                QUANTITATIVE
+                                                   VERIFICATION
+
+  V17-TAMARIND-001        Tamarind digestive use   PRESERVED / TRADITION
+
+  V17-BAMBARA-001         Bambara complete protein PRESERVED / NUTRITIONAL
+                                                   VERIFICATION
+
+  V17-EWEDU-001           Ewedu blood tonic        PRESERVED / TRADITION
+
+  V17-EWEDU-002           Ewedu among oldest leafy PRESERVED / HISTORICAL
+                          greens                   VERIFICATION
+
+  V17-PREP-001            Decoction preparation    PRESERVED / PREPARATION
+
+  V17-PREP-002            Poultice/bath            PRESERVED / PREPARATION
+                          preparation              
+
+  V17-PREP-003            Citrus preservation      PRESERVED / HISTORICAL
+                                                   VERIFICATION
+
+  V17-SPIRIT-001          Basil/neem incense       PRESERVED / SPIRITUAL
+                          spiritual cleansing      TRADITION
+
+  V17-ANATOMY-001         Digestive system         PRESERVED / NORMALIZED
+                          associations             
+
+  V17-ANATOMY-002         Liver/malaria uncertain  PRESERVED / QUARANTINED
+                          edge                     
+
+  V17-ANATOMY-003         Skin associations        PRESERVED / NORMALIZED
+
+  V17-ANATOMY-004         Blood associations       PRESERVED / NORMALIZED
+
+  V17-ANATOMY-005         Immune associations      PRESERVED / NORMALIZED
+  ------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+# 12. Original V17 Q/A Preservation Layer
+
+The original Q/A corpus is preserved as evaluation material.
+
+### Q/A 001
+
+**Original:** What tree fights malnutrition in Sahel?\
+**Original answer:** Moringa Oleifera miracle tree leaves.
+
+**Normalized question:** What plant was traditionally associated with
+nutritional support in Sahelian contexts?
+
+**Evidence status:** TRADITION / SOURCE REQUIRED.
+
+### Q/A 002
+
+**Original:** What did Kemet use for sore throat?\
+**Original answer:** Acacia Senegal gum Arabic.
+
+**Normalized:** What traditional use is associated with Acacia senegal
+gum in the V17 corpus?
+
+### Q/A 003
+
+**Original:** What Igbo leaf treats diarrhea?\
+**Original answer:** Vernonia amygdalina bitter leaf decoction.
+
+**Normalized:** Which leaf is associated with traditional digestive-use
+preparations in the Igbo medicine section?
+
+### Q/A 004
+
+**Original:** What sacred herb wards off spirits?\
+**Original answer:** Ocimum gratissimum African basil.
+
+**Normalized:** Which plant is associated with spiritual
+cleansing/warding-off-spirit traditions in V17?
+
+### Q/A 005
+
+**Original:** What is village pharmacy?\
+**Original answer:** Azadirachta indica neem leaves/baths.
+
+**Normalized:** Which plant is called "Village Pharmacy" in the V17
+corpus?
+
+### Q/A 006
+
+**Original:** What golden rhizome treats joint pain?\
+**Original answer:** Curcuma longa turmeric.
+
+**Normalized:** Which golden rhizome is associated with traditional
+joint-pain preparations?
+
+### Q/A 007
+
+**Original:** What leaves treat malaria?\
+**Original answer:** Carica papaya leaves.
+
+**Normalized:** Which plant leaves are associated with malaria in the
+V17 traditional-use corpus?
+
+### Q/A 008
+
+**Original:** What seed treats hypertension?\
+**Original answer:** Persea americana avocado seed.
+
+**Normalized:** Which seed is associated with hypertension in the V17
+traditional-use claim set?
+
+### Q/A 009
+
+**Original:** What Sahelian grain builds immunity?\
+**Original answer:** Pearl millet.
+
+### Q/A 010
+
+**Original:** What grain survives poor soil?\
+**Original answer:** Fonio.
+
+### Q/A 011
+
+**Original:** What highland grain treats anemia?\
+**Original answer:** Teff.
+
+### Q/A 012
+
+**Original:** What fruit prevents vitamin C deficiency?\
+**Original answer:** Baobab fruit.
+
+### Q/A 013
+
+**Original:** What legume prevents protein deficiency?\
+**Original answer:** Bambara groundnut.
+
+### Q/A 014
+
+**Original:** What leafy green builds blood?\
+**Original answer:** Ewedu / jute mallow.
+
+### Q/A 015
+
+**Original:** How were bitter leaves prepared?\
+**Original answer:** Decoction / boiling.
+
+### Q/A 016
+
+**Original:** How were spiritual cleansings done?\
+**Original answer:** Burning dried basil and neem leaves as
+smoke/incense.
+
+------------------------------------------------------------------------
+
+# 13. Embedding Chunk Contract
+
+V17.1 should be embedded at atomic semantic granularity.
+
+Recommended chunk classes:
+
+``` text
+PLANT_PROFILE
+PLANT_PART
+TRADITIONAL_MEDICINAL_USE
+TRADITIONAL_DIETARY_USE
+PREPARATION
+CULTURAL_MEANING
+SPIRITUAL_TRADITION
+REGIONAL_CONTEXT
+HISTORICAL_ATTESTATION
+HEALER_ROLE
+ANATOMY_ASSOCIATION
+CONDITION_ASSOCIATION
+QUANTITATIVE_CLAIM
+Q_AND_A
+PROVENANCE_CLAIM
+```
+
+### Required metadata
+
+``` yaml
+volume: V17
+revision: 17.1
+claim_id:
+entity_id:
+chunk_type:
+scientific_name:
+common_name:
+region:
+community:
+language:
+ecoregion:
+era:
+knowledge_system:
+plant_part:
+preparation:
+condition:
+use_domain:
+claim_type:
+epistemic_status:
+clinical_evidence_status:
+verification_status:
+original_v17_reference:
+```
+
+------------------------------------------------------------------------
+
+# 14. Retrieval Safety Rules
+
+``` text
+RULE 1:
+Never convert TRADITIONALLY_USED_FOR into CLINICALLY_SUPPORTED_FOR.
+
+RULE 2:
+Never convert CULTURAL_BELIEF or SPIRITUAL_TRADITION into biomedical mechanism.
+
+RULE 3:
+Never present an UNVERIFIED quantitative claim as a verified statistic.
+
+RULE 4:
+Never infer historical origin from modern geographic distribution.
+
+RULE 5:
+Never merge different botanical species merely because a common-use category is shared.
+
+RULE 6:
+Never treat "ancient" or "pre-colonial" as a precise date without chronological evidence.
+
+RULE 7:
+Preserve disputed claims in provenance rather than deleting them.
+
+RULE 8:
+When a source claim conflicts with independently verified evidence, retain the original claim in provenance and expose the evidence status in the response layer.
+```
+
+------------------------------------------------------------------------
+
+# 15. Provenance-Preserving Architecture
+
+``` text
+                         HOLOKAI V17.1
+                              │
+              ┌───────────────┴───────────────┐
+              │                               │
+       NORMALIZED GRAPH                ORIGINAL CLAIM VAULT
+              │                               │
+      botanical entities                 V17.0 wording
+      plant parts                        original Q/A
+      regions                            original assertions
+      systems                            original relationships
+      preparations                       original terminology
+      conditions
+              │                               │
+              └───────────────┬───────────────┘
+                              │
+                       EVIDENCE LAYER
+                              │
+                ┌─────────────┼─────────────┐
+                │             │             │
+             verified      disputed      unverified
+                │             │             │
+                └─────────────┼─────────────┘
+                              │
+                       EMBEDDING LAYER
+                              │
+                        HOLOKAI RAG
+```
+
+------------------------------------------------------------------------
+
+# 16. V17.1 Production Status
+
+``` yaml
+overall_status: READY_FOR_SOURCE_VERIFICATION
+ontology_status: NORMALIZED
+provenance_status: PRESERVED
+embedding_status: STRUCTURALLY_READY
+clinical_claim_status: REQUIRES_EVIDENCE_LAYER
+historical_claim_status: REQUIRES_SOURCE_LAYER
+quantitative_claim_status: REQUIRES_VERIFICATION
+botanical_taxonomy_status: NORMALIZED_DRAFT
+regional_attribution_status: REQUIRES_PRECISION
+```
+
+## Final architectural decision
+
+**V17.0 remains the immutable source layer.**
+
+**V17.1 becomes the normalized semantic layer.**
+
+**Verification does not overwrite either layer.**
+
+The resulting HoloKai stack is:
+
+``` text
+V17.0 SOURCE
+    ↓
+V17.1 NORMALIZATION
+    ↓
+CLAIM / EVIDENCE GRAPH
+    ↓
+EMBEDDING CORPUS
+    ↓
+RAG + KNOWLEDGE GRAPH RETRIEVAL
+    ↓
+EPISTEMICALLY CONTROLLED HOLOKAI RESPONSE
+```
+
+This preserves the cultural corpus while preventing HoloKai from
+accidentally turning an unverified traditional claim into a verified
+historical or biomedical fact.

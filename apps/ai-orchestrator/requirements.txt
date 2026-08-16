@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+python-dotenv
+requests
+pinecone
+psycopg[binary]
+ollama
+crewai
+langchain-google-genai

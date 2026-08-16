@@ -36,11 +36,11 @@ export function ProductCard({
       variants={holokaiVariants.cardEntrance}
       whileHover={{ scale: 1.02, transition: humanoidSyncTransition }}
       whileTap={{ scale: 0.98, transition: humanoidSyncTransition }}
-      className={`flex flex-col p-6 rounded-2xl bg-[#0a0a0f] border transition-colors duration-300 ${featured ? 'border-[var(--color-border-strong)] shadow-glow-brand' : 'border-white/10 hover:border-white/30'}`}
+      className={`flex flex-col p-6 rounded-2xl bg-background border transition-colors duration-300 ${featured ? 'border-border-strong shadow-glow-brand' : 'border-white/10 hover:border-white/30'}`}
     >
       {imageUrl && (
         <div className="w-full h-48 mb-6 rounded-xl bg-black/50 overflow-hidden relative border border-white/5 flex items-center justify-center">
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent z-10" />
           <div className="text-zinc-600 font-mono text-xs z-20">NO IMAGE DATA</div>
         </div>
       )}
@@ -53,10 +53,10 @@ export function ProductCard({
           <h3 className="text-xl font-bold text-white leading-tight">{name}</h3>
         </div>
         <div className="text-right flex flex-col items-end">
-          <span className="text-2xl font-bold text-[var(--color-brand)]">${price.toFixed(2)}</span>
+          <span className="text-2xl font-bold text-brand">${price.toFixed(2)}</span>
           {rating && (
             <span className="text-xs text-zinc-400 mt-1 flex items-center gap-1">
-              <span className="text-[var(--color-brand)]">★</span> {rating}
+              <span className="text-brand">★</span> {rating}
             </span>
           )}
         </div>
