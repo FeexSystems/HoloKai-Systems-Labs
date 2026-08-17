@@ -1,21 +1,21 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from typing import Any
 
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 
+from .rtdetr_foundationpose_adapter import normalize_detection
+
 
 class IsaacROSArtifactAdapter(Node):
-    """Normalize Isaac ROS detector/pose messages into HoloKai candidates.
+    """Normalize Isaac ROS detector and pose estimator messages into HoloKai observations.
 
-    The adapter accepts JSON during bring-up so it can bridge RT-DETR and
-    FoundationPose outputs without coupling the HoloKai core to a specific
-    Isaac ROS message version. A production graph can replace the two input
-    topics with vision_msgs/Detection2DArray and a typed pose message while
-    retaining the normalized HoloKai output contract.
+    Accepts vision/pose detections over ROS 2 topics, maps them through the
+    normalized perception contract, and publishes standard HoloKai candidate streams.
     """
 
     def __init__(self) -> None:
@@ -48,36 +48,44 @@ class IsaacROSArtifactAdapter(Node):
             return
 
         detections = payload.get('detections', payload if isinstance(payload, list) else [])
+        world_frame = payload.get('frame', 'map')
         normalized = []
+
         for i, detection in enumerate(detections):
             if not isinstance(detection, dict):
                 continue
             track_id = str(detection.get('trackId', detection.get('id', i)))
             pose = self.latest_pose.get(track_id, {})
-            normalized.append({
-                'entityId': detection.get('entityId'),
-                'trackId': track_id,
-                'label': detection.get('label', detection.get('className', 'unknown')),
-                'semanticType': detection.get('semanticType', 'cultural_artifact'),
-                'confidence': float(detection.get('confidence', detection.get('score', 0.0))),
-                'bbox': detection.get('bbox', detection.get('boundingBox', {})),
-                'pose': pose.get('pose6d', pose.get('pose', {})),
-                'poseConfidence': float(pose.get('confidence', pose.get('score', 0.0))),
-                'frame': pose.get('frameId', payload.get('frame', 'camera')),
-                'ocrText': detection.get('ocrText', ''),
-                'provenance': {
-                    'source': 'isaac_ros_artifact_adapter',
-                    'detectorSource': 'isaac_ros_rtdetr',
-                    'poseSource': 'isaac_ros_foundationpose',
-                },
-            })
+            label = str(detection.get('label', detection.get('className', 'unknown')))
+            conf = float(detection.get('confidence', detection.get('score', 0.0)))
+            bbox = detection.get('bbox', detection.get('boundingBox', {}))
+            pose_dict = pose.get('pose6d', pose.get('pose', {}))
+            pose_conf = float(pose.get('confidence', pose.get('score', 0.0)))
+            frame_id = pose.get('frameId', world_frame)
+
+            item = normalize_detection(
+                label=label,
+                confidence=conf,
+                bbox=bbox,
+                pose6d=pose_dict,
+                frame_id=frame_id,
+                detector_name=str(detection.get('detector', 'RT-DETR')),
+                pose_source=str(pose.get('source', 'FoundationPose')),
+                pose_confidence=pose_conf,
+                ocr_text=str(detection.get('ocrText', '')),
+            )
+            item['trackId'] = track_id
+            item['semanticType'] = detection.get('semanticType', 'cultural_artifact')
+            normalized.append(item)
 
         out = String()
         out.data = json.dumps({
-            'frame': payload.get('frame', 'camera'),
-            'detectorSource': 'isaac_ros_rtdetr',
-            'poseSource': 'isaac_ros_foundationpose',
+            'timestamp': datetime.now(timezone.utc).isoformat(),
+            'frame': world_frame,
+            'detectorSource': 'RT-DETR',
+            'poseSource': 'FoundationPose',
             'detections': normalized,
+            'count': len(normalized),
         }, separators=(',', ':'))
         self.pub.publish(out)
 
