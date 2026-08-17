@@ -1,0 +1,46 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "World" (
+    kind = "assembly"
+)
+{
+    def Xform "Environment"
+    {
+        def Xform "ResearchLaboratory"
+        {
+            custom string holokai:worldId = "holokai:world:001"
+            custom string holokai:worldType = "civilization-research-laboratory"
+            custom string holokai:provenance = "synthetic-development-scene"
+        }
+
+        def Xform "ArtifactGallery"
+        {
+            custom string holokai:semanticZone = "artifact-gallery"
+        }
+
+        def Xform "ObservationStation"
+        {
+            custom string holokai:semanticZone = "observation-station"
+        }
+    }
+
+    def Xform "Robotics"
+    {
+        custom string holokai:robotId = "holokai:robot:prototype-001"
+        custom string holokai:integration = "isaac-ros"
+    }
+
+    def Xform "SemanticAnchors"
+    {
+        def Xform "ArtifactAnchor_001"
+        {
+            custom string holokai:entityId = "artifact:demo:001"
+            custom string holokai:epistemicStance = "ESTABLISHED"
+        }
+    }
+}
