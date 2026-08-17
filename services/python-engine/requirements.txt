@@ -7,15 +7,16 @@ openai>=1.0.0
 python-multipart>=0.0.9
 httpx>=0.27.0
 
-# Managed PostgreSQL (Phase 2 catalog + jobs + claim persistence)
+# Managed PostgreSQL / PGVector
 psycopg[binary]>=3.2.0
+
+# Knowledge graph retrieval (optional at runtime; resolver degrades gracefully)
+neo4j>=5.0.0
 
 # Primary AI engines: Google Gemini (Chat & RAG), ElevenLabs (TTS), Deepgram (STT)
 
 # Vector RAG (aligned with frontend Ollama nomic-embed-text)
 # chromadb is OPTIONAL — without it, KnowledgeBase uses pure-Python JSON cosine store.
-# On Windows, chromadb often needs MSVC Build Tools (chroma-hnswlib). Prefer Docker Chroma
-# or the JSON fallback if pip install fails.
 # chromadb>=0.5.0,<1.0.0
 
 # Optional offline embed fallback (only if HOLAKAI_EMBED_FALLBACK=minilm)

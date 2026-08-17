@@ -98,3 +98,82 @@ export interface GenkitSynthesisResult {
   epistemicClassification: EpistemicStance;
   confidence: number;
 }
+
+export type EmbodiedIntent =
+  | 'observe'
+  | 'inspect'
+  | 'navigate'
+  | 'approach'
+  | 'pick'
+  | 'place'
+  | 'follow'
+  | 'return_home'
+  | 'stop';
+
+export interface EmbodiedPose {
+  x: number;
+  y: number;
+  z: number;
+  qx?: number;
+  qy?: number;
+  qz?: number;
+  qw?: number;
+}
+
+export interface EmbodiedActionConstraints {
+  maxLinearVelocity: number;
+  maxAngularVelocity: number;
+  humanProximityMeters: number;
+  allowManipulation: boolean;
+  allowedWorkspace?: string;
+}
+
+export interface EmbodiedProvenance {
+  source: string;
+  epistemicStance: EpistemicStance;
+  confidence: number;
+  evidenceIds: string[];
+}
+
+export interface EmbodiedAction {
+  taskId: string;
+  intent: EmbodiedIntent;
+  createdAt: string;
+  target: {
+    entityId: string;
+    semanticType: string;
+    locationFrame?: string;
+    pose?: EmbodiedPose;
+  };
+  constraints: EmbodiedActionConstraints;
+  requiredCapabilities: string[];
+  provenance: EmbodiedProvenance;
+  metadata?: Record<string, unknown>;
+}
+
+export interface RobotState {
+  robotId: string;
+  mode: 'disabled' | 'simulation' | 'isaac' | 'physical';
+  connected: boolean;
+  safetyState: 'unknown' | 'safe' | 'blocked' | 'estop';
+  batteryPercent?: number;
+  currentTaskId?: string;
+  pose?: EmbodiedPose;
+  capabilities: string[];
+  updatedAt: string;
+}
+
+export interface WorldObservation {
+  observedAt: string;
+  source: 'ros2' | 'isaac_sim' | 'physical_robot';
+  frame: string;
+  entities: Array<{
+    entityId: string;
+    semanticType: string;
+    confidence: number;
+    pose?: EmbodiedPose;
+  }>;
+  robot?: RobotState;
+  sensorMetadata?: Record<string, unknown>;
+  provenance?: EmbodiedProvenance;
+}

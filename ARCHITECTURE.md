@@ -2,103 +2,158 @@
 
 ## System Overview
 
-The **Planetary UI Platform** is a planetary-scale, edge-native, AI-augmented frontend architecture built on Next.js 15 App Router, Turborepo, Module Federation v2, Cloudflare Workers, and a unified design system.
-
----
+The **HoloKai Platform** is a planetary-scale, edge-native, AI-augmented civilization research operating system. Its web and cognitive planes are complemented by a physically isolated **Physical AI plane** based on ROS 2 and NVIDIA Isaac.
 
 ## 1. System Topology & Layers
 
 ```mermaid
 flowchart TB
   user[End User Browser]
-
-  subgraph Edge[Edge Intelligence Layer - Cloudflare Workers]
-    geo[Geo Router Worker]
+  subgraph Edge[Edge Intelligence]
+    geo[Cloudflare Edge]
     aiEdge[AI Route Predictor]
-    mfeResolver[MFE Manifest Resolver]
+    mfe[MFE Resolver]
   end
-
-  subgraph Runtime[Frontend Runtime & Monorepo Apps]
-    shell[Shell Host App - :3000]
-    oracle[Web Oracle MFE - :3001]
-    archive[Web Archive MFE - :3002]
+  subgraph Runtime[HoloKai Apps]
+    shell[Shell]
+    oracle[Oracle]
+    archive[Archive]
+    research[Research]
   end
-
-  subgraph DesignLayer[Planetary UI CSS Foundation]
-    tokens[@holokai/design-tokens]
-    preset[Tailwind Semantic Preset]
-    primitives[@holokai/ui]
+  subgraph Cognition[Civilization Intelligence]
+    bff[BFF Gateway]
+    python[Python Multi-Agent Engine]
+    rag[RAG / Chroma / Memory]
+    graph[Knowledge Graph]
   end
-
-  subgraph Origin[Backend & Infrastructure]
-    bff[TypeScript BFF API Gateway - :8000]
-    db[(PostgreSQL / Firebase / Drizzle)]
+  subgraph Physical[Physical AI]
+    gateway[Embodied Task Gateway]
+    ros[ROS 2 / DDS]
+    isaacros[Isaac ROS]
+    sim[Isaac Sim]
+    lab[Isaac Lab]
+    robot[Humanoid / Robot]
   end
-
   user --> Edge
   Edge --> Runtime
-  Runtime --> DesignLayer
-  Runtime --> Origin
+  Runtime --> Cognition
+  bff --> gateway
+  gateway --> ros
+  ros --> isaacros
+  isaacros --> robot
+  sim --> isaacros
+  lab --> sim
+  robot --> ros
+  ros --> gateway
+  gateway --> bff
+  python --> bff
+  rag --> python
+  graph --> python
 ```
 
----
+### Architectural boundary
 
-## 2. CSS & Design System Architecture
+- Cognitive systems decide high-level intent.
+- Physical AI systems perceive, simulate, plan, and execute.
+- ROS 2 is the embodiment boundary.
+- The BFF never imports ROS libraries.
+- The LLM never emits motor-level commands.
+- A deterministic safety gateway is mandatory before robot execution.
+
+## 2. NVIDIA Isaac Integration
+
+`robotics/` is the dedicated Physical AI workspace.
 
 ```text
-@layer reset, tokens, base, components, utilities, overrides;
-
-DESIGN TOKENS (@holokai/design-tokens)
-      ↓
-CSS CUSTOM PROPERTIES (--pui-* primitives, --color-* semantic)
-      ↓
-TAILWIND PRESET (packages/design-tokens/tailwind.preset.ts)
-      ↓
-DESIGN PRIMITIVES (@holokai/ui)
-      ↓
-APPLICATION SURFACES (apps/shell, apps/web-oracle, apps/web-archive)
+robotics/
+├── contracts/embodied_action.schema.json
+├── ros2/src/holokai_embodied/
+│   ├── cognitive_bridge.py
+│   ├── safety_gateway.py
+│   ├── world_model_bridge.py
+│   └── launch/holokai_embodied.launch.py
+└── isaac/
+    ├── sim/       # Isaac Sim scenes, USD assets, sensors
+    ├── lab/       # Isaac Lab environments and policies
+    └── assets/    # HoloKai semantic/physical assets
 ```
 
-### Key Technical Pillars
+HoloKai does not vendor NVIDIA Isaac ROS. NVIDIA's upstream packages remain the source of truth and are installed on the robotics host.
 
-1. **CSS Cascade Layers**: `@layer reset, tokens, base, components, utilities, overrides;` defined in [packages/design-tokens/src/index.css](file:///c:/Users/ENGR BILLI/HoloKai-Systems-Labs/packages/design-tokens/src/index.css).
-2. **Two-Level Token Architecture**:
-   - Primitive `--pui-*` raw values
-   - Contextual `--color-*` semantic mappings
-   - Theme switching via `[data-theme="dark"]`, `:root` (light), and system mode
-   - White-label brand overrides via `[data-brand="planetary"]` and `[data-brand="enterprise"]`
-3. **Token Scales**:
-   - **Typography**: 13-step `--text-xs` to `--text-9xl`, Inter + JetBrains Mono stacks, display hero classes
-   - **Spacing**: 4px base grid, `--space-0` to `--space-48`, responsive `.pui-section`
-   - **Radius**: 8-step `--radius-xs` to `--radius-full`
-   - **Shadows**: `--shadow-sm` to `--shadow-xl` with dark mode depth scaling
-   - **Motion**: `--duration-instant` to `--duration-cinematic`, `--ease-planetary`, entrance keyframes, stagger index `[data-motion-item]`
-4. **Accessibility**: `prefers-reduced-motion` global reduction and `.sr-only` class.
-5. **Shared Tailwind Preset**: [packages/design-tokens/tailwind.preset.ts](file:///c:/Users/ENGR BILLI/HoloKai-Systems-Labs/packages/design-tokens/tailwind.preset.ts) mapping Tailwind utilities directly to CSS tokens.
+| Layer | Responsibility |
+|---|---|
+| Isaac ROS | Accelerated ROS 2 perception, mapping, pose and robotics workloads |
+| Isaac Sim | Digital twins, physics, sensors, synthetic data, SIL/HIL validation |
+| Isaac Lab | Scalable robot-learning environments and evaluation |
+| ROS 2 | Robot middleware / hardware boundary |
+| HoloKai | Civilization knowledge, provenance, reasoning, memory, task intent |
 
----
+## 3. Embodied Intelligence Contract
 
-## 3. Package Structure
+Every task crossing cognition into embodiment uses `robotics/contracts/embodied_action.schema.json` and the shared `@holokai/contracts` TypeScript definitions.
+
+The contract carries task identity, semantic target, spatial pose/frame, velocity and human-proximity constraints, required capabilities, epistemic stance, evidence IDs, confidence, and metadata.
+
+## 4. Safety Architecture
+
+```text
+HoloKai Agent / LLM
+        |
+        v
+EmbodiedAction
+        |
+        v
+Schema validation
+        |
+        v
+Deterministic Safety Gateway
+        |
+   +----+----+
+   |         |
+ reject    approve
+             |
+             v
+           ROS 2
+             |
+             v
+       Isaac / Robot
+```
+
+The safety gateway is deliberately non-LLM. It enforces hard bounds, emergency-stop state, manipulation authorization, provenance presence, and minimum human-proximity constraints.
+
+## 5. Cognitive ↔ World Model Loop
+
+```text
+Knowledge Graph / RAG
+        ↓
+Cognitive Planner
+        ↓
+Embodied Action
+        ↓
+ROS 2 / Isaac
+        ↓
+Perception + Localization
+        ↓
+World Observation
+        ↓
+World Model / Episodic Memory
+        ↓
+Cognitive Planner
+```
+
+This creates the foundation for **Embodied Civilization Intelligence**: cultural entities can become spatially grounded without losing provenance or epistemic status.
+
+## 6. CSS & Design System
+
+The robotics UI consumes the same `@holokai/design-tokens` and `@holokai/ui` system. Future surfaces include Robot Dossier, World Map, Sensor Health, Action Timeline, Simulation Viewport, and Safety State.
+
+## 7. Package Structure
 
 ```text
 /
-├── apps/
-│   ├── shell/           Next.js 15 Host Shell & Spatial Lab (:3000)
-│   ├── web-oracle/      Oracle AI Research MFE Remote (:3001)
-│   ├── web-archive/     Civilization Archive MFE Remote (:3002)
-│   └── bff/             TypeScript API Gateway (:8000)
-│
-├── packages/
-│   ├── design-tokens/   Planetary UI CSS Design Tokens & Cascade Layers
-│   ├── ui/              Shared React 19 UI Primitives
-│   ├── design-system/   TypeScript Tokens & Epistemic Definitions
-│   ├── contracts/       Typed API & Event Schemas
-│   ├── event-bus/       Cross-MFE State Sync Event Bus
-│   ├── runtime/         Shared Frontend Runtime Utilities
-│   └── mfe-orchestrator/ Module Federation Resolution Engine
-│
-└── edge/
-    ├── ai-router-worker/      Cloudflare Edge AI Router
-    ├── geo-router-worker/     Cloudflare Geo Router
-    └── mfe-manifest-worker/   MFE Manifest Resolver Worker
+├── apps/                  # HoloKai web and BFF applications
+├── packages/              # Shared contracts, UI, runtime and design system
+├── services/              # Python cognition, RAG and memory
+├── robotics/              # ROS 2 + NVIDIA Isaac Physical AI plane
+└── edge/                  # Cloudflare edge intelligence
 ```

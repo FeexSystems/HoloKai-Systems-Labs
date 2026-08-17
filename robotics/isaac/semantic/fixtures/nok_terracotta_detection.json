@@ -1,0 +1,22 @@
+{
+  "frame": "map",
+  "detectorSource": "isaac_sim_ground_truth",
+  "sensorMetadata": {
+    "camera": "holokai_stereo_left",
+    "simulation": true
+  },
+  "detections": [
+    {
+      "label": "Nok terracotta sculpture",
+      "semanticType": "cultural_artifact",
+      "confidence": 0.97,
+      "trackId": "artifact-001",
+      "pose": {"x": 1.2, "y": -0.4, "z": 0.8},
+      "bbox": {"x": 0.42, "y": 0.31, "width": 0.18, "height": 0.34},
+      "provenance": {
+        "source": "isaac_sim_ground_truth",
+        "method": "simulated-detection"
+      }
+    }
+  ]
+}

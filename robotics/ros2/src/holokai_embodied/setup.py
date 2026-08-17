@@ -4,7 +4,7 @@ package_name = 'holokai_embodied'
 
 setup(
     name=package_name,
-    version='0.3.0',
+
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
@@ -29,6 +29,6 @@ setup(
             'world_model = holokai_embodied.world_model:main',
             'semantic_perception_bridge = holokai_embodied.semantic_perception_bridge:main',
             'isaac_ros_guard = holokai_embodied.isaac_ros_guard:main',
-        ],
+   ],
     },
 )

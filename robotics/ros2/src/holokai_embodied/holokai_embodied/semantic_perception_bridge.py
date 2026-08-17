@@ -11,7 +11,6 @@ from std_msgs.msg import String
 
 
 class SemanticPerceptionBridge(Node):
-    """Normalize detector output into stable HoloKai semantic candidates."""
 
     def __init__(self) -> None:
         super().__init__('holokai_semantic_perception_bridge')
@@ -70,8 +69,7 @@ class SemanticPerceptionBridge(Node):
             'robot': payload.get('robot', {}) if isinstance(payload, dict) else {},
             'sensorMetadata': payload.get('sensorMetadata', {}) if isinstance(payload, dict) else {},
             'provenance': {
-                'pipeline': 'holokai-semantic-perception-v1',
-                'detectorSource': payload.get('detectorSource', 'unknown') if isinstance(payload, dict) else 'unknown',
+           'detectorSource': payload.get('detectorSource', 'unknown') if isinstance(payload, dict) else 'unknown',
             },
         }
         out = String()

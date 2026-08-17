@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://holokai.org/schemas/artifact-intelligence.v2.1.json",
+  "title": "HoloKai Artifact Intelligence Observation",
+  "type": "object",
+  "required": ["observationId", "perception", "identity", "provenance"],
+  "properties": {
+    "observationId": {"type": "string"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "perception": {
+      "type": "object",
+      "required": ["detector", "confidence"],
+      "properties": {
+        "detector": {"type": "string"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "bbox": {"type": "object"},
+        "pose6d": {"type": "object"},
+        "frameId": {"type": "string"}
+      }
+    },
+    "identity": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["RESOLVED", "AMBIGUOUS", "UNRESOLVED"]},
+        "entityId": {"type": "string"},
+        "name": {"type": "string"},
+        "civilization": {"type": "string"},
+        "matchScore": {"type": "number", "minimum": 0, "maximum": 1},
+        "candidateIds": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "knowledge": {"type": "object"},
+    "provenance": {
+      "type": "object",
+      "required": ["perceptionSource", "resolver"],
+      "properties": {
+        "perceptionSource": {"type": "string"},
+        "resolver": {"type": "string"},
+        "knowledgeSources": {"type": "array", "items": {"type": "object"}},
+        "evidenceIds": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "epistemic": {
+      "type": "object",
+      "properties": {
+        "stance": {"enum": ["ESTABLISHED", "SCHOLARLY_DEBATE", "TRADITION", "ESOTERIC", "SPECULATIVE", "FICTIONAL"]},
+        "basis": {"type": "string"}
+      }
+    }
+  },
+  "additionalProperties": true
+}
