@@ -28,7 +28,7 @@ class WorldModel(Node):
 
         self.observation_pub = self.create_publisher(String, '/holokai/world/state', 10)
         self.entity_sub = self.create_subscription(
-            String, '/holokai/robot/observation', self._on_observation, 20
+            String, '/holokai/robot/resolved_observation', self._on_observation, 20
         )
         self.odom_sub = self.create_subscription(
             Odometry, '/visual_slam/tracking/odometry', self._on_odom, 20
@@ -53,7 +53,7 @@ class WorldModel(Node):
         try:
             payload = json.loads(message.data)
         except json.JSONDecodeError:
-            self.get_logger().warning('Ignoring malformed observation payload')
+            self.get_logger().warning('Ignoring malformed resolved observation payload')
             return
 
         for entity in payload.get('entities', []):
