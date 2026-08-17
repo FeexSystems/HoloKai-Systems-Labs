@@ -8,7 +8,7 @@
 [![UI Suite](https://img.shields.io/badge/UI_Suite-%40holokai%2Fui-purple?style=for-the-badge)](packages/ui)
 [![3D GLTF Viewer](https://img.shields.io/badge/3D_GLTF-Cyber_Mannequin-cyan?style=for-the-badge)](apps/shell)
 [![Vocal Engine](https://img.shields.io/badge/Vocal_AI-Gemini%20%2B%20ElevenLabs%20%2B%20Deepgram-emerald?style=for-the-badge)](packages/ui)
-[![Build Status](https://img.shields.io/badge/Build-100%25_PASSED-emerald?style=for-the-badge)](apps/shell)
+[![Physical AI](https://img.shields.io/badge/Physical_AI-ROS_2_%2B_NVIDIA_Isaac-76B900?style=for-the-badge)](robotics/)
 
 ---
 
@@ -16,7 +16,67 @@
 
 **HoloKai** is a civilization-scale, edge-native, 3D spatial research operating system dedicated to the digitization, preservation, and synthesis of **Pan-African Epigraphy, Archaeoastronomy, Metallurgy, and Oral Memory**.
 
-Combining a **Next.js 15 App Router Streaming SSR Shell Host**, **3D Cyber Mannequin GLTF Node**, **Cinematic 3D Vanguard Units Carousel Gallery**, **Multi-Vocal AI Engine (Google Gemini AI + ElevenLabs + Deepgram)**, **Module Federation v2 Micro-Frontends**, and an authoritative **Systemic DesignDNA Foundation (`@holokai/design-system` & `@holokai/ui`)**, HoloKai provides a high-production 3D spatial interface powered by a **16-Volume Ancient African History Knowledge Corpus**.
+The platform combines the existing Next.js 15 spatial research OS, multi-vocal AI engine, Module Federation micro-frontends, systemic DesignDNA, Python multi-agent/RAG engine, and a new isolated **Physical AI plane** for ROS 2 and NVIDIA Isaac. HoloKai can therefore evolve from a research interface into an embodied civilization-intelligence platform while keeping web cognition and physical execution cleanly separated.
+
+---
+
+## 🧠 Civilization Intelligence + 🤖 Physical AI
+
+```text
+                         HOLOKAI
+                            │
+            ┌───────────────┴───────────────┐
+            │                               │
+      CIVILIZATION OS                  PHYSICAL AI
+            │                               │
+     Oracle / RAG / Graph             ROS 2 / Isaac ROS
+     Memory / Epistemics              Isaac Sim / Lab
+            │                               │
+            └───────────┬───────────────────┘
+                        │
+                EMBODIED AI GATEWAY
+                        │
+                  Humanoid / Robot
+```
+
+### NVIDIA Isaac integration
+
+The new `robotics/` workspace contains the HoloKai Physical AI boundary:
+
+- `robotics/contracts/embodied_action.schema.json` — versioned embodied task contract.
+- `robotics/ros2/` — ROS 2 package with cognitive, safety, and world-model bridges.
+- `robotics/isaac/sim/` — Isaac Sim digital-twin and synthetic-data workspace.
+- `robotics/isaac/lab/` — Isaac Lab robot-learning workspace.
+- `robotics/isaac/assets/` — semantic-to-physical asset registry boundary.
+- `apps/bff/src/routes/robotics.ts` — controlled HTTP gateway for task submission, robot status, and world state.
+
+### Safety boundary
+
+The LLM and HoloKai agents **never emit motor-level commands**. They produce a schema-validated `EmbodiedAction`. A deterministic safety gateway validates velocity, human-proximity, manipulation authorization, emergency-stop state, and provenance before an approved task can cross into ROS 2.
+
+### Cognitive → physical loop
+
+```text
+Knowledge Graph / RAG
+        ↓
+Cognitive Planner
+        ↓
+EmbodiedAction
+        ↓
+Safety Gateway
+        ↓
+ROS 2
+        ↓
+Isaac ROS / Isaac Sim / Robot
+        ↓
+Perception + World Observation
+        ↓
+World Model / Episodic Memory
+        ↓
+Cognitive Planner
+```
+
+The robotics layer is optional for web-only deployments. Configure `HOLOKAI_ROBOTICS_GATEWAY_URL` only on a BFF host that is explicitly allowed to communicate with a robotics gateway.
 
 ---
 
@@ -30,62 +90,37 @@ Combining a **Next.js 15 App Router Streaming SSR Shell Host**, **3D Cyber Manne
                      ┌─────────────────┴─────────────────┐
                      │  MAIN CHAT & REASONING ENGINE     │
                      │        GOOGLE GEMINI AI           │
-                     │  (Gemini 2.5 Flash & Flash Lite)  │
                      └─────────────────┬─────────────────┘
                                        │
                      ┌─────────────────┴─────────────────┐
                      │          VOCAL ENGINE             │
-                     ├───────────────────────────────────┤
-                     │ 1st CHOICE: ELEVENLABS (Primary)   │
-                     │ 2nd CHOICE: DEEPGRAM (Fallback)   │
-                     │ BROWSER: WEB SPEECH (Local)       │
-                     └─────────────────┬─────────────────┘
-                                       │
-                     ┌─────────────────┴─────────────────┐
-                     │      AUDIO VISUALIZER MATRIX      │
-                     │  (48-Band Canvas + Script Glyphs) │
+                     │ ElevenLabs → Deepgram → Browser  │
                      └───────────────────────────────────┘
 ```
-
-1. **Google Gemini AI (Main Chat Engine)**:
-   - Powers all scholar multi-agent reasoning, primary source epigraphic transliterations, 16-volume codex vector queries, and 6-tier epistemic confidence scoring.
-2. **ElevenLabs (1st Choice Vocal Engine)**:
-   - High-fidelity conversational speech synthesis for 8 Vanguard Guardian voice personas (Kemet-Alpha, Kush-Prime, Asante-V, Bantu-Node, Sika-Gold, Zamani, Naja-7, Oluwa-Core).
-3. **Deepgram (2nd Choice Vocal Engine)**:
-   - High-speed Nova-3 Speech-to-Text & Aura TTS fallback engine for real-time live microphone audio transcription.
-4. **Audio & Ancient Script Spectrum Visualizers**:
-   - `VoiceVisualizer`: Real-time 48-band Canvas 2D audio spectrum analyzer with gold frequency bars.
-   - `AncientScriptVoiceVisualizer`: Floating Ge'ez, Hieroglyphic, Meroitic, and Nsibidi glyph particles reacting to voice amplitude.
 
 ---
 
 ## 🕴️ 3D Spatial & Video Visual Suite (`@holokai/ui`)
 
-1. **3D Cyber Mannequin GLTF Node (`CyberMannequinViewer.tsx`)**:
-   - Interactive WebGL / Canvas 3D mannequin canvas (`cyber_mannequin.gltf`) with 15 skeleton joint nodes, autorotation, cybernetic wireframe, and cursor interactive orbit.
-2. **Cinematic Vanguard Carousel Gallery (`VanguardCarousel.tsx`)**:
-   - 3D Coverflow perspective slider with auto-playing MP4 video loops on focus, character spec metrics, and ElevenLabs voice triggers.
-3. **Spaceship-Style Motion Cards (`Card.tsx`)**:
-   - 3D perspective tilt (`rotateX`, `rotateY`), follow-mouse glare sheen overlay, and magnetic hover translation.
-4. **WebGL Particle Atmosphere (`SpatialCanvas.tsx`)**:
-   - Canvas 2D/Three.js starfield particle constellation with cursor spotlight tracking.
+1. **3D Cyber Mannequin GLTF Node** — interactive WebGL mannequin with skeleton joint nodes.
+2. **Cinematic Vanguard Carousel** — 3D coverflow gallery with voice triggers.
+3. **Spaceship-Style Motion Cards** — perspective tilt and magnetic interactions.
+4. **WebGL Particle Atmosphere** — spatial particle constellation.
 
 ---
 
 ## 🎨 Systemic DesignDNA Hierarchy
 
 ```text
-@layer reset, tokens, base, components, utilities, overrides;
-
 DESIGN TOKENS (@holokai/design-tokens)
       ↓
-CSS CUSTOM PROPERTIES (--pui-* primitives, --color-* semantic)
+CSS CUSTOM PROPERTIES
       ↓
-TAILWIND PRESET (packages/design-tokens/tailwind.preset.ts)
+TAILWIND PRESET
       ↓
-DESIGN PRIMITIVES & DOMAIN COMPONENTS (@holokai/ui)
+@holokai/ui
       ↓
-APPLICATION SURFACES (apps/shell, apps/web-oracle, apps/web-archive)
+APPLICATION + ROBOTICS CONTROL SURFACES
 ```
 
 ---
@@ -93,30 +128,28 @@ APPLICATION SURFACES (apps/shell, apps/web-oracle, apps/web-archive)
 ## 🛠️ Quick Start & Production Commands
 
 ```bash
-# 1. Install workspace dependencies
 pnpm install
-
-# 2. Launch production server on port 3005
-pnpm --filter @holokai/shell start -p 3005
-
-# 3. Rebuild monorepo packages cleanly
-cmd /c "pnpm --filter @holokai/design-system build && pnpm --filter @holokai/ui build && pnpm --filter @holokai/shell build"
+pnpm --filter @holokai/shell build
 ```
 
-| Service | Route / Port | Description |
-| --- | --- | --- |
-| **HoloKai Spatial OS Shell** | `http://localhost:3005/` | 3D Spatial Research OS, Mannequin Viewer, Vanguard Carousel & Voice Chamber |
-| **System Edge** | `http://localhost:3005/system` | Platform Telemetry & Edge Runtime |
-| **Web Oracle Remote** | `http://localhost:3001/` | Oracle AI Research Remote |
-| **Web Archive Remote** | `http://localhost:3002/` | Civilization Archive Remote |
+For the robotics host:
+
+```bash
+cd robotics/ros2
+colcon build --symlink-install
+source install/setup.bash
+ros2 launch holokai_embodied holokai_embodied.launch.py
+```
+
+The NVIDIA Isaac installation itself is managed according to NVIDIA's supported Isaac ROS / Isaac Sim / Isaac Lab environment rather than vendored into the HoloKai web monorepo.
 
 ---
 
 ## 📄 Governance & Documentation
 
 - **System Architecture Specification**: [ARCHITECTURE.md](ARCHITECTURE.md)
+- **Physical AI Foundation**: [robotics/README.md](robotics/README.md)
 - **Master Implementation Roadmap**: [PLANETARY_IMPLEMENTATION.md](PLANETARY_IMPLEMENTATION.md)
 - **HoloKai Platform Enhancement Initiative**: [HOLOKAI-ENHANCEMENT-INITIATIVE.md](HOLOKAI-ENHANCEMENT-INITIATIVE.md)
 - **Homepage Enrichment Tasks**: [.kiro/specs/holokai-homepage-enrichment/tasks.md](.kiro/specs/holokai-homepage-enrichment/tasks.md)
 - **Specialized AI Agents**: [.claude/agents/](.claude/agents/)
-- **Walkthrough & Verification Log**: [walkthrough.md](walkthrough.md)
