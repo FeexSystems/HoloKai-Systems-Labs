@@ -4,7 +4,7 @@ package_name = 'holokai_embodied'
 
 setup(
     name=package_name,
-    version='0.3.1',
+    version='0.3.2',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
@@ -31,6 +31,7 @@ setup(
             'isaac_ros_guard = holokai_embodied.isaac_ros_guard:main',
             'isaac_ros_artifact_adapter = holokai_embodied.isaac_ros_artifact_adapter:main',
             'multimodal_resolver = holokai_embodied.multimodal_resolver_node:main',
+            'artifact_intelligence = holokai_ embodied.artifact_intelligence:main',
         ],
     },
 )
