@@ -4,12 +4,18 @@ package_name = 'holokai_embodied'
 
 setup(
     name=package_name,
-    version='0.1.0',
+    version='0.2.0',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/launch', ['launch/holokai_embodied.launch.py']),
+        (
+            'share/' + package_name + '/launch',
+            [
+                'launch/holokai_embodied.launch.py',
+                'launch/holokai_isaac_ros.launch.py',
+            ],
+        ),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,6 +26,8 @@ setup(
             'cognitive_bridge = holokai_embodied.cognitive_bridge:main',
             'safety_gateway = holokai_embodied.safety_gateway:main',
             'world_model_bridge = holokai_embodied.world_model_bridge:main',
+            'world_model = holokai_embodied.world_model:main',
+            'isaac_ros_guard = holokai_embodied.isaac_ros_guard:main',
         ],
     },
 )
