@@ -9,38 +9,107 @@ def Xform "World" (
     kind = "assembly"
 )
 {
-    def Xform "Environment"
+    def Xform "HoloKaiLaboratory" (
+        kind = "component"
+    )
     {
-        def Xform "ResearchLaboratory"
+        custom string holokai:worldId = "world:holokai:laboratory:001"
+        custom string holokai:worldType = "civilization-research-laboratory"
+        custom string holokai:provenance = "HoloKai Physical AI synthetic environment"
+
+        def Cube "Floor"
         {
-            custom string holokai:worldId = "holokai:world:001"
-            custom string holokai:worldType = "civilization-research-laboratory"
-            custom string holokai:provenance = "synthetic-development-scene"
+            float3 xformOp:scale = (12, 8, 0.05)
+            float3 xformOp:translate = (0, 0, -0.05)
+            uniform token[] xformOpOrder = ["xformOp:scale", "xformOp:translate"]
         }
 
-        def Xform "ArtifactGallery"
+        def Cube "ResearchPlinth"
         {
-            custom string holokai:semanticZone = "artifact-gallery"
+            float3 xformOp:scale = (1.2, 1.2, 0.45)
+            float3 xformOp:translate = (0, 0, 0.45)
+            uniform token[] xformOpOrder = ["xformOp:scale", "xformOp:translate"]
+            custom string holokai:entityId = "artifact:research:plinth:001"
+            custom string holokai:semanticType = "research_surface"
         }
 
-        def Xform "ObservationStation"
+        def Cube "ArtifactAnchor"
         {
-            custom string holokai:semanticZone = "observation-station"
-        }
-    }
-
-    def Xform "Robotics"
-    {
-        custom string holokai:robotId = "holokai:robot:prototype-001"
-        custom string holokai:integration = "isaac-ros"
-    }
-
-    def Xform "SemanticAnchors"
-    {
-        def Xform "ArtifactAnchor_001"
-        {
-            custom string holokai:entityId = "artifact:demo:001"
+            float3 xformOp:scale = (0.35, 0.35, 0.55)
+            float3 xformOp:translate = (0, 0, 1.45)
+            uniform token[] xformOpOrder = ["xformOp:scale", "xformOp:translate"]
+            custom string holokai:entityId = "artifact:ife:bronze-head:demo-001"
+            custom string holokai:semanticType = "cultural_artifact"
+            custom string holokai:civilization = "Ife"
             custom string holokai:epistemicStance = "ESTABLISHED"
+            custom float holokai:confidence = 0.95
         }
+
+        def Cube "ResearchTableA"
+        {
+            float3 xformOp:scale = (2.0, 0.9, 0.45)
+            float3 xformOp:translate = (-4, 2.5, 0.45)
+            uniform token[] xformOpOrder = ["xformOp:scale", "xformOp:translate"]
+        }
+
+        def Cube "ResearchTableB"
+        {
+            float3 xformOp:scale = (2.0, 0.9, 0.45)
+            float3 xformOp:translate = (4, 2.5, 0.45)
+            uniform token[] xformOpOrder = ["xformOp:scale", "xformOp:translate"]
+        }
+
+        def Xform "CameraRig"
+        {
+            def Camera "LeftCamera"
+            {
+                float3 xformOp:translate = (-0.35, 0, 2.1)
+                float3 xformOp:rotateXYZ = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+                float focalLength = 24
+                float horizontalAperture = 36
+                custom string holokai:rosFrame = "camera_left_optical_frame"
+                custom string holokai:rosTopic = "/visual_slam/image_0"
+            }
+
+            def Camera "RightCamera"
+            {
+                float3 xformOp:translate = (0.35, 0, 2.1)
+                float3 xformOp:rotateXYZ = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+                float focalLength = 24
+                float horizontalAperture = 36
+                custom string holokai:rosFrame = "camera_right_optical_frame"
+                custom string holokai:rosTopic = "/visual_slam/image_1"
+            }
+        }
+
+        def Xform "Robot"
+        {
+            custom string holokai:entityId = "robot:holokai:prototype-001"
+            custom string holokai:semanticType = "embodied_agent"
+            custom string holokai:rosBaseFrame = "base_link"
+
+            def Cube "Body"
+            {
+                float3 xformOp:scale = (0.55, 0.35, 0.8)
+                float3 xformOp:translate = (0, -2.5, 0.8)
+                uniform token[] xformOpOrder = ["xformOp:scale", "xformOp:translate"]
+            }
+
+            def Cube "SensorMast"
+            {
+                float3 xformOp:scale = (0.12, 0.12, 0.55)
+                float3 xformOp:translate = (0, -2.5, 1.75)
+                uniform token[] xformOpOrder = ["xformOp:scale", "xformOp:translate"]
+            }
+        }
+    }
+
+    def DistantLight "KeyLight"
+    {
+        float3 xformOp:rotateXYZ = (-35, 20, 25)
+        uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+        float intensity = 1000
     }
 }
