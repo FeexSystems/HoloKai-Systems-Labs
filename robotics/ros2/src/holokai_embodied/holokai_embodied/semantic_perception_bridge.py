@@ -11,16 +11,11 @@ from std_msgs.msg import String
 
 
 class SemanticPerceptionBridge(Node):
-    """Normalize detector observations into HoloKai semantic entities.
-
-    Detector implementations remain replaceable (RT-DETR, FoundationPose,
-    custom models, or simulation ground truth). This node owns the stable
-    HoloKai semantic contract and provenance boundary.
-    """
+    """Normalize detector observations into stable HoloKai semantic candidates."""
 
     def __init__(self) -> None:
         super().__init__('holokai_semantic_perception_bridge')
-        self.pub = self.create_publisher(String, '/holokai/robot/observation', 20)
+        self.pub = self.create_publisher(String, '/holokai/semantic/candidates', 20)
         self.sub = self.create_subscription(
             String, '/holokai/perception/detections', self._on_detection, 20
         )
@@ -75,7 +70,7 @@ class SemanticPerceptionBridge(Node):
             'robot': payload.get('robot', {}) if isinstance(payload, dict) else {},
             'sensorMetadata': payload.get('sensorMetadata', {}) if isinstance(payload, dict) else {},
             'provenance': {
-                'pipeline': 'holokai-semantic-perception-v1',
+                'pipeline': 'holokai-semantic-perception-v2.1',
                 'detectorSource': payload.get('detectorSource', 'unknown') if isinstance(payload, dict) else 'unknown',
             },
         }
