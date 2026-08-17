@@ -1,0 +1,25 @@
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+
+def generate_launch_description():
+    return LaunchDescription([
+        Node(
+            package='holokai_embodied',
+            executable='cognitive_bridge',
+            name='holokai_cognitive_bridge',
+            output='screen',
+        ),
+        Node(
+            package='holokai_embodied',
+            executable='safety_gateway',
+            name='holokai_safety_gateway',
+            output='screen',
+        ),
+        Node(
+            package='holokai_embodied',
+            executable='world_model_bridge',
+            name='holokai_world_model_bridge',
+            output='screen',
+        ),
+    ])
