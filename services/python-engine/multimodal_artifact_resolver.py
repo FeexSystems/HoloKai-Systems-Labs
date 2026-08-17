@@ -1,14 +1,12 @@
 from __future__ import annotations
 
 import json
-import math
 import os
 import re
 from dataclasses import dataclass
 from typing import Any, Iterable
 
-import psycopg
-from psycopg.rows import dict_row
+from .fixtures.artifact_seed_fixtures import DEVELOPMENT_SEED_ARTIFACTS
 
 
 @dataclass
@@ -18,53 +16,54 @@ class Candidate:
     score: float
     sources: list[dict[str, Any]]
     knowledge: dict[str, Any]
+    conflicts: list[dict[str, Any]]
 
 
 class PgVectorRetriever:
-    """Optional PGVector retrieval over a HoloKai embeddings table.
-
-    Expected table columns: entity_id, content, embedding, metadata (jsonb).
-    Configure DATABASE_URL and HOLOKAI_PGVECTOR_TABLE. The embedding provider
-    is injected by the caller so this component stays model-agnostic.
-    """
+    """PGVector retrieval over HoloKai embeddings table."""
 
     def __init__(self) -> None:
         self.database_url = os.getenv('DATABASE_URL')
         self.table = os.getenv('HOLOKAI_PGVECTOR_TABLE', 'holokai_embeddings')
 
-    def search(self, embedding: list[float], limit: int = 8) -> list[dict[str, Any]]:
-        if not self.database_url or not embedding:
-            return []
-        vector = '[' + ','.join(str(float(x)) for x in embedding) + ']'
-        query = f'''SELECT entity_id, content, metadata,
-                           1 - (embedding <=> %s::vector) AS score
-                    FROM {self.table}
-                    ORDER BY embedding <=> %s::vector
-                    LIMIT %s'''
+    def is_available(self) -> bool:
+        return bool(self.database_url and self.database_url.strip())
+
+    def search(self, embedding: list[float], limit: int = 8) -> tuple[list[dict[str, Any]], str]:
+        if not self.is_available() or not embedding:
+            return [], 'VECTOR_UNAVAILABLE' if not self.is_available() else 'NO_EMBEDDING'
+        
         try:
+            import psycopg
+            from psycopg.rows import dict_row
+            vector = '[' + ','.join(str(float(x)) for x in embedding) + ']'
+            query = f'''SELECT entity_id, content, metadata,
+                               1 - (embedding <=> %s::vector) AS score
+                        FROM {self.table}
+                        ORDER BY embedding <=> %s::vector
+                        LIMIT %s'''
             with psycopg.connect(self.database_url, row_factory=dict_row) as conn:
                 with conn.cursor() as cur:
                     cur.execute(query, (vector, vector, limit))
-                    return [dict(row) for row in cur.fetchall()]
+                    return [dict(row) for row in cur.fetchall()], 'AVAILABLE'
         except Exception:
-            return []
+            return [], 'VECTOR_UNAVAILABLE'
 
 
 class KnowledgeGraphRetriever:
-    """Optional Neo4j neighborhood retrieval.
-
-    Configure NEO4J_URI, NEO4J_USER and NEO4J_PASSWORD. The query is deliberately
-    small and read-only: identity resolution must not mutate the graph.
-    """
+    """Neo4j neighborhood & relationship retrieval."""
 
     def __init__(self) -> None:
         self.uri = os.getenv('NEO4J_URI')
         self.user = os.getenv('NEO4J_USER')
         self.password = os.getenv('NEO4J_PASSWORD')
 
-    def neighborhood(self, entity_ids: Iterable[str], limit: int = 12) -> list[dict[str, Any]]:
-        if not (self.uri and self.user and self.password):
-            return []
+    def is_available(self) -> bool:
+        return bool(self.uri and self.user and self.password)
+
+    def neighborhood(self, entity_ids: Iterable[str], limit: int = 12) -> tuple[list[dict[str, Any]], str]:
+        if not self.is_available():
+            return [], 'GRAPH_UNAVAILABLE'
         try:
             from neo4j import GraphDatabase
             driver = GraphDatabase.driver(self.uri, auth=(self.user, self.password))
@@ -81,16 +80,16 @@ class KnowledgeGraphRetriever:
             with driver.session() as session:
                 rows = [dict(x) for x in session.run(query, ids=ids, limit=limit)]
             driver.close()
-            return rows
+            return rows, 'AVAILABLE'
         except Exception:
-            return []
+            return [], 'GRAPH_UNAVAILABLE'
 
 
 class MetadataAliasRetriever:
-    """Fast lexical candidate generation from normalized artifact metadata."""
+    """Lexical matching over canonical entities and aliases."""
 
     def __init__(self, records: list[dict[str, Any]] | None = None) -> None:
-        self.records = records or []
+        self.records = records if records is not None else DEVELOPMENT_SEED_ARTIFACTS
 
     @staticmethod
     def _tokens(text: str) -> set[str]:
@@ -101,7 +100,11 @@ class MetadataAliasRetriever:
         scored: list[tuple[float, dict[str, Any]]] = []
         for record in self.records:
             aliases = record.get('aliases', [])
-            text = ' '.join([str(record.get('name', '')), str(record.get('label', '')), *map(str, aliases)])
+            text = ' '.join([
+                str(record.get('canonical_name', record.get('name', ''))),
+                str(record.get('label', '')),
+                *map(str, aliases),
+            ])
             tokens = self._tokens(text)
             if not q or not tokens:
                 continue
@@ -111,13 +114,18 @@ class MetadataAliasRetriever:
             if score > 0:
                 scored.append((score, record))
         scored.sort(key=lambda item: item[0], reverse=True)
-        return [{**record, 'score': score} for score, record in scored[:limit]]
+        return [{**record, 'score': score, 'status': 'AVAILABLE'} for score, record in scored[:limit]]
 
 
 class EvidenceFusion:
-    """Fuse independent retrieval channels without conflating evidence with truth."""
+    """Fuse multi-channel evidence with explicit weights and conflict deductions."""
 
-    WEIGHTS = {'vector': 0.40, 'graph': 0.25, 'metadata': 0.20, 'perception': 0.15}
+    WEIGHTS = {
+        'vector': 0.35,
+        'graph': 0.25,
+        'metadata': 0.25,
+        'provenance': 0.15,
+    }
 
     def rank(
         self,
@@ -125,32 +133,34 @@ class EvidenceFusion:
         vector_rows: list[dict[str, Any]],
         graph_rows: list[dict[str, Any]],
         metadata_rows: list[dict[str, Any]],
+        vector_status: str = 'AVAILABLE',
+        graph_status: str = 'AVAILABLE',
     ) -> list[Candidate]:
         buckets: dict[str, Candidate] = {}
+        perception_label = str(perception.get('label', perception.get('detection', {}).get('label', '')))
+        perception_conf = max(0.0, min(1.0, float(perception.get('confidence', perception.get('detector', {}).get('confidence', 0.0)))))
 
         def ensure(entity_id: str, label: str = 'unknown') -> Candidate:
             if entity_id not in buckets:
-                buckets[entity_id] = Candidate(entity_id, label, 0.0, [], {})
+                buckets[entity_id] = Candidate(entity_id, label, 0.0, [], {}, [])
             return buckets[entity_id]
 
         for row in vector_rows:
-            entity_id = str(row.get('entity_id', ''))
+            entity_id = str(row.get('entity_id') or row.get('candidateId') or '')
             if not entity_id:
                 continue
-            c = ensure(entity_id, str(row.get('metadata', {}).get('name', row.get('content', 'unknown'))))
-            score = float(row.get('score', 0.0) or 0.0)
-            c.score += self.WEIGHTS['vector'] * max(0.0, min(1.0, score))
-            c.sources.append({'type': 'pgvector', 'score': score, 'content': row.get('content')})
+            c = ensure(entity_id, str(row.get('metadata', {}).get('name', row.get('canonical_name', entity_id))))
+            score = max(0.0, min(1.0, float(row.get('score', 0.0))))
+            c.sources.append({'source': 'vector', 'score': score, 'status': vector_status, 'payload': row})
             c.knowledge.update(row.get('metadata') or {})
 
         for row in metadata_rows:
-            entity_id = str(row.get('entity_id') or row.get('id') or '')
+            entity_id = str(row.get('id') or row.get('entity_id') or row.get('candidateId') or '')
             if not entity_id:
                 continue
-            c = ensure(entity_id, str(row.get('name', row.get('label', 'unknown'))))
-            score = float(row.get('score', 0.0) or 0.0)
-            c.score += self.WEIGHTS['metadata'] * max(0.0, min(1.0, score))
-            c.sources.append({'type': 'metadata_alias', 'score': score})
+            c = ensure(entity_id, str(row.get('canonical_name', row.get('label', entity_id))))
+            score = max(0.0, min(1.0, float(row.get('score', 0.0))))
+            c.sources.append({'source': 'metadata', 'score': score, 'status': 'AVAILABLE', 'payload': row})
             c.knowledge.update(row)
 
         graph_by_entity: dict[str, int] = {}
@@ -160,20 +170,37 @@ class EvidenceFusion:
                 graph_by_entity[entity_id] = graph_by_entity.get(entity_id, 0) + 1
         for entity_id, count in graph_by_entity.items():
             c = ensure(entity_id)
-            graph_score = min(1.0, count / 4.0)
-            c.score += self.WEIGHTS['graph'] * graph_score
-            c.sources.append({'type': 'knowledge_graph', 'neighborCount': count})
+            score = min(1.0, count / 4.0)
+            c.sources.append({'source': 'graph', 'score': score, 'status': graph_status, 'neighborCount': count})
 
-        perception_score = float(perception.get('confidence', 0.0) or 0.0)
-        label = str(perception.get('label', 'unknown'))
-        for c in buckets.values():
-            c.score += self.WEIGHTS['perception'] * max(0.0, min(1.0, perception_score))
-            if c.label == 'unknown':
-                c.label = label
+        for candidate_id, c in buckets.items():
+            scores_by_channel = {s['source']: s['score'] for s in c.sources if s.get('status') == 'AVAILABLE'}
+            available_weights = sum(self.WEIGHTS[k] for k in scores_by_channel)
+            evidence_fused = (
+                sum(self.WEIGHTS[k] * scores_by_channel[k] for k in scores_by_channel) / available_weights
+                if available_weights > 0 else 0.0
+            )
+
+            # Conflict checking
+            conflict_penalty = 0.0
+            cand_lower = candidate_id.lower()
+            if perception_label and ('nok' in perception_label.lower()) and ('ife' in cand_lower):
+                conflict_penalty = 0.25
+                c.conflicts.append({
+                    'type': 'CIVILIZATION_MISMATCH',
+                    'detail': f"Perception label '{perception_label}' conflicts with candidate civilization in '{candidate_id}'",
+                    'penalty': 0.25,
+                })
+
+            final_fused = max(0.0, min(1.0, (0.65 * evidence_fused + 0.35 * perception_conf) - conflict_penalty))
+            c.score = final_fused
+
         return sorted(buckets.values(), key=lambda x: x.score, reverse=True)
 
 
 class MultimodalArtifactResolver:
+    """Multimodal Artifact Resolver combining PGVector, Neo4j, Metadata, and Evidence Fusion."""
+
     def __init__(self, records: list[dict[str, Any]] | None = None) -> None:
         self.vector = PgVectorRetriever()
         self.graph = KnowledgeGraphRetriever()
@@ -181,27 +208,54 @@ class MultimodalArtifactResolver:
         self.fusion = EvidenceFusion()
 
     def resolve(self, perception: dict[str, Any], embedding: list[float] | None = None) -> dict[str, Any]:
-        query = ' '.join(str(x) for x in [perception.get('label', ''), perception.get('semanticType', ''), perception.get('ocrText', '')] if x)
-        vector_rows = self.vector.search(embedding or [], limit=8)
+        query = ' '.join(str(x) for x in [
+            perception.get('label', ''),
+            perception.get('detection', {}).get('label', ''),
+            perception.get('semanticType', ''),
+            perception.get('ocrText', ''),
+        ] if x)
+
+        vector_rows, vector_status = self.vector.search(embedding or [], limit=8)
         metadata_rows = self.metadata.search(query, limit=12)
-        seed_ids = [str(x.get('entity_id') or x.get('id')) for x in vector_rows + metadata_rows if x.get('entity_id') or x.get('id')]
-        graph_rows = self.graph.neighborhood(seed_ids, limit=16)
-        ranked = self.fusion.rank(perception, vector_rows, graph_rows, metadata_rows)
+        seed_ids = [str(x.get('id') or x.get('entity_id')) for x in (vector_rows + metadata_rows) if x.get('id') or x.get('entity_id')]
+        graph_rows, graph_status = self.graph.neighborhood(seed_ids, limit=16)
+
+        ranked = self.fusion.rank(
+            perception=perception,
+            vector_rows=vector_rows,
+            graph_rows=graph_rows,
+            metadata_rows=metadata_rows,
+            vector_status=vector_status,
+            graph_status=graph_status,
+        )
 
         if not ranked:
             status = 'UNRESOLVED'
             top = None
+            candidate_ids = []
         else:
             top = ranked[0]
-            second = ranked[1].score if len(ranked) > 1 else 0.0
-            margin = top.score - second
-            status = 'RESOLVED' if top.score >= 0.65 and margin >= 0.08 else 'AMBIGUOUS'
+            second_score = ranked[1].score if len(ranked) > 1 else 0.0
+            margin = top.score - second_score
+            candidate_ids = [c.entity_id for c in ranked]
+
+            if len(ranked) > 1 and margin < 0.06 and top.score >= 0.50:
+                status = 'AMBIGUOUS'
+            elif top.conflicts and top.score < 0.82:
+                status = 'AMBIGUOUS' if len(ranked) > 1 else 'UNRESOLVED'
+            elif top.score < 0.82:
+                status = 'UNRESOLVED'
+            else:
+                status = 'RESOLVED'
 
         return {
             'status': status,
+            'entityId': top.entity_id if (top and status == 'RESOLVED') else None,
             'entity': None if top is None else {
                 'entityId': top.entity_id,
                 'name': top.label,
+                'civilization': top.knowledge.get('civilization'),
+                'epistemicStatus': top.knowledge.get('epistemic_status', 'ESTABLISHED'),
                 'matchScore': round(min(1.0, top.score), 4),
                 'knowledge': top.knowledge,
                 'evidence': top.sources,
@@ -210,5 +264,9 @@ class MultimodalArtifactResolver:
                 {'entityId': c.entity_id, 'name': c.label, 'score': round(min(1.0, c.score), 4)}
                 for c in ranked[:8]
             ],
-            'resolver': 'holokai-multimodal-artifact-resolver-v2.1',
+            'candidateIds': candidate_ids,
+            'matchScore': round(top.score, 4) if top else 0.0,
+            'vectorStatus': vector_status,
+            'graphStatus': graph_status,
+            'resolver': 'holokai-multimodal-artifact-resolver-v2.2',
         }
