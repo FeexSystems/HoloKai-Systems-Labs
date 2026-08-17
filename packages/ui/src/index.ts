@@ -26,6 +26,7 @@ export * from './components/ProcessSection';
 export * from './components/AIChatLauncher';
 export * from './components/VanguardCard';
 export * from './components/VanguardCarousel';
+export * from './components/ArtifactIntelligenceCard';
 
 // ── New Primitives (Phase B) ─────────────────────────────────────────────────
 export * from './components/IconButton';

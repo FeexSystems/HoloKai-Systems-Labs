@@ -58,38 +58,19 @@ oracleRouter.post('/query', async (req: Request<{}, {}, OracleQueryRequest>, res
       });
 
       if (aliveReq.ok) {
-        const aliveRes = await aliveReq.json();
-        const oracleResponse: OracleQueryResponse = {
-          queryId: `hk_query_${Date.now()}`,
-          text: aliveRes.answer || aliveRes.text || 'The Oracle is silent.',
-          epistemicStance: aliveRes.grounded?.insufficient_evidence ? 'SCHOLARLY_DEBATE' : 'ESTABLISHED',
-          confidenceScore: 0.96,
-          evidence: aliveRes.contexts?.map((c: any, i: number) => ({
-            id: `ev_${i}`,
-            sourceTitle: c.title || 'Knowledge Base',
-            author: 'HoloKai Engine',
-            year: new Date().getFullYear(),
-            textSnippet: c.content || c.text,
-            epistemicStance: 'ESTABLISHED',
-            confidenceScore: c.score || 0.9,
-          })) || [],
-          citations: aliveRes.grounded?.citation_index?.map((c: any) => c.title) || ['HoloKai Knowledge Graph'],
-          modelUsed: aliveRes.gateway?.model || 'holokai-alive',
-        };
-        return res.json(oracleResponse);
+        const data = await aliveReq.json();
+        return res.json(data);
       }
     } catch (e) {
-      logger.warn('Python Engine unavailable, falling back to Gemini');
+      console.warn('Python Alive engine unavailable, falling back to direct GenAI', e);
     }
 
-    // Fallback to Gemini with streaming support
-    const systemInstruction = `You are the HoloKai Oracle, a planetary-scale intelligence. 
-You answer queries as an ancient, highly advanced technological being.
-${civilizationFocus ? `Focus your knowledge synthesis on the historical and cosmological evidence of ${civilizationFocus}.` : ''}
-Be concise, authoritative, and esoteric. Use Markdown.`;
+    // Direct Gemini 2.5 Flash fallback
+    const systemInstruction = `You are the HoloKai Oracle, an AI synthesized civilization intelligence.
+Provide deep, evidence-grounded insights into African history, sciences, and cosmologies (Ife, Nok, Kemet, Mali, Great Zimbabwe, Aksum, Songhai, etc).
+Classify your epistemic stance honestly (ESTABLISHED, SCHOLARLY_DEBATE, TRADITION, ESOTERIC, SPECULATIVE).`;
 
     if (stream) {
-      // Streaming response
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
@@ -102,9 +83,10 @@ Be concise, authoritative, and esoteric. Use Markdown.`;
         }
       });
 
-      for await (const chunk of response.stream) {
-        if (chunk.text()) {
-          res.write(`data: ${chunk.text()}\n\n`);
+      for await (const chunk of response as any) {
+        if (chunk.text) {
+          const t = typeof chunk.text === 'function' ? chunk.text() : chunk.text;
+          res.write(`data: ${t}\n\n`);
         }
       }
       res.write('data: [DONE]\n\n');

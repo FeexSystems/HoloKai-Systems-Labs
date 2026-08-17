@@ -5,7 +5,7 @@
 
 import { Router, Request, Response } from 'express';
 import { logger } from '../lib/logger.js';
-import { metrics } from '../lib/metrics-collector.js';
+import { getMetricsSummary } from '../lib/metrics-collector.js';
 
 export const healthRouter = Router();
 
@@ -272,7 +272,7 @@ async function checkDiskSpace(): Promise<HealthCheckResult> {
       service: 'disk_space',
       status: 'degraded',
       message: 'Unable to check disk space',
-      responseTime: Date.now - start
+      responseTime: Date.now() - start
     };
   }
 }
@@ -284,7 +284,7 @@ async function checkMemoryUsage(): Promise<HealthCheckResult> {
   const start = Date.now();
   try {
     const memoryUsage = process.memoryUsage();
-    const duration = Date.now - start;
+    const duration = Date.now() - start;
 
     const usedMB = memoryUsage.heapUsed / 1024 / 1024;
     const totalMB = memoryUsage.heapTotal / 1024 / 1024;
@@ -300,8 +300,8 @@ async function checkMemoryUsage(): Promise<HealthCheckResult> {
       responseTime: duration,
       metadata: {
         usedMB: usedMB.toFixed(2),
-      totalMB: totalMB.toFixed(2),
-      usagePercent: usagePercent.toFixed(2)
+        totalMB: totalMB.toFixed(2),
+        usagePercent: usagePercent.toFixed(2)
       }
     };
   } catch (error) {
@@ -309,7 +309,7 @@ async function checkMemoryUsage(): Promise<HealthCheckResult> {
       service: 'memory',
       status: 'degraded',
       message: 'Unable to check memory usage',
-      responseTime: Date.now - start
+      responseTime: Date.now() - start
     };
   }
 }
@@ -359,11 +359,12 @@ healthRouter.get('/', async (req: Request, res: Response<HealthResponse>) => {
     timestamp: new Date().toISOString(),
     uptime: Date.now() - startTime,
     services,
-    metrics: metrics.getMetricsSummary()
+    metrics: getMetricsSummary()
   };
 
   // Log health check result
-  logger.info('Health check completed', {
+  logger.info({
+    message: 'Health check completed',
     status: overallStatus,
     services: services.map(s => ({
       service: s.service,

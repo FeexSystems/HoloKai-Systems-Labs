@@ -20,7 +20,7 @@ export class RetryHandler {
     backoffMultiplier: 2,
     retryableErrors: (error) => {
       // Retry on network errors, 5xx errors, and specific status codes
-      if (!.error) return false;
+      if (!error) return false;
       
       // Network errors (no response)
       if (!error.response) return true;
