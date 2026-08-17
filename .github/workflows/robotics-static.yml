@@ -1,0 +1,37 @@
+name: Robotics Static Validation
+
+on:
+  push:
+    paths:
+      - 'robotics/**'
+      - 'apps/bff/src/routes/robotics.ts'
+      - 'packages/contracts/src/**'
+      - '.github/workflows/robotics-static.yml'
+  pull_request:
+    paths:
+      - 'robotics/**'
+      - 'apps/bff/src/routes/robotics.ts'
+      - 'packages/contracts/src/**'
+      - '.github/workflows/robotics-static.yml'
+
+jobs:
+  robotics-static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate embodied action schema
+        run: python -m json.tool robotics/contracts/embodied_action.schema.json >/dev/null
+
+      - name: Validate ROS package XML
+        run: python -c "import xml.etree.ElementTree as ET; ET.parse('robotics/ros2/src/holokai_embodied/package.xml')"
+
+      - name: Python syntax check
+        run: python -m py_compile robotics/ros2/src/holokai_embodied/holokai_embodied/*.py robotics/ros2/src/holokai_embodied/launch/*.py
+
+      - name: Validate package layout
+        run: |
+          test -f robotics/README.md
+          test -f robotics/ros2/src/holokai_embodied/setup.py
+          test -f robotics/ros2/src/holokai_embodied/resource/holokai_embodied
+          test -f robotics/ros2/src/holokai_embodied/launch/holokai_embodied.launch.py
