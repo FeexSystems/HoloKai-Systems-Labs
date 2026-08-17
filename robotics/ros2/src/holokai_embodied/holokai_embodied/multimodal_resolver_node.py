@@ -36,7 +36,7 @@ class MultimodalResolverNode(Node):
 
         self.pub = self.create_publisher(String, '/holokai/robot/resolved_observation', 20)
         self.sub = self.create_subscription(
-            String, '/holokai/robot/observation', self._on_observation, 20
+            String, '/holokai/semantic/candidates', self._on_candidates, 20
         )
 
     def _embedding(self, entity: dict[str, Any]) -> list[float] | None:
@@ -61,11 +61,11 @@ class MultimodalResolverNode(Node):
             self.get_logger().warning(f'Embedding retrieval skipped: {exc}')
             return None
 
-    def _on_observation(self, message: String) -> None:
+    def _on_candidates(self, message: String) -> None:
         try:
             observation = json.loads(message.data)
         except json.JSONDecodeError:
-            self.get_logger().warning('Ignoring malformed robot observation')
+            self.get_logger().warning('Ignoring malformed semantic candidate payload')
             return
 
         if not self.ready or self.resolver is None:
@@ -85,15 +85,14 @@ class MultimodalResolverNode(Node):
             enriched['resolution'] = result
             if result.get('status') == 'RESOLVED' and result.get('entity'):
                 resolved = result['entity']
+                knowledge = resolved.get('knowledge', {})
                 enriched['resolvedEntity'] = {
                     'name': resolved.get('name'),
-                    'civilization': resolved.get('civilization') or resolved.get('knowledge', {}).get('civilization'),
+                    'civilization': resolved.get('civilization') or knowledge.get('civilization'),
                 }
                 enriched['entityId'] = resolved.get('entityId', enriched.get('entityId'))
-                enriched['knowledge'] = resolved.get('knowledge', {})
-                enriched['evidenceIds'] = [
-                    str(i) for i, _ in enumerate(resolved.get('evidence', []))
-                ]
+                enriched['knowledge'] = knowledge
+                enriched['evidenceIds'] = [str(i) for i, _ in enumerate(resolved.get('evidence', []))]
             entities.append(enriched)
 
         out = String()
