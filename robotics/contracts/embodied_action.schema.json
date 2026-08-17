@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://holokai.org/schemas/embodied-action/v1",
+  "title": "HoloKai Embodied Action",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["taskId", "intent", "createdAt", "target", "constraints", "requiredCapabilities", "provenance"],
+  "properties": {
+    "taskId": {"type": "string", "minLength": 1},
+    "intent": {"type": "string", "enum": ["observe", "inspect", "navigate", "approach", "pick", "place", "follow", "return_home", "stop"]},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entityId", "semanticType"],
+      "properties": {
+        "entityId": {"type": "string"},
+        "semanticType": {"type": "string"},
+        "locationFrame": {"type": "string"},
+        "pose": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"},
+            "qx": {"type": "number"}, "qy": {"type": "number"}, "qz": {"type": "number"}, "qw": {"type": "number"}
+          }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxLinearVelocity", "maxAngularVelocity", "humanProximityMeters", "allowManipulation"],
+      "properties": {
+        "maxLinearVelocity": {"type": "number", "minimum": 0, "maximum": 3},
+        "maxAngularVelocity": {"type": "number", "minimum": 0, "maximum": 6.28},
+        "humanProximityMeters": {"type": "number", "minimum": 0},
+        "allowManipulation": {"type": "boolean"},
+        "allowedWorkspace": {"type": "string"}
+      }
+    },
+    "requiredCapabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "epistemicStance", "confidence"],
+      "properties": {
+        "source": {"type": "string"},
+        "epistemicStance": {"type": "string", "enum": ["ESTABLISHED", "SCHOLARLY_DEBATE", "TRADITION", "ESOTERIC", "SPECULATIVE", "FICTIONAL"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "evidenceIds": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "metadata": {"type": "object"}
+  }
+}
