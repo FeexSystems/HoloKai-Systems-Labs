@@ -65,10 +65,42 @@ oracleRouter.post('/query', async (req: Request<{}, {}, OracleQueryRequest>, res
       console.warn('Python Alive engine unavailable, falling back to direct GenAI', e);
     }
 
+<<<<<<< Updated upstream
     // Direct Gemini 2.5 Flash fallback
     const systemInstruction = `You are the HoloKai Oracle, an AI synthesized civilization intelligence.
 Provide deep, evidence-grounded insights into African history, sciences, and cosmologies (Ife, Nok, Kemet, Mali, Great Zimbabwe, Aksum, Songhai, etc).
 Classify your epistemic stance honestly (ESTABLISHED, SCHOLARLY_DEBATE, TRADITION, ESOTERIC, SPECULATIVE).`;
+=======
+    // Direct Gemini fallback with Live World Model context injection
+    let liveWorldContext = '';
+    try {
+      const worldReq = await fetch(`${PYTHON_ENGINE_URL}/api/world/state`, { signal: AbortSignal.timeout(1500) });
+      if (worldReq.ok) {
+        const worldData: any = await worldReq.json();
+        if (worldData.observations && worldData.observations.length > 0) {
+          const latest = worldData.observations[0];
+          const pos = latest.pose?.position || {};
+          liveWorldContext = `\n\nCURRENT LIVE PHYSICAL WORLD MODEL STATE:
+- Active Observation ID: ${latest.observationId || latest.observation_id}
+- Sensor Capture Time: ${latest.timestamp || latest.observed_at} (Note: Time of robot sensor capture)
+- Detected Physical Object: ${latest.detection?.label || 'Artifact'}
+- Detection Confidence (RT-DETR): ${((latest.detector?.confidence || 0) * 100).toFixed(1)}%
+- Spatial Pose (FoundationPose): x=${pos.x ?? 0}m, y=${pos.y ?? 0}m, z=${pos.z ?? 0}m, frame=${latest.pose?.frameId || 'map'}, status=${latest.pose?.spatialStatus || 'GROUNDED'}
+- Identity Resolution Status: ${latest.identity?.status || 'UNRESOLVED'}
+- Candidate Entity ID: ${latest.identity?.entityId || 'None'}
+- Match Confidence: ${((latest.identity?.matchScore || 0) * 100).toFixed(1)}%`;
+        }
+      }
+    } catch {
+      // Continue without live world context
+    }
+
+    const systemInstruction = `You are the HoloKai Oracle, an AI synthesized civilization intelligence and physical AI observer.
+Provide deep, evidence-grounded insights into African history, sciences, and cosmologies (Ife, Nok, Kemet, Mali, Great Zimbabwe, Aksum, Songhai, etc).
+${civilizationFocus ? `Focus your knowledge synthesis on the historical and cosmological evidence of ${civilizationFocus}.` : ''}
+Classify your epistemic stance honestly (ESTABLISHED, SCHOLARLY_DEBATE, TRADITION, ESOTERIC, SPECULATIVE).
+If the user asks what you are observing or where an artifact is located, use the live physical world model state provided below.${liveWorldContext}`;
+>>>>>>> Stashed changes
 
     if (stream) {
       res.setHeader('Content-Type', 'text/event-stream');

@@ -154,6 +154,7 @@ router.post('/tasks', async (req: Request, res: Response) => {
 });
 
 router.get('/world', async (_req: Request, res: Response) => {
+<<<<<<< Updated upstream
   const base = gatewayUrl();
   if (base) {
     try {
@@ -177,6 +178,28 @@ router.get('/world', async (_req: Request, res: Response) => {
     }
   } catch {
     // Return empty deterministic world state
+=======
+  const engine = pythonEngineUrl();
+  try {
+    const response = await fetch(`${engine}/api/world/state`, { signal: AbortSignal.timeout(2000) });
+    if (response.ok) {
+      const body = await response.json();
+      return res.json(body);
+    }
+  } catch {
+    // Check gateway
+  }
+
+  const base = gatewayUrl();
+  if (base) {
+    try {
+      const response = await fetch(`${base}/v1/world`, { signal: AbortSignal.timeout(2000) });
+      const body = await response.json().catch(() => ({}));
+      return res.status(response.status).json(body);
+    } catch {
+      // Fallback
+    }
+>>>>>>> Stashed changes
   }
 
   return res.json({
@@ -221,6 +244,23 @@ router.get('/world/artifacts/:id', async (req: Request, res: Response) => {
   return res.status(404).json({ error: 'artifact_not_found', entityId: id });
 });
 
+<<<<<<< Updated upstream
+=======
+router.get('/world/observations', async (_req: Request, res: Response) => {
+  const engine = pythonEngineUrl();
+  try {
+    const response = await fetch(`${engine}/api/world/observations`, { signal: AbortSignal.timeout(2000) });
+    if (response.ok) {
+      const body = await response.json();
+      return res.json(body);
+    }
+  } catch {
+    // Return empty list
+  }
+  return res.json({ observations: [] });
+});
+
+>>>>>>> Stashed changes
 router.post('/artifacts/resolve', async (req: Request, res: Response) => {
   const parsed = resolveSchema.safeParse(req.body);
   if (!parsed.success) {
@@ -252,6 +292,10 @@ router.post('/artifacts/resolve', async (req: Request, res: Response) => {
     conflicts: [],
     policyVersion: 'v2.2',
   });
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 });
 
 export { router as roboticsRouter };

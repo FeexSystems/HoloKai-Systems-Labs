@@ -290,4 +290,9 @@ def test_10_end_to_end_artifact_pipeline():
         state = store.get_world_state()
         assert state["entityCount"] == 1
         assert state["observationCount"] == 1
+<<<<<<< Updated upstream
         assert state["observations"][0]["observation_id"] == obs_id
+=======
+        first_obs = state["observations"][0]
+        assert (first_obs.get("observationId") or first_obs.get("observation_id")) == obs_id
+>>>>>>> Stashed changes

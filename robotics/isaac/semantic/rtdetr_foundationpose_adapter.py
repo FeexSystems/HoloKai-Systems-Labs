@@ -1,7 +1,14 @@
+<<<<<<< Updated upstream
 """Normalized Perception Adapter for Isaac ROS RT-DETR and FoundationPose.
 
 Keeps NVIDIA/hardware-specific message types cleanly separated from HoloKai
 Cognitive, World Model, and Evidence Fusion layers.
+=======
+"""Isaac ROS RT-DETR + FoundationPose Semantic Perception Adapter.
+
+Translates raw perception detections and 6DoF poses from Isaac Sim / Isaac ROS
+into the model-agnostic HoloKai Live Artifact Intelligence contract.
+>>>>>>> Stashed changes
 """
 
 from __future__ import annotations
@@ -13,6 +20,7 @@ from typing import Any
 
 
 @dataclass
+<<<<<<< Updated upstream
 class DetectorInfo:
     name: str = 'RT-DETR'
     version: str = 'isaac-ros-3.1'
@@ -33,6 +41,22 @@ class DetectionPayload:
     classId: str = ''
     bbox: dict[str, float] = field(default_factory=dict)
     ocrText: str = ''
+=======
+class SensorInfo:
+    camera: str = '/visual_slam/image_0'
+    depth: str = '/visual_slam/depth_0'
+
+
+@dataclass
+class VisualProperties:
+    category: str = 'terracotta_sculpture'
+    shape: list[str] = field(default_factory=lambda: ['anthropomorphic'])
+    material: list[str] = field(default_factory=lambda: ['ceramic', 'terracotta'])
+    color: list[str] = field(default_factory=lambda: ['reddish-brown', 'ochre'])
+    texture: list[str] = field(default_factory=lambda: ['fired-clay', 'granular'])
+    geometry: dict[str, Any] = field(default_factory=lambda: {'height': 0.32, 'width': 0.18, 'depth': 0.15})
+    visualDescriptors: list[str] = field(default_factory=lambda: ['perforated-pupils', 'triangular-eyes', 'elaborate-coiffure'])
+>>>>>>> Stashed changes
 
 
 @dataclass
@@ -64,8 +88,15 @@ class Pose6D:
 class NormalizedArtifactObservation:
     observationId: str
     timestamp: str
+<<<<<<< Updated upstream
     detector: dict[str, Any]
     detection: dict[str, Any]
+=======
+    sensor: dict[str, Any]
+    detector: dict[str, Any]
+    detection: dict[str, Any]
+    visualProperties: dict[str, Any]
+>>>>>>> Stashed changes
     pose: dict[str, Any]
     provenance: dict[str, Any] = field(default_factory=dict)
 
@@ -81,6 +112,11 @@ def normalize_detection(
     pose_confidence: float = 0.0,
     class_id: str = '',
     ocr_text: str = '',
+<<<<<<< Updated upstream
+=======
+    sensor_info: dict[str, Any] | None = None,
+    visual_properties: dict[str, Any] | None = None,
+>>>>>>> Stashed changes
     observation_id: str | None = None,
 ) -> dict[str, Any]:
     """Normalize raw perception into stable, model-agnostic HoloKai contract."""
@@ -102,9 +138,32 @@ def normalize_detection(
         'spatialStatus': spatial_status,
     }
 
+<<<<<<< Updated upstream
     obs = NormalizedArtifactObservation(
         observationId=obs_id,
         timestamp=now_ts,
+=======
+    # Extract or synthesize visual properties for archaeological features
+    default_props = asdict(VisualProperties())
+    if 'nok' in label.lower():
+        default_props['category'] = 'terracotta_sculpture'
+        default_props['shape'] = ['anthropomorphic', 'cylindrical_head']
+        default_props['material'] = ['fired_terracotta', 'coarse_clay']
+        default_props['visualDescriptors'] = ['triangular_perforated_eyes', 'pierced_pupils', 'flared_nostrils', 'beaded_neckbands']
+    elif 'ife' in label.lower():
+        default_props['category'] = 'metal_or_terracotta_head'
+        default_props['shape'] = ['naturalistic_head']
+        default_props['material'] = ['leaded_brass', 'copper_alloy', 'terracotta']
+        default_props['visualDescriptors'] = ['striated_facial_lines', 'coronet_crown', 'refined_naturalism']
+
+    if visual_properties:
+        default_props.update(visual_properties)
+
+    obs = NormalizedArtifactObservation(
+        observationId=obs_id,
+        timestamp=now_ts,
+        sensor=sensor_info or asdict(SensorInfo()),
+>>>>>>> Stashed changes
         detector={
             'name': detector_name,
             'version': 'v2.2',
@@ -113,9 +172,17 @@ def normalize_detection(
         detection={
             'label': label,
             'classId': class_id or label.lower().replace(' ', '_'),
+<<<<<<< Updated upstream
             'bbox': bbox or {},
             'ocrText': ocr_text,
         },
+=======
+            'confidence': clean_conf,
+            'bbox': bbox or {},
+            'ocrText': ocr_text,
+        },
+        visualProperties=default_props,
+>>>>>>> Stashed changes
         pose=norm_pose,
         provenance={
             'source': 'isaac_ros_semantic_perception_v2.2',
