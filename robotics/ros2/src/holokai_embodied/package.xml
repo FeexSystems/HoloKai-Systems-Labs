@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>holokai_embodied</name>
-  <version>0.3.3</version>
+
   <description>HoloKai embodied intelligence bridge for ROS 2 and NVIDIA Isaac.</description>
   <maintainer email="engineering@holokai.org">HoloKai Engineering</maintainer>
   <license>MIT</license>
@@ -11,7 +11,7 @@
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>sensor_msgs</depend>
-  <depend>nav_msgs</depend>
+ main
 
   <export>
     <build_type>ament_python</build_type>
