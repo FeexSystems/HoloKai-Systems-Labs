@@ -1,0 +1,1 @@
+"""HoloKai multimodal artifact resolver."""
