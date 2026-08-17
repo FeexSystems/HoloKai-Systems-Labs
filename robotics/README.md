@@ -269,69 +269,84 @@ High-bandwidth image processing should remain in the NVIDIA graph where practica
 
 ---
 
-## 7. Semantic Perception v2.1
+## 7. Semantic Perception v2.2
 
-Semantic Perception v2.1 turns generic computer-vision output into an auditable HoloKai artifact observation.
+Semantic Perception v2.2 turns generic computer-vision output into an auditable HoloKai artifact observation with explicit 6DoF grounding and spatial status verification (`GROUNDED` vs `UNGROUNDED`).
 
 ```text
-             RGB / Depth
-                  │
-                  ▼
-             RT-DETR
-                  │
-             2D detection
-                  │
-                  ▼
-          FoundationPose
-                  │
-             6DoF pose
-                  │
-                  ▼
-       Semantic Perception Bridge
-                  │
-                  ▼
-          Candidate artifact
-                  │
-                  ▼
-       Multimodal Artifact Resolver
-                  │
-                  ▼
-        Artifact Intelligence
-                  │
-                  ▼
-          HoloKai World Model
+             RGB / Depth / IMU
+                   │
+                   ▼
+             Isaac ROS RT-DETR
+                   │
+             2D detection + BBox
+                   │
+                   ▼
+        Isaac ROS FoundationPose
+                   │
+             6DoF Pose (x, y, z, qx, qy, qz, qw)
+                   │
+                   ▼
+        Normalized Perception Adapter
+                   │
+                   ▼
+        Candidate Artifact Observation
+                   │
+                   ▼
+        Multimodal Artifact Resolver v2.2
+                   │
+                   ▼
+        Artifact Intelligence v2.2
+                   │
+                   ▼
+        HoloKai World Model v1
 ```
 
-The stable semantic boundary carries, where available:
-
-- label;
-- semantic type;
-- confidence;
-- bounding box;
-- pose;
-- track ID;
-- detector source;
-- sensor metadata;
-- provenance;
-- epistemic stance.
-
-Detector-specific APIs do not leak into the cognitive core.
+The stable semantic boundary carries:
+- `observationId`: Unique deterministic identifier;
+- `detector`: Name (`RT-DETR`), version (`v2.2`), confidence;
+- `detection`: Label, classId, bounding box, OCR text;
+- `pose`: 6DoF Position, orientation, frame ID (`map`), spatialStatus (`GROUNDED` / `UNGROUNDED`), source (`FoundationPose`), confidence;
+- `provenance`: Detection pipeline origin and timestamp;
+- `epistemic`: Stance (`ESTABLISHED`, `SCHOLARLY_DEBATE`, `TRADITION`, etc.).
 
 ---
 
-## 8. Multimodal Artifact Resolver
+## 8. Multimodal Artifact Resolver v2.2 & Evidence Fusion
 
-The resolver answers a different question from the detector.
+The resolver answers:
+> **Which HoloKai cultural entity is supported by the combined multidisciplinary evidence?**
 
-Detector:
+Explicit channel weights:
+- **Vector Retrieval (`PGVector`)**: 0.35
+- **Graph Topology (`Neo4j`)**: 0.25
+- **Metadata Lexical / Alias**: 0.25
+- **Provenance & Citations**: 0.15
 
-> **What physical visual pattern is present?**
+$$\text{Fused Score} = 0.65 \times \left(\sum_{k} w_k \cdot s_k\right) + 0.35 \times \text{PerceptionConfidence} - \text{ConflictPenalty}$$
 
-Resolver:
+### Decision Thresholds:
+- **`RESOLVED`**: Best candidate score $\ge 0.82$, score margin $\ge 0.06$, no civilization mismatch conflicts.
+- **`AMBIGUOUS`**: Multiple candidates within margin $< 0.06$, or detected civilization conflict.
+- **`UNRESOLVED`**: Insufficient evidence, or best score $< 0.82$.
+- **Graceful Degradation**: If PGVector or Neo4j are unconfigured, resolver tags `VECTOR_UNAVAILABLE` or `GRAPH_UNAVAILABLE` and normalizes over remaining active channels without fabricating evidence.
 
-> **Which HoloKai entity, if any, is supported by the available evidence?**
+### 10-Point Verification Matrix (Passed)
 
-The resolver combines four evidence channels:
+| Test ID | Scenario | Input Pattern | Result | Status |
+|---|---|---|---|---|
+| **TEST 1** | Conclusive Entity Resolution | High perception + vector + graph + metadata + provenance | `RESOLVED` | ✅ VERIFIED |
+| **TEST 2** | Ambiguous Candidate Margin | Two candidates within margin $< 0.06$ | `AMBIGUOUS` | ✅ VERIFIED |
+| **TEST 3** | Unknown Artifact | No candidates cross baseline threshold | `UNRESOLVED` | ✅ VERIFIED |
+| **TEST 4** | Conflicting Evidence | Visual Nok vs Metadata Ife | Mismatch penalty $\rightarrow$ `AMBIGUOUS` | ✅ VERIFIED |
+| **TEST 5** | PGVector Unavailable | Database unconfigured | Tagged `VECTOR_UNAVAILABLE` $\rightarrow$ operational | ✅ VERIFIED |
+| **TEST 6** | Neo4j Unavailable | Knowledge Graph unconfigured | Tagged `GRAPH_UNAVAILABLE` $\rightarrow$ operational | ✅ VERIFIED |
+| **TEST 7** | Pose Frame Failure | Missing or invalid transform frame | Spatial status $\rightarrow$ `UNGROUNDED` | ✅ VERIFIED |
+| **TEST 8** | World Model Persistence | State commit to SQLite / Supabase | State survives process restart | ✅ VERIFIED |
+| **TEST 9** | Provenance Retention | Canonical entity lookup | Full academic citations preserved | ✅ VERIFIED |
+| **TEST 10** | End-to-End Pipeline | Detection $\rightarrow$ Resolver $\rightarrow$ World Model | Complete vertical validation | ✅ VERIFIED |
+
+---
 
 ```text
                   Candidate
