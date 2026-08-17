@@ -286,6 +286,98 @@ def _core_fragments(query: str, core: Any = None) -> List[Dict[str, Any]]:
         return []
 
 
+def _world_model_contexts(query: str) -> List[Dict[str, Any]]:
+    """Retrieve live physical observations, 6DoF grounding, and evidence fusion from World Model v1."""
+    q = (query or "").lower()
+    world_keywords = [
+        "observ", "see", "seeing", "robot", "artifact", "where is", "identify",
+        "evidence", "provenance", "uncertain", "look at", "spatial", "pose",
+        "nok", "ife", "sculpture", "terracotta", "current"
+    ]
+    if not any(k in q for k in world_keywords):
+        return []
+
+    try:
+        from world_memory_store import get_world_store
+
+        store = get_world_store()
+        state = store.get_world_state()
+        observations = state.get("observations") or []
+        if not observations:
+            return []
+
+        out = []
+        for obs in observations[:3]:
+            obs_id = obs.get("observationId") or obs.get("observation_id", "unknown")
+            observed_at = obs.get("observed_at") or obs.get("timestamp", "unknown")
+            detector = obs.get("detector") or obs.get("perception", {})
+            detection = obs.get("detection") or {}
+            visual = obs.get("visualProperties") or {}
+            pose = obs.get("pose") or {}
+            pos = pose.get("position", {})
+            identity = obs.get("identity") or {}
+            entity_id = identity.get("entityId") or obs.get("entity_id")
+            
+            # Fetch entity metadata & provenance if resolved
+            entity_meta = store.get_entity(entity_id) if entity_id else None
+            evidence_records = store.get_artifact_evidence(entity_id) if entity_id else []
+
+            lines = [
+                f"LIVE WORLD MODEL OBSERVATION [ID: {obs_id}]",
+                f"Observation Timestamp: {observed_at} (Note: Time of robot sensor capture, NOT historical period date)",
+                f"Physical Label: {detection.get('label', 'Unknown Object')}",
+                f"Detector: {detector.get('name', 'RT-DETR')} (Confidence: {float(detector.get('confidence', 0.0))*100:.1f}%)",
+                f"Visual Properties: Shape={visual.get('shape', [])}, Material={visual.get('material', [])}, Descriptors={visual.get('visualDescriptors', [])}",
+                f"Spatial 6DoF Pose: x={pos.get('x', 0.0):.2f}m, y={pos.get('y', 0.0):.2f}m, z={pos.get('z', 0.0):.2f}m, Frame={pose.get('frameId', 'map')}, Grounding={pose.get('spatialStatus', 'GROUNDED')}",
+                f"Resolution Status: {identity.get('status', 'UNRESOLVED')} (Match Score: {float(identity.get('matchScore', 0.0))*100:.1f}%)",
+                f"Historical Candidate Entity: {entity_id or 'None'}",
+            ]
+
+            if entity_meta:
+                lines.append(f"Canonical Name: {entity_meta.get('canonical_name')}")
+                lines.append(f"Civilization: {entity_meta.get('civilization')}")
+                lines.append(f"Historical Era: {entity_meta.get('historical_period')}")
+                lines.append(f"Epistemic Stance: {entity_meta.get('epistemic_status')}")
+
+            if evidence_records:
+                lines.append("Multi-Channel Evidence Breakdown:")
+                for ev in evidence_records:
+                    lines.append(f"  • {ev.get('source_type', '').capitalize()}: score={float(ev.get('score', 0.0)):.2f} (Status: {ev.get('source_reference', 'AVAILABLE')})")
+
+            # Academic citations and archaeological provenance records
+            academic_cits = (entity_meta or {}).get("academic_citations") or []
+            prov_records = (entity_meta or {}).get("provenance_records") or []
+            if academic_cits:
+                cit_strs = [f"{c.get('authors', '')} ({c.get('year', '')}) - {c.get('title', '')}" for c in academic_cits]
+                lines.append(f"Academic Citations: {'; '.join(cit_strs)}")
+            if prov_records:
+                prov_strs = [f"{p.get('institution', '')} (Acquired: {p.get('acquisition_year', '')}, Type: {p.get('provenance_type', '')})" for p in prov_records]
+                lines.append(f"Provenance Records: {'; '.join(prov_strs)}")
+
+            prov = (entity_meta or {}).get("provenance", {}) or obs.get("provenance", {})
+            if isinstance(prov, dict) and prov.get("citations"):
+                lines.append(f"Citations: {', '.join(prov.get('citations', []))}")
+
+            content_text = "\n".join(lines)
+            out.append({
+                "content": content_text,
+                "text": content_text,
+                "score": 0.98,
+                "title": f"LIVE WORLD MODEL · {detection.get('label', 'Artifact Observation')}",
+                "metadata": {
+                    "origin": "world_model",
+                    "observationId": obs_id,
+                    "entityId": entity_id,
+                    "spatialStatus": pose.get("spatialStatus", "GROUNDED"),
+                },
+                "retrieval": "world_model",
+            })
+        return out
+    except Exception as exc:
+        logger.warning("world model context extraction failed: %s", exc)
+        return []
+
+
 def build_alive_messages(
     query: str,
     contexts: List[Dict[str, Any]],
@@ -397,6 +489,7 @@ def alive_ask(
             return default
 
     tasks = {
+        "world": lambda: _world_model_contexts(q),
         "vec": lambda: _vector_contexts(q, kb, k=k, domain=domain, min_score=min_score),
         "graph": lambda: _graph_contexts(q, k=max(6 if not fast else 3, k), domain=domain),
         "mem": lambda: _memory_contexts(q, k=6 if not fast else 3),
@@ -408,7 +501,7 @@ def alive_ask(
         tasks["agents"] = lambda: _core_fragments(q, core)
 
     channel_results: Dict[str, List[Dict[str, Any]]] = {}
-    with ThreadPoolExecutor(max_workers=6) as pool:
+    with ThreadPoolExecutor(max_workers=7) as pool:
         fut = {pool.submit(fn, name): name for name, fn in tasks.items()}
         for f in as_completed(fut, timeout=12.0):
             name = fut[f]
@@ -418,6 +511,7 @@ def alive_ask(
                 logger.debug("alive channel %s timed out: %s", name, exc)
                 channel_results[name] = []
 
+    world = channel_results.get("world", [])
     vec = channel_results.get("vec", [])
     graph = channel_results.get("graph", [])
     mem = channel_results.get("mem", [])
@@ -425,7 +519,7 @@ def alive_ask(
     web = channel_results.get("web", [])
     agents = channel_results.get("agents", [])
 
-    contexts = _merge_contexts(vec, graph, mem, replies, web, agents, limit=max(10, k + 6))
+    contexts = _merge_contexts(world, vec, graph, mem, replies, web, agents, limit=max(10, k + 6))
 
     # Keyword comprehensive backfill
     if len(contexts) < 3:

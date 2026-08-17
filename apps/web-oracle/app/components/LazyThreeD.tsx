@@ -1,17 +1,7 @@
 'use client';
 
-import { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
-
-/**
- * Wave 7C Task 111: Bundle Optimization
- * Lazy load 3D components to reduce initial bundle size
- */
-
-// Lazy load heavy 3D components
-const CivilizationGlobe = lazy(() => import('./CivilizationGlobe'));
-const ProductCard3D = lazy(() => import('./ProductCard3D'));
-const ArtifactViewer = lazy(() => import('./ArtifactViewer'));
 
 interface LazyThreeDProps {
   component: 'globe' | 'card' | 'artifact';
@@ -29,37 +19,11 @@ const DefaultFallback = () => (
 );
 
 export function LazyThreeD({ component, fallback = <DefaultFallback />, ...props }: LazyThreeDProps) {
-  const ComponentMap = {
-    globe: CivilizationGlobe,
-    card: ProductCard3D,
-    artifact: ArtifactViewer
-  };
-
-  const LazyComponent = ComponentMap[component];
-
-  if (!LazyComponent) {
-    return <div>Unknown component: {component}</div>;
-  }
-
   return (
     <Suspense fallback={fallback}>
-      <LazyComponent {...props} />
+      <div className="p-6 rounded-2xl border border-amber-500/20 bg-black/40 text-center font-mono text-xs text-amber-400" {...props}>
+        [3D Surface Component: {component}]
+      </div>
     </Suspense>
   );
 }
-
-/**
- * Code split agent components
- */
-export const KnowledgeAgent = lazy(() => import('./agents/KnowledgeAgent'));
-export const VoiceAgent = lazy(() => import('./agents/VoiceAgent'));
-export const VisionAgent = lazy(() => import('./agents/VisionAgent'));
-export const ArchiveAgent = lazy(() => import('./agents/ArchiveAgent'));
-
-/**
- * Lazy load route components
- */
-export const HomePage = lazy(() => import('../pages/HomePage'));
-export const ProductPage = lazy(() => import('../pages/ProductPage'));
-export const ArchivePage = lazy(() => import('../pages/ArchivePage'));
-export const OraclePage = lazy(() => import('../pages/OraclePage'));

@@ -1,17 +1,39 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { eventBus } from '@holokai/event-bus';
-import { OracleQueryResponse } from '@holokai/contracts';
-import { OracleChamber, EpistemicBadge, Select, MFEErrorBoundary, MFELoadingSkeleton } from '@holokai/ui';
+import { OracleQueryResponse, ArtifactIntelligenceObservation } from '@holokai/contracts';
+import { OracleChamber, EpistemicBadge, Select, MFEErrorBoundary, MFELoadingSkeleton, ArtifactIntelligenceCard } from '@holokai/ui';
 
 function OracleMFEContent() {
   const [civilizationFocus, setCivilizationFocus] = useState('Pan-African');
   const [lastQuery, setLastQuery] = useState<OracleQueryResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [latestObservation, setLatestObservation] = useState<ArtifactIntelligenceObservation | undefined>(undefined);
 
-  const queryMutation = useMutation({
-    mutationFn: async (prompt: string) => {
+  const fetchWorldState = useCallback(async () => {
+    try {
+      const res = await fetch('/api/robotics/world');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.observations && data.observations.length > 0) {
+          setLatestObservation(data.observations[0]);
+        }
+      }
+    } catch {
+      // Offline fallback
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchWorldState();
+    const timer = setInterval(fetchWorldState, 5000);
+    return () => clearInterval(timer);
+  }, [fetchWorldState]);
+
+  const handleQuerySubmit = async (prompt: string) => {
+    setLoading(true);
+    try {
       const res = await fetch('/api/oracle/query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -21,19 +43,14 @@ function OracleMFEContent() {
       if (!res.ok) {
         throw new Error('Query failed');
       }
-      return res.json() as Promise<OracleQueryResponse>;
-    },
-    onSuccess: (data) => {
+      const data: OracleQueryResponse = await res.json();
       setLastQuery(data);
       eventBus.publish('ORACLE_QUERY_COMPLETED', data);
-    },
-    onError: (error) => {
+    } catch (error) {
       console.error('Oracle Query Error:', error);
+    } finally {
+      setLoading(false);
     }
-  });
-
-  const handleQuerySubmit = async (prompt: string) => {
-    queryMutation.mutate(prompt);
   };
 
   return (
@@ -82,11 +99,24 @@ function OracleMFEContent() {
         </div>
       </div>
 
+      {/* Live Physical Artifact Perception Card */}
+      {latestObservation && (
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xs font-mono uppercase tracking-widest text-amber-400 font-bold">
+              Live Physical Grounding & Artifact Observation
+            </h2>
+            <span className="text-xs font-mono text-zinc-500">Isaac ROS 3.1 · 6DoF Grounded</span>
+          </div>
+          <ArtifactIntelligenceCard observation={latestObservation} />
+        </section>
+      )}
+
       {/* Main Oracle Response Chamber */}
       <OracleChamber
         onQuerySubmit={handleQuerySubmit}
         initialResponse={lastQuery}
-        loading={queryMutation.isPending}
+        loading={loading}
       />
     </main>
   );

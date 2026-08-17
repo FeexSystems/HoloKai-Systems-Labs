@@ -44,6 +44,7 @@ export * from './components/PricingCard';
 export * from './components/TestimonialCard';
 export * from './components/Toast';
 export * from './components/ResearchLogCard';
+export * from './components/ArtifactIntelligenceCard';
 export * from './components/ProductCard';
 export * from './components/ProductGrid';
 export * from './components/SubscriptionCard';

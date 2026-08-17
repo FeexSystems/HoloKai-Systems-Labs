@@ -218,6 +218,17 @@ class WebSearchRequest(BaseModel):
     max_results: int = Field(5, ge=1, le=10)
 
 
+class ArtifactResolveRequest(BaseModel):
+    observation: Dict[str, Any]
+    vector: List[Dict[str, Any]] = []
+    graph: List[Dict[str, Any]] = []
+    metadata: List[Dict[str, Any]] = []
+    provenance: List[Dict[str, Any]] = []
+    resolvedThreshold: float = 0.82
+    ambiguityMargin: float = 0.06
+    conflictPenaltyWeight: float = 0.25
+
+
 class ChatMessage(BaseModel):
     id: str
     role: str
@@ -632,6 +643,172 @@ async def alive_seed_endpoint(force: bool = False):
     except Exception as exc:
         logger.exception("Alive seed failed")
         raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+
+# ----------------------------------------------------------------------
+# HoloKai World Model v1 & Artifact Resolution Endpoints
+# ----------------------------------------------------------------------
+@app.get("/api/world/state")
+async def get_world_state_endpoint():
+    """Retrieve full live HoloKai World Model state with entities and physical observations."""
+    try:
+        from world_memory_store import get_world_store
+
+        return get_world_store().get_world_state()
+    except Exception as exc:
+        logger.exception("Failed to get world state")
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@app.get("/api/world/entities")
+async def get_world_entities_endpoint():
+    """List all registered entities in the World Model."""
+    try:
+        from world_memory_store import get_world_store
+
+        return {"entities": get_world_store().get_world_state().get("entities", [])}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@app.get("/api/world/entities/{entity_id}")
+async def get_world_entity_endpoint(entity_id: str):
+    """Retrieve a single entity from the World Model."""
+    from world_memory_store import get_world_store
+
+    ent = get_world_store().get_entity(entity_id)
+    if not ent:
+        raise HTTPException(status_code=404, detail="Entity not found")
+    return ent
+
+
+@app.get("/api/world/artifacts/{entity_id}")
+async def get_world_artifact_endpoint(entity_id: str):
+    """Retrieve artifact entity with its complete multi-channel evidence and academic provenance."""
+    from world_memory_store import get_world_store
+
+    store = get_world_store()
+    ent = store.get_entity(entity_id)
+    if not ent:
+        raise HTTPException(status_code=404, detail="Artifact entity not found")
+    evidence = store.get_artifact_evidence(entity_id)
+    provenance = store.get_artifact_provenance(entity_id)
+    return {
+        "entity": ent,
+        "evidence": evidence,
+        "provenance": provenance,
+    }
+
+
+@app.get("/api/world/observations")
+async def get_world_observations_endpoint(limit: int = Query(50, ge=1, le=200)):
+    """Retrieve historical and live physical observations from Isaac Sim / Isaac ROS."""
+    try:
+        from world_memory_store import get_world_store
+
+        return {"observations": get_world_store().get_observations(limit=limit)}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@app.get("/api/world/observations/{observation_id}")
+async def get_world_observation_by_id_endpoint(observation_id: str):
+    """Retrieve an observation by its unique correlation ID."""
+    from world_memory_store import get_world_store
+
+    obs = get_world_store().get_observation(observation_id)
+    if not obs:
+        raise HTTPException(status_code=404, detail="Observation not found")
+    return obs
+
+
+@app.post("/api/artifacts/resolve")
+async def resolve_artifact_endpoint(payload: ArtifactResolveRequest):
+    """Resolve physical observation using Multimodal Evidence Fusion and persist to World Model."""
+    try:
+        from services.artifact_resolver.resolver import Evidence, MultimodalArtifactResolver
+        from world_memory_store import get_world_store
+
+        store = get_world_store()
+        resolver = MultimodalArtifactResolver(
+            resolved_threshold=payload.resolvedThreshold,
+            ambiguity_margin=payload.ambiguityMargin,
+            conflict_penalty_weight=payload.conflictPenaltyWeight,
+        )
+
+        obs = payload.observation
+        detector_conf = float(obs.get("confidence", obs.get("detector", {}).get("confidence", 0.0)))
+        perception_label = str(obs.get("label", obs.get("detection", {}).get("label", "")))
+
+        vector_ev = [Evidence(**e) if isinstance(e, dict) else e for e in payload.vector]
+        graph_ev = [Evidence(**e) if isinstance(e, dict) else e for e in payload.graph]
+        metadata_ev = [Evidence(**e) if isinstance(e, dict) else e for e in payload.metadata]
+        provenance_ev = [Evidence(**e) if isinstance(e, dict) else e for e in payload.provenance]
+
+        res = resolver.resolve(
+            perception=detector_conf,
+            vector=vector_ev,
+            graph=graph_ev,
+            metadata=metadata_ev,
+            provenance=provenance_ev,
+            perception_label=perception_label,
+        )
+
+        obs_id = str(obs.get("observationId") or obs.get("id") or f"obs-{datetime.now().strftime('%Y%m%d%H%M%S')}")
+
+        # Commit observation to World Model
+        store.save_observation({
+            "observationId": obs_id,
+            "entity_id": res.entity_id,
+            "timestamp": obs.get("timestamp", datetime.now(timezone.utc).isoformat()),
+            "perception": obs.get("detector", obs),
+            "detection": obs.get("detection", {}),
+            "pose": obs.get("pose", {}),
+            "visualProperties": obs.get("visualProperties", {}),
+            "identity": {
+                "status": res.status,
+                "entityId": res.entity_id,
+                "matchScore": res.match_score,
+            },
+            "provenance": obs.get("provenance", {}),
+        })
+
+        # Save resolution & multi-channel evidence records
+        store.save_resolution(obs_id, {
+            "entityId": res.entity_id,
+            "status": res.status,
+            "matchScore": res.match_score,
+            "scores": res.scores,
+            "conflictPenalty": res.scores.get("conflictPenalty", 0.0),
+            "policyVersion": res.policy_version,
+            "evidence": res.evidence,
+        })
+
+        # Log state transition event
+        store.log_state_event(
+            event_type="ARTIFACT_RESOLVED" if res.status == "RESOLVED" else "ARTIFACT_OBSERVED",
+            entity_id=res.entity_id,
+            observation_id=obs_id,
+            payload={
+                "status": res.status,
+                "matchScore": res.match_score,
+                "pose": obs.get("pose", {}),
+            },
+        )
+
+        return {
+            "status": res.status,
+            "entityId": res.entity_id,
+            "matchScore": res.match_score,
+            "scores": res.scores,
+            "evidence": res.evidence,
+            "conflicts": res.conflicts,
+            "policyVersion": res.policy_version,
+            "observationId": obs_id,
+        }
+    except Exception as exc:
+        logger.exception("Artifact resolution failed")
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
 
 
 @app.get("/api/graph/status")

@@ -1,24 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Wifi, WifiOff } from 'lucide-react';
 
-interface OfflineDetectionHook {
-  isOnline: boolean;
-  isOffline: boolean;
-  showOfflineBanner: boolean;
-  dismissBanner: () => void;
-}
-
-export function useOfflineDetection(): OfflineDetectionHook {
+export function useOfflineDetection() {
   const [isOnline, setIsOnline] = useState(true);
   const [showOfflineBanner, setShowOfflineBanner] = useState(false);
 
   useEffect(() => {
-    // Initial check
+    if (typeof window === 'undefined') return;
+
     setIsOnline(navigator.onLine);
 
-    // Event listeners for online/offline status
     const handleOnline = () => {
       setIsOnline(true);
       setShowOfflineBanner(false);
@@ -32,45 +25,22 @@ export function useOfflineDetection(): OfflineDetectionHook {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Periodic connectivity check (every 30 seconds)
-    const checkConnectivity = async () => {
-      try {
-        const response = await fetch('/api/health', {
-          method: 'HEAD',
-          cache: 'no-cache',
-          signal: AbortSignal.timeout(5000)
-        });
-        setIsOnline(response.ok);
-      } catch {
-        setIsOnline(false);
-        setShowOfflineBanner(true);
-      }
-    };
-
-    const intervalId = setInterval(checkConnectivity, 30000);
-
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
-      clearInterval(intervalId);
     };
   }, []);
 
-  const dismissBanner = () => {
-    setShowOfflineBanner(false);
-  };
+  const dismissBanner = () => setShowOfflineBanner(false);
 
   return {
     isOnline,
     isOffline: !isOnline,
     showOfflineBanner,
-    dismissBanner
+    dismissBanner,
   };
 }
 
-/**
- * Offline Banner Component
- */
 export function OfflineBanner({ show, onDismiss }: { show: boolean; onDismiss: () => void }) {
   if (!show) return null;
 
@@ -95,9 +65,6 @@ export function OfflineBanner({ show, onDismiss }: { show: boolean; onDismiss: (
   );
 }
 
-/**
- * Online Status Indicator Component
- */
 export function OnlineStatusIndicator() {
   const { isOnline } = useOfflineDetection();
 

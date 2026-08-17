@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { Play, Pause, Volume2, VolumeX, SkipForward, SkipBack, Settings } from 'lucide-react';
 
 interface VoiceOutputProps {
@@ -75,14 +75,14 @@ export function VoiceOutput({
 
   const handleSkip = (direction: 'forward' | 'back') => {
     if (audioRef.current) {
-      const currentTime = audioRef.currentTime;
-      const duration = audioRef.duration;
+      const currentTime = audioRef.current.currentTime;
+      const duration = audioRef.current.duration || 0;
       const skipAmount = 10; // skip 10 seconds
 
       if (direction === 'forward') {
-        audioRef.currentTime = Math.min(currentTime + skipAmount, duration);
+        audioRef.current.currentTime = Math.min(currentTime + skipAmount, duration);
       } else {
-        audioRef.currentTime = Math.max(currentTime - skipAmount, 0);
+        audioRef.current.currentTime = Math.max(currentTime - skipAmount, 0);
       }
     }
   };
