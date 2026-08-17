@@ -8,7 +8,8 @@ export type EpistemicStance =
   | 'TRADITION'
   | 'ESOTERIC'
   | 'SPECULATIVE'
-  | 'FICTIONAL';
+  | 'FICTIONAL'
+  | 'UNKNOWN';
 
 export interface EvidenceSpan {
   id: string;
@@ -176,4 +177,68 @@ export interface WorldObservation {
   robot?: RobotState;
   sensorMetadata?: Record<string, unknown>;
   provenance?: EmbodiedProvenance;
+}
+
+export interface ArtifactEvidenceRecord {
+  candidateId: string;
+  source: 'vector' | 'graph' | 'metadata' | 'provenance';
+  score: number;
+  status?: string;
+  payload?: Record<string, unknown>;
+}
+
+export interface ArtifactResolutionResult {
+  status: 'RESOLVED' | 'AMBIGUOUS' | 'UNRESOLVED';
+  entityId: string | null;
+  matchScore: number;
+  scores: Record<string, number>;
+  evidence: ArtifactEvidenceRecord[];
+  conflicts?: Array<{ type: string; detail: string; penalty: number }>;
+  policyVersion: string;
+}
+
+export interface ArtifactWorldEntity {
+  id: string;
+  canonicalName: string;
+  civilization?: string;
+  historicalPeriod?: string;
+  epistemicStatus: EpistemicStance;
+  metadata: Record<string, unknown>;
+  provenance: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ArtifactIntelligenceObservation {
+  observationId: string;
+  timestamp: string;
+  perception: {
+    detector: string;
+    confidence: number;
+    bbox?: Record<string, number>;
+    pose6d?: Record<string, unknown>;
+    frameId: string;
+    spatialStatus: 'GROUNDED' | 'UNGROUNDED';
+  };
+  identity: {
+    status: 'RESOLVED' | 'AMBIGUOUS' | 'UNRESOLVED';
+    entityId?: string | null;
+    name: string;
+    civilization?: string;
+    matchScore: number;
+    candidateIds?: string[];
+  };
+  evidence: ArtifactEvidenceRecord[];
+  scores: Record<string, number>;
+  knowledge?: Record<string, unknown>;
+  provenance: {
+    perceptionSource: string;
+    resolver: string;
+    knowledgeSources?: Array<{ source?: string; title?: string }>;
+    evidenceIds?: string[];
+  };
+  epistemic: {
+    stance: EpistemicStance;
+    basis: string;
+  };
 }
