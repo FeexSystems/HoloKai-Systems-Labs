@@ -194,7 +194,7 @@ export function doubleSubmitCookie(req: Request, res: Response, next: NextFuncti
     return next();
   }
 
-  const cookieToken = req.cookies?.[CSSRF_CONFIG.cookieName];
+  const cookieToken = req.cookies?.[CSRF_CONFIG.cookieName];
   const headerToken = req.get(CSRF_CONFIG.headerName);
 
   if (!cookieToken || !headerToken) {

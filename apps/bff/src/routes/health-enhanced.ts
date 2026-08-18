@@ -5,7 +5,7 @@
 
 import { Router, Request, Response } from 'express';
 import { logger } from '../lib/logger.js';
-import { metrics } from '../lib/metrics-collector.js';
+import { metrics, getMetricsSummary } from '../lib/metrics-collector.js';
 
 export const healthRouter = Router();
 
@@ -74,7 +74,7 @@ async function checkPythonEngine(): Promise<HealthCheckResult> {
       signal: AbortSignal.timeout(5000)
     });
 
-    const duration = Date.now - start;
+    const duration = Date.now() - start;
 
     if (response.ok) {
       const data = await response.json();
@@ -151,7 +151,7 @@ async function checkElevenLabsAPI(): Promise<HealthCheckResult> {
       signal: AbortSignal.timeout(5000)
     });
 
-    const duration = Date.now - start;
+    const duration = Date.now() - start;
 
     if (response.ok) {
       return {
@@ -183,7 +183,7 @@ async function checkElevenLabsAPI(): Promise<HealthCheckResult> {
 async function checkDeepgramAPI(): Promise<HealthCheckResult> {
   const start = Date.now();
   try {
-    const response = fetch('https://api.deepgram.com/v1/projects', {
+    const response = await fetch('https://api.deepgram.com/v1/projects', {
       method: 'GET',
       headers: {
         'Authorization': `Token ${process.env.DEEPGRAM_API_KEY || ''}`
@@ -191,7 +191,7 @@ async function checkDeepgramAPI(): Promise<HealthCheckResult> {
       signal: AbortSignal.timeout(5000)
     });
 
-    const duration = Date.now - start;
+    const duration = Date.now() - start;
 
     if (response.ok) {
       return {
@@ -212,7 +212,7 @@ async function checkDeepgramAPI(): Promise<HealthCheckResult> {
       service: 'deepgram_api',
       status: 'degraded',
       message: 'Deepgram API unavailable',
-      responseTime: Date.now - start
+      responseTime: Date.now() - start
     };
   }
 }
@@ -226,7 +226,7 @@ async function checkClerk(): Promise<HealthCheckResult> {
     const { ClerkExpressRequireAuth } = await import('@clerk/clerk-sdk-node');
     
     // Just verify the SDK is loaded
-    const duration = Date.now - start;
+    const duration = Date.now() - start;
 
     return {
       service: 'clerk_auth',
@@ -241,7 +241,7 @@ async function checkClerk(): Promise<HealthCheckResult> {
       service: 'clerk_auth',
       status: 'degraded',
       message: 'Clerk SDK unavailable',
-      responseTime: Date.now - start
+      responseTime: Date.now() - start
     };
   }
 }
@@ -255,7 +255,7 @@ async function checkDiskSpace(): Promise<HealthCheckResult> {
     const fs = await import('fs');
     const stats = fs.statSync('.');
     
-    const duration = Date.now - start;
+    const duration = Date.now() - start;
 
     // In production, check actual disk space
     return {
@@ -272,7 +272,7 @@ async function checkDiskSpace(): Promise<HealthCheckResult> {
       service: 'disk_space',
       status: 'degraded',
       message: 'Unable to check disk space',
-      responseTime: Date.now - start
+      responseTime: Date.now() - start
     };
   }
 }
@@ -284,7 +284,7 @@ async function checkMemoryUsage(): Promise<HealthCheckResult> {
   const start = Date.now();
   try {
     const memoryUsage = process.memoryUsage();
-    const duration = Date.now - start;
+    const duration = Date.now() - start;
 
     const usedMB = memoryUsage.heapUsed / 1024 / 1024;
     const totalMB = memoryUsage.heapTotal / 1024 / 1024;
@@ -309,7 +309,7 @@ async function checkMemoryUsage(): Promise<HealthCheckResult> {
       service: 'memory',
       status: 'degraded',
       message: 'Unable to check memory usage',
-      responseTime: Date.now - start
+      responseTime: Date.now() - start
     };
   }
 }
@@ -359,18 +359,18 @@ healthRouter.get('/', async (req: Request, res: Response<HealthResponse>) => {
     timestamp: new Date().toISOString(),
     uptime: Date.now() - startTime,
     services,
-    metrics: metrics.getMetricsSummary()
+    metrics: getMetricsSummary()
   };
 
   // Log health check result
-  logger.info('Health check completed', {
+  logger.info({
     status: overallStatus,
     services: services.map(s => ({
       service: s.service,
       status: s.status,
       responseTime: s.responseTime
     }))
-  });
+  }, 'Health check completed');
 
   // Set appropriate status code
   const statusCode = overallStatus === 'healthy' ? 200 : overallStatus === 'degraded' ? 200 : 503;

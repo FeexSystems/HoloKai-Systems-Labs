@@ -16,6 +16,7 @@ export interface CacheOptions {
   noStore?: boolean;
   mustRevalidate?: boolean;
   proxyRevalidate?: boolean;
+  immutable?: boolean;
 }
 
 /**
@@ -146,7 +147,7 @@ export function generateETag(content: string): string {
 export function etagMiddleware(req: Request, res: Response, next: NextFunction) {
   const originalSend = res.send;
 
-  res.send = function (body: any) {
+  res.send = function (this: Response, body: any) {
     if (typeof body === 'string' || Buffer.isBuffer(body)) {
       const etag = generateETag(body.toString());
       res.setHeader('ETag', `"${etag}"`);

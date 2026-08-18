@@ -117,4 +117,43 @@ router.get('/world', async (_req: Request, res: Response) => {
   }
 });
 
+router.get('/stream', async (req: Request, res: Response) => {
+  const base = gatewayUrl();
+  if (!base) {
+    res.status(503).json({ error: 'robotics_gateway_unconfigured' });
+    return;
+  }
+
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
+  try {
+    const response = await fetch(`${base}/stream`);
+    
+    if (!response.ok || !response.body) {
+      res.write(`data: ${JSON.stringify({ error: 'stream_unavailable' })}\n\n`);
+      res.end();
+      return;
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    req.on('close', () => {
+      reader.cancel();
+    });
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      res.write(decoder.decode(value, { stream: true }));
+    }
+  } catch (error) {
+    res.write(`data: ${JSON.stringify({ error: 'stream_error', detail: error instanceof Error ? error.message : 'unknown error' })}\n\n`);
+    res.end();
+  }
+});
+
 export { router as roboticsRouter };

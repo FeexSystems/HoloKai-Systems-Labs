@@ -6,7 +6,7 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
-    "lint-app": "next lint"
+    "lint-app": "next lint ."
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.6",

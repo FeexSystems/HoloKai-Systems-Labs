@@ -26,7 +26,7 @@ router.post('/stream', async (req: Request, res: Response) => {
 
     const generator = systemPrompt 
       ? geminiClient.streamWithSystemPrompt(systemPrompt, prompt)
-      : gemini.streamContent(prompt);
+      : geminiClient.streamContent(prompt);
 
     for await (const chunk of generator) {
       if (chunk.text) {
@@ -38,7 +38,7 @@ router.post('/stream', async (req: Request, res: Response) => {
     res.end();
   } catch (error) {
     if (error instanceof z.ZodError) {
-      res.status(400).json({ error: 'Invalid request body', details: error.errors });
+      res.status(400).json({ error: 'Invalid request body', details: error.issues });
       return;
     }
 

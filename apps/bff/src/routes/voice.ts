@@ -62,7 +62,7 @@ router.post('/synthesize', async (req: Request, res: Response) => {
     res.send(audioBuffer);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      res.status(400).json({ error: 'Invalid request body', details: error.errors });
+      res.status(400).json({ error: 'Invalid request body', details: error.issues });
       return;
     }
 

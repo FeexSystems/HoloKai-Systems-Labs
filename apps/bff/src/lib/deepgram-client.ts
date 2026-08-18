@@ -54,8 +54,8 @@ export class DeepgramClientWrapper {
       return {
         text: transcript.transcript || '',
         confidence: transcript.confidence || 0,
-        language: transcript.language || this.language,
-        duration: transcript.words?.reduce((acc, word) => acc + (word.end - word.start), 0) || 0,
+        language: transcript.languages?.[0] || this.language,
+        duration: transcript.words?.reduce((acc: number, word: any) => acc + (word.end - word.start), 0) || 0,
       };
     } catch (error) {
       console.error('Deepgram transcription error:', error);
@@ -90,8 +90,8 @@ export class DeepgramClientWrapper {
       return {
         text: transcript.transcript || '',
         confidence: transcript.confidence || 0,
-        language: transcript.language || 'en-US',
-        duration: transcript.words?.reduce((acc, word) => acc + (word.end - word.start), 0) || 0,
+        language: transcript.languages?.[0] || 'en-US',
+        duration: transcript.words?.reduce((acc: number, word: any) => acc + (word.end - word.start), 0) || 0,
       };
     } catch (error) {
       console.error('Deepgram transcription with language detection error:', error);

@@ -36,7 +36,7 @@ oracleRouter.post('/query', async (req: Request<{}, {}, OracleQueryRequest>, res
     // Validate request body with Zod
     const parseResult = OracleQuerySchema.safeParse(req.body);
     if (!parseResult.success) {
-      return res.status(400).json({ error: 'Validation failed', issues: parseResult.error.errors });
+      return res.status(400).json({ error: 'Validation failed', issues: parseResult.error.issues });
     }
 
     const { prompt, civilizationFocus } = parseResult.data;
@@ -102,9 +102,9 @@ Be concise, authoritative, and esoteric. Use Markdown.`;
         }
       });
 
-      for await (const chunk of response.stream) {
-        if (chunk.text()) {
-          res.write(`data: ${chunk.text()}\n\n`);
+      for await (const chunk of response) {
+        if (chunk.text) {
+          res.write(`data: ${chunk.text}\n\n`);
         }
       }
       res.write('data: [DONE]\n\n');

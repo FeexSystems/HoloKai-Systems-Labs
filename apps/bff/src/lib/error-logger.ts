@@ -52,6 +52,7 @@ export class ErrorLogger {
       timestamp: new Date().toISOString(),
       service: process.env.SERVICE_NAME || 'holokai-bff',
       environment: process.env.NODE_ENV || 'development',
+      error: { name: 'UnknownError', message: 'An unknown error occurred' },
       ...context
     };
 
@@ -59,7 +60,7 @@ export class ErrorLogger {
     this.errorQueue.push(errorContext);
 
     // Log to console for immediate visibility
-    logger.error('Error logged:', errorContext);
+    logger.error(errorContext, 'Error logged:');
 
     // Flush if queue is full
     if (this.errorQueue.length >= this.MAX_QUEUE_SIZE) {
@@ -83,7 +84,7 @@ export class ErrorLogger {
       ipAddress: req.ip,
       endpoint: req.path,
       method: req.method,
-      statusCode: error.statusCode || 500,
+      statusCode: (error as any).statusCode || 500,
       error: {
         name: error.name,
         message: error.message,
@@ -218,7 +219,7 @@ export class ErrorLogger {
       // Also log to file for backup
       logger.info(`Flushed ${errorsToFlush.length} errors to monitoring`);
     } catch (error) {
-      logger.error('Failed to flush errors:', error);
+      logger.error(error, 'Failed to flush errors:');
       // Re-add to queue if flush failed
       this.errorQueue.unshift(...errorsToFlush);
     }
@@ -283,7 +284,7 @@ export function errorLoggingMiddleware(req: any, res: any, next: any) {
   res.json = function (data: any) {
     if (res.statusCode >= 400) {
       const error = new Error(data.error || 'HTTP Error');
-      error.statusCode = res.statusCode;
+      (error as any).statusCode = res.statusCode;
       errorLogger.logRequestError(error, req, { responseData: data });
     }
     return originalJson.call(this, data);

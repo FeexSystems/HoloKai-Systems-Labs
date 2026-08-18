@@ -95,7 +95,7 @@ class MetricsCollector {
    * Get gauge value
    */
   getGauge(name: string, tags?: Record<string, string>): number {
-    const key = this.buildKey(name, name, tags);
+    const key = this.buildKey(name, tags);
     return this.gauges.get(key) || 0;
   }
 
@@ -187,7 +187,7 @@ class MetricsCollector {
     }
 
     const tagString = Object.entries(tags)
-      .sort(([key, value]) => key)
+      .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
       .map(([key, value]) => `${key}=${value}`)
       .join(',');
     return `${name}|${tagString}`;
@@ -316,7 +316,7 @@ export function getMetricsSummary() {
     },
     cache: {
       hits: metrics.getCounter(MetricNames.CACHE_HITS),
-      misses: metrics.getCounter(MetricS_CACHE_MISSES),
+      misses: metrics.getCounter(MetricNames.CACHE_MISSES),
       hitRate: calculateCacheHitRate(),
       size: metrics.getGauge(MetricNames.CACHE_SIZE)
     },

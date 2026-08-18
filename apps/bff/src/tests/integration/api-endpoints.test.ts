@@ -96,7 +96,7 @@ describe('API Endpoint Integration Tests', () => {
 
     it('should handle streaming responses', async () => {
       const response = await fetch(`${BFF_URL}/api/oracle/query?stream=true`, {
-        method: POST',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
