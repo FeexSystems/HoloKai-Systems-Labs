@@ -11,7 +11,7 @@ export interface ChatFeedProps {
   className?: string;
 }
 
-export const ChatFeed: React.FC<ChatFeedProps> = ({ messages, isTyping, onSendMessage, className = '' }) => {
+export const ChatFeed: React.FC<ChatFeedProps> = ({ messages = [], isTyping, onSendMessage = () => {}, className = '' }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = React.useState('');
 

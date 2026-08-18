@@ -18,7 +18,7 @@ export function TelemetryDashboard() {
 
   useEffect(() => {
     // In local dev, BFF runs on port 3001 typically, or via Next.js proxy
-    const eventSource = new EventSource('http://localhost:3001/api/robotics/stream');
+    const eventSource = new EventSource('http://localhost:4000/api/robotics/stream');
 
     eventSource.onmessage = (event) => {
       try {
@@ -59,7 +59,14 @@ export function TelemetryDashboard() {
             {error ? (
               <span className="text-red-400">Stream Offline: {error}</span>
             ) : (
-              <span className="text-zinc-500 animate-pulse">Waiting for WebRTC...</span>
+              <video 
+                src="/gr00t-stream.mp4" 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="w-full h-full object-cover opacity-80"
+              />
             )}
             
             {/* Overlay bounding boxes */}
@@ -134,7 +141,7 @@ export function TelemetryDashboard() {
         <Card className="p-4 bg-zinc-900 border-zinc-800 h-96 flex flex-col">
           <h2 className="text-xl font-bold mb-4 text-cyan-400">Knowledge Fabric</h2>
           <div className="flex-1 bg-zinc-950 rounded border border-zinc-800 p-4 font-mono text-xs text-zinc-300 overflow-y-auto">
-            {data?.objects.map(obj => (
+            {(data?.objects || []).map(obj => (
               <div key={obj.id} className="mb-2">
                 <span className="text-purple-400">MERGE</span> (e:Entity &#123;id: "{obj.id}"&#125;)<br/>
                 <span className="text-blue-400">SET</span> e.label = "{obj.label}"<br/>
@@ -144,7 +151,7 @@ export function TelemetryDashboard() {
                 <div className="border-b border-zinc-800 my-2"></div>
               </div>
             ))}
-            {!data?.objects.length && <div className="text-zinc-600 italic">No artifacts currently resolved in view.</div>}
+            {(!data?.objects || data.objects.length === 0) && <div className="text-zinc-600 italic">No artifacts currently resolved in view.</div>}
           </div>
         </Card>
       </div>

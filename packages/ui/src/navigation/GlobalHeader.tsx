@@ -85,6 +85,7 @@ export function GlobalHeader({ onNavigate, cartCount: propCartCount }: GlobalHea
     { label: 'Vanguards', path: '/vanguards' },
     { label: '3D Lab', path: '/lab' },
     { label: 'System Edge', path: '/system' },
+    { label: 'Command Center', path: '/system/command' },
   ];
 
   return (
