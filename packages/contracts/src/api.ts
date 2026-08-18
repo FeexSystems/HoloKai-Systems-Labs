@@ -208,37 +208,3 @@ export interface ArtifactWorldEntity {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface ArtifactIntelligenceObservation {
-  observationId: string;
-  timestamp: string;
-  perception: {
-    detector: string;
-    confidence: number;
-    bbox?: Record<string, number>;
-    pose6d?: Record<string, unknown>;
-    frameId: string;
-    spatialStatus: 'GROUNDED' | 'UNGROUNDED';
-  };
-  identity: {
-    status: 'RESOLVED' | 'AMBIGUOUS' | 'UNRESOLVED';
-    entityId?: string | null;
-    name: string;
-    civilization?: string;
-    matchScore: number;
-    candidateIds?: string[];
-  };
-  evidence: ArtifactEvidenceRecord[];
-  scores: Record<string, number>;
-  knowledge?: Record<string, unknown>;
-  provenance: {
-    perceptionSource: string;
-    resolver: string;
-    knowledgeSources?: Array<{ source?: string; title?: string }>;
-    evidenceIds?: string[];
-  };
-  epistemic: {
-    stance: EpistemicStance;
-    basis: string;
-  };
-}
